@@ -23,7 +23,7 @@ export default function getBitbucketData(repoNames) {
             pullRequests: {},
         };
 
-        bbData.RAWDATA = repoData;
+        // bbData.RAWDATA = repoData;
 
         let pullRequestListUrl = repoData.links.pullrequests.href;
         let pdListData = await bitbucketCourier(pullRequestListUrl);
@@ -33,8 +33,12 @@ export default function getBitbucketData(repoNames) {
             bbData.repos[repoName].pullRequests[prData.id] = {
                 title: prData.title,
                 open: prData.state === 'OPEN',
-                createdDatetime: prData.created_on,
-                updatedDatetime: prData.updated_on,
+                timeSinceCreated: timeDeltaString(prData.created_on),
+                timeSinceUpdated: timeDeltaString(prData.updated_on),
+                mergeConflicts: await getConflitStatus(prData.links.diff.href),
+                summary: await getDiffSummary(prData.links.diffstat.href),
+                branchSource: prData.source.branch.name,
+                branchTarget: prData.destination.branch.name,
                 author: {
                     name: prData.author.display_name,
                     profileUrl: prData.author.links.html.href,
@@ -53,8 +57,59 @@ export default function getBitbucketData(repoNames) {
                 }
             })
         }));
-        // }));
     })).then(() => bbData);
+}
+
+async function getConflitStatus(diffUrl) {
+    let diff = await bitbucketCourier(diffUrl);
+    return diff.includes('<<<<<<<');
+}
+
+async function getDiffSummary(diffstatUrl) {
+    let diffstat = await bitbucketCourier(diffstatUrl);
+    let summary = {
+        linesAdded: 0,
+        linesRemoved: 0
+    };
+
+    diffstat.values.forEach(stat => {
+        if ('lines_added' in stat) {
+            summary.linesAdded += stat.lines_added;
+        }
+        if ('lines_added' in stat) {
+            summary.linesRemoved += stat.lines_removed;
+        }
+    });
+
+    return summary;
+}
+
+function timeDeltaString(timestamp) {
+    let nowTime = Date.now();
+    let thenTime = Date.parse(timestamp);
+    let msecs = (nowTime - thenTime);
+    let secs = Math.floor(msecs / 1000) % 60;
+    let mins = Math.floor((msecs / (1000 * 60)) % 60);
+    let hours = Math.floor((msecs / (1000 * 60 * 60)) % 24);
+    let days = Math.floor((msecs / (1000 * 60 * 60 * 24)) % 7);
+
+    let daysString = () => `${days} day` + (days === 1 ? '' : 's');
+    let hoursString = () => `${hours} hour` + (hours === 1 ? '' : 's');
+    let minsString = () => `${mins} min` + (mins === 1 ? '' : 's');
+    let secsString = () => `${secs} sec` + (secs === 1 ? '' : 's');
+
+    let timeString = '';
+    if (days) {
+        timeString = `${daysString()}, ${hoursString()}`;
+    }
+    else if (hours) {
+        timeString = `${hoursString()}, ${minsString()}`;
+    }
+    else if (mins) {
+        timeString = `${minsString()}, ${secsString()}`;
+    }
+    timeString += ' ago'
+    return timeString;
 }
 
 function bitbucketCourier(url) {

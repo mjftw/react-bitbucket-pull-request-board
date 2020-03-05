@@ -16,9 +16,8 @@
         }
     },
     "repos": {
-        "repoId": {
-            "name": "repo name",
-            "projectId": 1234,
+        "repoName": {
+            "projectKey": 1234,
             "branches": {
                 "branch-name": {
                     "head": "branch head commit hash"
@@ -54,15 +53,16 @@
                 }
             }
         }
-    },
-    "jiraBoards": [
-        {
-            "issues": {
-                "AB-1234": {
-                    "issueUrl": "http://url-of-issue",
-                    "priorityIconUrl": "http://priority-icon-url"
-                }
+    }
+},
+"jiraBoards": [
+    {
+        "issues": {
+            "AB-1234": {
+                "issueUrl": "http://url-of-issue",
+                "priorityIconUrl": "http://priority-icon-url"
             }
         }
-    ]
+    }
+]
 }

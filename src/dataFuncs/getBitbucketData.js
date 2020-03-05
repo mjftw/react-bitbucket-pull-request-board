@@ -14,6 +14,10 @@ export default function getBitbucketData(repoNames) {
             bitbucketRepoRootUrl(workspaceName, repoName)
         );
 
+        if (!repoData.slug) {
+            return;
+        }
+
         bbData.repos[repoData.slug] = {
             projectKey: repoData.project.key,
             pullRequests: {},
@@ -27,7 +31,6 @@ export default function getBitbucketData(repoNames) {
             let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
             let prData = await bitbucketCourier(pullRequestUrl);
             bbData.repos[repoName].pullRequests[prData.id] = {
-                // RAWDATA: prData,
                 title: prData.title,
                 open: prData.state === 'OPEN',
                 createdDatetime: prData.created_on,

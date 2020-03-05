@@ -1,73 +1,68 @@
 {
-    "users": [
-        {
-            "id": 1234,
+    "users": {
+        "userId": {
             "name": "username",
             "profileUrl": "http://user-profile-url",
             "avatarUrl": "http://avatar-image-url"
         }
-    ],
-    "repoGroups": [
-        {
-            "id": 1234,
-            "name": "Name of repo group/folder",
+    },
+    "projects": {
+        "projectId": {
+            "name": "Name of repo group/project",
             "repoIds": [
                 1234,
                 5678
             ]
         }
-    ],
-    "repos": [
-        {
-            "id": 1234,
+    },
+    "repos": {
+        "repoId": {
             "name": "repo name",
-            "groupId": 1234,
+            "projectId": 1234,
             "branches": {
-                "id": 123,
-                "name": "branch-name",
-                "head": "branch head commit hash"
+                "branch-name": {
+                    "head": "branch head commit hash"
+                }
             },
             "pullRequests": {
-                "id": 123,
-                "name": "PR name",
-                "merged": false,
-                "mergeConflicts": false,
-                "raisedDatetime": "2020-03-05T11:00:02+00:00",
-                "updatedDatetime": "2020-03-05T11:00:02+00:00",
-                "branchSourceId": 123,
-                "branchTargetId": 123,
-                "jiraIssueId": "AB-1234",
-                "authorUserId": 1234,
-                "summary": {
-                    "linesAdded": 100,
-                    "linesRemoved": 50
-                },
-                "reviewers": [
-                    {
-                        "userId": 1234,
-                        "numComments": 0,
-                        "approved": false,
-                        "declined": false
+                "prId": {
+                    "name": "PR name",
+                    "merged": false,
+                    "mergeConflicts": false,
+                    "raisedDatetime": "2020-03-05T11:00:02+00:00",
+                    "updatedDatetime": "2020-03-05T11:00:02+00:00",
+                    "branchSourceId": 123,
+                    "branchTargetId": 123,
+                    "jiraIssueId": "AB-1234",
+                    "authorUserId": 1234,
+                    "summary": {
+                        "linesAdded": 100,
+                        "linesRemoved": 50
                     },
-                    {
-                        "userId": 1234,
-                        "numComments": 0,
-                        "approved": false,
-                        "declined": false
+                    "reviewers": {
+                        "userId": {
+                            "numComments": 0,
+                            "approved": false,
+                            "declined": false
+                        },
+                        "userId": {
+                            "numComments": 0,
+                            "approved": false,
+                            "declined": false
+                        }
                     }
-                ]
+                }
             }
         }
-    ],
+    },
     "jiraBoards": [
         {
-            "issues": [
-                {
-                    "id": "AB-1234",
+            "issues": {
+                "AB-1234": {
                     "issueUrl": "http://url-of-issue",
                     "priorityIconUrl": "http://priority-icon-url"
                 }
-            ]
+            }
         }
     ]
 }

@@ -5,7 +5,6 @@ export default function getBitbucketData(repoNames) {
     const workspaceName = getEnv().bitbucket.workspaceName;
 
     let bbData = {
-        users: {},
         repos: {},
         projects: {}
     };
@@ -28,12 +27,28 @@ export default function getBitbucketData(repoNames) {
             let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
             let prData = await bitbucketCourier(pullRequestUrl);
             bbData.repos[repoName].pullRequests[prData.id] = {
-                RAWDATA: prData,
+                // RAWDATA: prData,
                 title: prData.title,
-                open: prData.state === "OPEN",
+                open: prData.state === 'OPEN',
                 createdDatetime: prData.created_on,
-                updatedDatetime: prData.updated_on
+                updatedDatetime: prData.updated_on,
+                author: {
+                    name: prData.author.display_name,
+                    profileUrl: prData.author.links.html.href,
+                    avatarUrl: prData.author.links.avatar.href
+                },
+                reviewers: [],
             };
+            prData.participants.map(p => {
+                if (p.role === 'REVIEWER') {
+                    bbData.repos[repoName].pullRequests[prData.id].reviewers.push({
+                        name: p.user.display_name,
+                        profileUrl: p.user.links.html.href,
+                        avatarUrl: p.user.links.avatar.href,
+                        approved: p.approved
+                    });
+                }
+            })
         }));
         // }));
     })).then(() => bbData);

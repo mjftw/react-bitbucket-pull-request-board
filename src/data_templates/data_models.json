@@ -1,11 +1,4 @@
 {
-    "users": {
-        "userId": {
-            "name": "username",
-            "profileUrl": "http://user-profile-url",
-            "avatarUrl": "http://avatar-image-url"
-        }
-    },
     "projects": {
         "projectId": {
             "name": "Name of repo group/project",
@@ -29,18 +22,23 @@
                     "branchSourceId": 123,
                     "branchTargetId": 123,
                     "jiraIssueId": "AB-1234",
-                    "authorUserId": 1234,
+                    "author": {
+                        "name": "username",
+                        "profileUrl": "http://user-profile-url",
+                        "avatarUrl": "http://avatar-image-url"
+                    },
                     "summary": {
                         "linesAdded": 100,
                         "linesRemoved": 50
                     },
-                    "reviewers": {
-                        "userId": {
-                            "numComments": 0,
-                            "approved": false,
-                            "declined": false
+                    "reviewers": [
+                        {
+                            "name": "username",
+                            "profileUrl": "http://user-profile-url",
+                            "avatarUrl": "http://avatar-image-url",
+                            "approved": false
                         }
-                    }
+                    ]
                 }
             }
         }

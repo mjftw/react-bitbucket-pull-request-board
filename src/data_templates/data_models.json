@@ -18,17 +18,13 @@
     "repos": {
         "repoName": {
             "projectKey": 1234,
-            "branches": {
-                "branch-name": {
-                    "head": "branch head commit hash"
-                }
-            },
+            "pullRequestsUrl": "http://repo-pull-requests",
             "pullRequests": {
                 "prId": {
-                    "name": "PR name",
-                    "merged": false,
+                    "title": "PR title",
+                    "open": true,
                     "mergeConflicts": false,
-                    "raisedDatetime": "2020-03-05T11:00:02+00:00",
+                    "createdDatetime": "2020-03-05T11:00:02+00:00",
                     "updatedDatetime": "2020-03-05T11:00:02+00:00",
                     "branchSourceId": 123,
                     "branchTargetId": 123,
@@ -39,11 +35,6 @@
                         "linesRemoved": 50
                     },
                     "reviewers": {
-                        "userId": {
-                            "numComments": 0,
-                            "approved": false,
-                            "declined": false
-                        },
                         "userId": {
                             "numComments": 0,
                             "approved": false,

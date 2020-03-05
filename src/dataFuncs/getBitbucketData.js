@@ -30,6 +30,8 @@ export default function getBitbucketData(repoNames) {
         await Promise.all(pdListData.values.map(async prListDataItem => {
             let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
             let prData = await bitbucketCourier(pullRequestUrl);
+            let comments = await getUserCommentCount(prData.links.comments.href);
+
             bbData.repos[repoName].pullRequests[prData.id] = {
                 title: prData.title,
                 open: prData.state === 'OPEN',
@@ -42,7 +44,8 @@ export default function getBitbucketData(repoNames) {
                 author: {
                     name: prData.author.display_name,
                     profileUrl: prData.author.links.html.href,
-                    avatarUrl: prData.author.links.avatar.href
+                    avatarUrl: prData.author.links.avatar.href,
+                    comments: (prData.author.display_name in comments) ? comments[prData.author.display_name] : 0
                 },
                 reviewers: [],
             };
@@ -52,12 +55,28 @@ export default function getBitbucketData(repoNames) {
                         name: p.user.display_name,
                         profileUrl: p.user.links.html.href,
                         avatarUrl: p.user.links.avatar.href,
+                        comments: (p.user.display_name in comments) ? comments[p.user.display_name] : 0,
                         approved: p.approved
                     });
                 }
             })
         }));
     })).then(() => bbData);
+}
+
+async function getUserCommentCount(commentsUrl) {
+    let comments = await bitbucketCourier(commentsUrl);
+    let userCommentCount = {};
+    comments.values.forEach(comment => {
+        let userName = comment.user.display_name;
+        if (!(userName in userCommentCount)) {
+            userCommentCount[userName] = 1;
+        }
+        else {
+            userCommentCount[userName]++;
+        }
+    })
+    return userCommentCount;
 }
 
 async function getConflitStatus(diffUrl) {

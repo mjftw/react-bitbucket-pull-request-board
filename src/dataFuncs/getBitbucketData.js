@@ -22,17 +22,20 @@ export default function getBitbucketData(repoNames) {
 
         bbData.RAWDATA = repoData;
 
-        let prData = await bitbucketCourier(repoData.links.pullrequests.href);
-        prData.values.map(prDataItem => {
-            let prId = prDataItem.id;
-            bbData.repos[repoName].pullRequests[prId] = {
-                RAWDATA: prDataItem,
-                title: prDataItem.title,
-                open: prDataItem.state === "OPEN",
-                createdDatetime: prDataItem,
-                updatedDatetime: prDataItem.updated_on
+        let pullRequestListUrl = repoData.links.pullrequests.href;
+        let pdListData = await bitbucketCourier(pullRequestListUrl);
+        await Promise.all(pdListData.values.map(async prListDataItem => {
+            let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
+            let prData = await bitbucketCourier(pullRequestUrl);
+            bbData.repos[repoName].pullRequests[prData.id] = {
+                RAWDATA: prData,
+                title: prData.title,
+                open: prData.state === "OPEN",
+                createdDatetime: prData.created_on,
+                updatedDatetime: prData.updated_on
             };
-        });
+        }));
+        // }));
     })).then(() => bbData);
 }
 

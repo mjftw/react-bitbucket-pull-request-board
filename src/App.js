@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
 import getEnv from './env'
-import getBitbucketData from './dataFuncs/getBitbucketData'
+import getPRData from './dataFuncs/getPRData'
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: ""
+            prData: null
         }
     }
 
     componentDidMount() {
-        getBitbucketData(getEnv().bitbucket.repos)
-            .then(response => {
-                console.log()
-                this.setState({
-                    response: JSON.stringify(response, null, 4)
-                })
-            }
-            )
+        getPRData(getEnv().bitbucket.repos).then(prData => {
+            console.log()
+            this.setState({
+                prData: prData
+            })
+        }
+        )
     }
 
     render() {
         return (
-            <div>
-                <pre>
-                    {this.state.response}
-                </pre>
-            </div >
+            JSON.stringify(this.state.prData)
         );
     }
 }

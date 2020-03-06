@@ -1,13 +1,11 @@
 import courier from './courier'
 import getEnv from '../env'
 
-export default function getBitbucketData(repoNames) {
+
+export default async function getPRData(repoNames) {
     const workspaceName = getEnv().bitbucket.workspaceName;
 
-    let bbData = {
-        repos: {},
-        projects: {}
-    };
+    let bbData = {};
 
     return Promise.all(repoNames.map(async repoName => {
         let repoData = await bitbucketCourier(
@@ -18,13 +16,6 @@ export default function getBitbucketData(repoNames) {
             return;
         }
 
-        bbData.repos[repoData.slug] = {
-            projectKey: repoData.project.key,
-            pullRequests: {},
-        };
-
-        // bbData.RAWDATA = repoData;
-
         let pullRequestListUrl = repoData.links.pullrequests.href;
         let pdListData = await bitbucketCourier(pullRequestListUrl);
         await Promise.all(pdListData.values.map(async prListDataItem => {
@@ -32,8 +23,10 @@ export default function getBitbucketData(repoNames) {
             let prData = await bitbucketCourier(pullRequestUrl);
             let comments = await getUserCommentCount(prData.links.comments.href);
 
-            bbData.repos[repoName].pullRequests[prData.id] = {
+            bbData[prData.id] = {
                 title: prData.title,
+                repoName: repoName,
+                projectKey: repoData.project.key,
                 open: prData.state === 'OPEN',
                 timeSinceCreated: timeDeltaString(prData.created_on),
                 timeSinceUpdated: timeDeltaString(prData.updated_on),
@@ -51,7 +44,7 @@ export default function getBitbucketData(repoNames) {
             };
             prData.participants.map(p => {
                 if (p.role === 'REVIEWER') {
-                    bbData.repos[repoName].pullRequests[prData.id].reviewers.push({
+                    bbData[prData.id].reviewers.push({
                         name: p.user.display_name,
                         profileUrl: p.user.links.html.href,
                         avatarUrl: p.user.links.avatar.href,
@@ -61,7 +54,7 @@ export default function getBitbucketData(repoNames) {
                 }
             })
         }));
-    })).then(() => bbData);
+    })).then(() => Object.keys(bbData).map(key => bbData[key]));
 }
 
 async function getUserCommentCount(commentsUrl) {

@@ -1,57 +1,30 @@
-{
-    "projects": {
-        "projectId": {
-            "name": "Name of repo group/project",
-            "repoIds": [
-                1234,
-                5678
-            ]
-        }
-    },
-    "repos": {
-        "repoName": {
-            "projectKey": 1234,
-            "pullRequestsUrl": "http://repo-pull-requests",
-            "pullRequests": {
-                "prId": {
-                    "title": "PR title",
-                    "open": true,
-                    "mergeConflicts": false,
-                    "createdDatetime": "2020-03-05T11:00:02+00:00",
-                    "updatedDatetime": "2020-03-05T11:00:02+00:00",
-                    "branchSourceId": 123,
-                    "branchTargetId": 123,
-                    "jiraIssueId": "AB-1234",
-                    "author": {
-                        "name": "username",
-                        "profileUrl": "http://user-profile-url",
-                        "avatarUrl": "http://avatar-image-url"
-                    },
-                    "summary": {
-                        "linesAdded": 100,
-                        "linesRemoved": 50
-                    },
-                    "reviewers": [
-                        {
-                            "name": "username",
-                            "profileUrl": "http://user-profile-url",
-                            "avatarUrl": "http://avatar-image-url",
-                            "approved": false
-                        }
-                    ]
-                }
-            }
-        }
-    }
-},
-"jiraBoards": [
+[
     {
-        "issues": {
-            "AB-1234": {
-                "issueUrl": "http://url-of-issue",
-                "priorityIconUrl": "http://priority-icon-url"
+        "repoName": "repository name",
+        "repoProjectKey": "repository project name",
+        "title": "PR title",
+        "open": true,
+        "mergeConflicts": false,
+        "timeSinceCreated": "2 days, 3 hours ago",
+        "timeSinceUpdated": "1 hour, 2 mins ago",
+        "branchSource": "source-branch-name",
+        "branchTarget": "target-branch-name",
+        "author": {
+            "name": "username",
+            "profileUrl": "http://user-profile-url",
+            "avatarUrl": "http://avatar-image-url"
+        },
+        "summary": {
+            "linesAdded": 100,
+            "linesRemoved": 50
+        },
+        "reviewers": [
+            {
+                "name": "username",
+                "profileUrl": "http://user-profile-url",
+                "avatarUrl": "http://avatar-image-url",
+                "approved": false
             }
-        }
+        ]
     }
 ]
-}

@@ -26,7 +26,8 @@ export default async function getPRData(repoNames) {
             bbData[prData.id] = {
                 title: prData.title,
                 repoName: repoName,
-                projectKey: repoData.project.key,
+                id: prData.id,
+                repoProjectKey: repoData.project.key,
                 open: prData.state === 'OPEN',
                 timeSinceCreated: timeDeltaString(prData.created_on),
                 timeSinceUpdated: timeDeltaString(prData.updated_on),

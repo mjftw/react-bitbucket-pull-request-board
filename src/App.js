@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import getEnv from './env'
 import getPRData from './dataFuncs/getPRData'
+import InfoBoard from './components/InfoBoard';
 
 class App extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class App extends Component {
 
     render() {
         return (
-            JSON.stringify(this.state.prData)
+            <InfoBoard prData={this.state.prData}></InfoBoard>
         );
     }
 }

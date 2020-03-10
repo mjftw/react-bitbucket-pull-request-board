@@ -1,6 +1,5 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
-import GitInfo from './GitInfo'
 import PullRequestInfo from './PullRequestInfo';
 
 export default function InfoBoard(props) {

@@ -5,7 +5,7 @@ import GitInfo from './GitInfo'
 
 export default function PullRequestInfo(props) {
     return (
-        <Box className={styles().Box}>
+        <Box className={styles().Box} border={1} marginTop={'0.1em'}>
             <GitInfo prData={props.prData}></GitInfo>
         </Box>
     );

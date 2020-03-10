@@ -8,29 +8,26 @@ export default function GitInfo(props) {
     return (
         <Container >
             <Grid container spacing={3}>
-                <Grid item xs={1}>
-                    #{pr.id}
-                </Grid>
-                <Grid item xs={11}>
-                    {pr.title}<br />
-                </Grid>
-                <Grid item xs={6}>
-                    <Box style={{ 'textAlign': 'left' }}>
-                        {pr.repoName}<br />
-                        {pr.repoProjectKey}<br />
-                        {pr.timeSinceCreated}<br />
-                        {pr.timeSinceUpdated}
-                    </Box>
-                </Grid>
-                <Grid item xs={6} style={{ 'textAlign': 'right' }}>
-                    <Box>
-                        {pr.branchSource}<br />
-                        {pr.branchTarget}<br />
-                        +{pr.summary.linesAdded} | -{pr.summary.linesAdded}<br />
-                        {pr.mergeConflicts ? 'Merge' : 'No merge'} conficts
-                    </Box>
-                </Grid>
+                <Grid item xs={1}>#{pr.id}</Grid>
+                <Grid item xs={11}>{pr.title}</Grid>
             </Grid>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ 'textAlign': 'left' }}>{pr.repoName}</div>
+                <div style={{ 'textAlign': 'right' }}>{pr.branchSource}</div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ 'textAlign': 'left' }}>{pr.repoProjectKey}</div>
+                <div style={{ 'textAlign': 'right' }}>{pr.branchTarget}</div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ 'textAlign': 'left' }}>{pr.timeSinceCreated}</div>
+                <div style={{ 'textAlign': 'right' }}>+{pr.summary.linesAdded} | -{pr.summary.linesAdded}</div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ 'textAlign': 'left' }}>{pr.timeSinceUpdated}</div>
+                <div style={{ 'textAlign': 'right' }}>{pr.mergeConflicts ? 'Merge' : 'No merge'} conficts</div>
+            </div>
         </Container >
     );
 }
+//

@@ -18,8 +18,7 @@ class App extends Component {
             this.setState({
                 prData: prData
             })
-        }
-        )
+        }).catch(error => alert(`${error}. API key expired?`))
     }
 
     render() {

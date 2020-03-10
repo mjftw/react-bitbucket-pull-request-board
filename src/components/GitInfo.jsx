@@ -1,40 +1,36 @@
 import React from 'react';
+import Container from '@material-ui/core/Container'
+import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 
 export default function GitInfo(props) {
     const pr = props.prData;
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={1}>
-                #{pr.id}
+        <Container >
+            <Grid container spacing={3}>
+                <Grid item xs={1}>
+                    #{pr.id}
+                </Grid>
+                <Grid item xs={11}>
+                    {pr.title}<br />
+                </Grid>
+                <Grid item xs={6}>
+                    <Box style={{ 'textAlign': 'left' }}>
+                        {pr.repoName}<br />
+                        {pr.repoProjectKey}<br />
+                        {pr.timeSinceCreated}<br />
+                        {pr.timeSinceUpdated}
+                    </Box>
+                </Grid>
+                <Grid item xs={6} style={{ 'textAlign': 'right' }}>
+                    <Box>
+                        {pr.branchSource}<br />
+                        {pr.branchTarget}<br />
+                        +{pr.summary.linesAdded} | -{pr.summary.linesAdded}<br />
+                        {pr.mergeConflicts ? 'Merge' : 'No merge'} conficts
+                    </Box>
+                </Grid>
             </Grid>
-            <Grid item xs={11}>
-                {pr.title}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.repoName}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.branchSource}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.repoProjectKey}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.branchTarget}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.timeSinceCreated}
-            </Grid>
-            <Grid item xs={6}>
-                +{pr.summary.linesAdded} | -{pr.summary.linesAdded}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.timeSinceUpdated}
-            </Grid>
-            <Grid item xs={6}>
-                {pr.mergeConflicts ? 'M' : 'No m'}erge conficts
-            </Grid>
-        </Grid>
+        </Container >
     );
 }

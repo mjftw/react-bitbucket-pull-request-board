@@ -121,7 +121,6 @@ function timeDeltaString(timestamp) {
     else if (mins) {
         timeString = `${minsString()}, ${secsString()}`;
     }
-    timeString += ' ago'
     return timeString;
 }
 

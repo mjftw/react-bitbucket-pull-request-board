@@ -5,8 +5,11 @@ const styles = makeStyles({
         background: 'linear-gradient(45deg, #7edbff 30%, #bcf5ff 90%)',
         borderRadius: 8,
         color: 'black',
-        height: '5em',
+        height: '7em',
         padding: '0.5em',
+    },
+    gridText: {
+        height: "10vh%"
     }
 })
 

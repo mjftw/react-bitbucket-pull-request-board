@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container'
-import Box from '@material-ui/core/Box'
+import { FaLevelDownAlt } from 'react-icons/fa'
 import Grid from '@material-ui/core/Grid'
 
 export default function GitInfo(props) {
@@ -13,19 +13,19 @@ export default function GitInfo(props) {
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ 'textAlign': 'left' }}>{pr.repoName}</div>
-                <div style={{ 'textAlign': 'right' }}>{pr.branchSource}</div>
+                <div style={{ 'textAlign': 'right' }}>{pr.branchSource}<FaLevelDownAlt /></div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ 'textAlign': 'left' }}>{pr.repoProjectKey}</div>
                 <div style={{ 'textAlign': 'right' }}>{pr.branchTarget}</div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ 'textAlign': 'left' }}>{pr.timeSinceCreated}</div>
-                <div style={{ 'textAlign': 'right' }}>+{pr.summary.linesAdded} | -{pr.summary.linesAdded}</div>
+                <div style={{ 'textAlign': 'left' }}>Created {pr.timeSinceCreated} ago</div>
+                <div style={{ 'textAlign': 'right' }}><span style={{ color: 'green' }}>+{pr.summary.linesAdded}</span> | <span style={{ color: 'red' }}>-{pr.summary.linesAdded}</span></div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ 'textAlign': 'left' }}>{pr.timeSinceUpdated}</div>
-                <div style={{ 'textAlign': 'right' }}>{pr.mergeConflicts ? 'Merge' : 'No merge'} conficts</div>
+                <div style={{ 'textAlign': 'left' }}>Updated {pr.timeSinceUpdated}</div>
+                <div style={{ 'textAlign': 'right' }}>{pr.mergeConflicts ? <span style={{ color: 'orange' }}>Merge conficts</span> : 'No merge conficts'} </div>
             </div>
         </Container >
     );

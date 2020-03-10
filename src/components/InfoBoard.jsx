@@ -6,7 +6,7 @@ import PullRequestInfo from './PullRequestInfo';
 export default function InfoBoard(props) {
     if (props.prData) {
         return (
-            <Container>
+            <Container style={{ margin: '0.5rem' }}>
                 {props.prData.map(prDataItem =>
                     <PullRequestInfo prData={prDataItem}></PullRequestInfo>
                 )}

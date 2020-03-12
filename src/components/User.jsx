@@ -1,14 +1,28 @@
 import React from 'react'
+import { Image } from 'grommet/components/Image'
+import { Box } from 'grommet/components/Box'
+
+const AvatarImage = (props) => (
+    <Image
+        fit='contain'
+        fill={true}
+        alignSelf='end'
+        {...props}
+    />
+);
+
+const UserBox = (props) => (
+    <Box
+        height='xsmall'
+        direction='column'
+        {...props}
+    />
+);
 
 export default function User(props) {
     return (
-        <div>
-            <img src={props.avatarUrl} style={imgStyle} />
-        </div>
+        <UserBox>
+            <AvatarImage src={props.avatarUrl} />
+        </UserBox>
     )
 }
-
-const imgStyle = {
-    height: '6em',
-    width: '6em'
-};

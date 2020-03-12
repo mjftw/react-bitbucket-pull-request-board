@@ -6,9 +6,8 @@ import UserInfo from './UserInfo'
 const PullRequestBox = (props) => (
     <Box
         direction='row'
-        border='black'
+        border={true}
         background='linear-gradient(45deg, #7edbff 30%, #bcf5ff 90%)'
-        height='7em'
         round='small'
         pad={{
             vertical: 'xxsmall', horizontal: 'small'

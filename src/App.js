@@ -24,7 +24,7 @@ class App extends Component {
 
     componentDidMount() {
         getPRData(getEnv().bitbucket.repos).then(prData => {
-            console.log()
+            console.log(prData)
             this.setState({
                 prData: prData
             })

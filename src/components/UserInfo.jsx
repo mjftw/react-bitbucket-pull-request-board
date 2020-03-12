@@ -8,7 +8,7 @@ export default function UserInfo(props) {
         <Box display="flex" margin={'0.1em'}>
             <User avatarUrl={pr.author.avatarUrl}></User>
             {pr.reviewers.map(reviewer =>
-                <User avatarUrl={reviewer.avatarUrl}></User>
+                <User avatarUrl={reviewer.avatarUrl} key={reviewer.profileUrl}></User>
             )}
         </Box>
 

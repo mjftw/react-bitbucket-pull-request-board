@@ -17,8 +17,9 @@ export default function InfoBoard(props) {
         return (
             <Container style={{ margin: '0.5rem' }}>
                 {props.prData.map(prDataItem =>
-                    <PullRequestInfo prData={prDataItem}></PullRequestInfo>
-                )}
+                    <PullRequestInfo prData={prDataItem} key={prDataItem.id} ></PullRequestInfo>
+                )
+                }
             </Container >
         );
     }

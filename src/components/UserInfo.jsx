@@ -1,16 +1,24 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
+import { Box } from 'grommet/components/Box'
 import User from './User'
+
+const UserInfoBox = (props) => (
+    <Box
+        direction='row'
+        margin='0.1em'
+        {...props}
+    />
+);
 
 export default function UserInfo(props) {
     const pr = props.prData;
     return (
-        <Box display="flex" margin={'0.1em'}>
+        <UserInfoBox>
             <User avatarUrl={pr.author.avatarUrl}></User>
             {pr.reviewers.map(reviewer =>
                 <User avatarUrl={reviewer.avatarUrl} key={reviewer.profileUrl}></User>
             )}
-        </Box>
+        </UserInfoBox>
 
     )
 }

@@ -1,14 +1,28 @@
 import React from 'react';
-import Box from '@material-ui/core/Box'
-import styles from '../styles'
+import { Box } from 'grommet/components/Box'
 import GitInfo from './GitInfo'
 import UserInfo from './UserInfo'
 
+const PullRequestBox = (props) => (
+    <Box
+        direction='row'
+        border='black'
+        background='linear-gradient(45deg, #7edbff 30%, #bcf5ff 90%)'
+        height='7em'
+        round='small'
+        pad={{
+            vertical: 'xxsmall', horizontal: 'small'
+        }}
+        elevation='medium'
+        {...props}
+    />
+);
+
 export default function PullRequestInfo(props) {
     return (
-        <Box className={styles().Box} display="flex" border={1} marginTop={'0.1em'}>
+        <PullRequestBox>
             <GitInfo prData={props.prData}></GitInfo>
             <UserInfo prData={props.prData}></UserInfo>
-        </Box>
+        </PullRequestBox>
     );
 }

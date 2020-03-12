@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import './App.css';
+import { Grommet } from 'grommet';
 import getEnv from './env'
 import getPRData from './dataFuncs/getPRData'
 import InfoBoard from './components/InfoBoard';
+
+const theme = {
+    global: {
+        font: {
+            family: 'Roboto',
+            size: '14px',
+            height: '20px',
+        },
+    },
+};
 
 class App extends Component {
     constructor(props) {
@@ -23,7 +33,9 @@ class App extends Component {
 
     render() {
         return (
-            <InfoBoard prData={this.state.prData}></InfoBoard>
+            <Grommet theme={theme}>
+                <InfoBoard prData={this.state.prData}></InfoBoard>
+            </Grommet>
         );
     }
 }

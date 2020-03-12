@@ -1,6 +1,19 @@
 import React from 'react'
-import Container from '@material-ui/core/Container'
+import { Box } from 'grommet/components/Box'
 import PullRequestInfo from './PullRequestInfo';
+
+const InfoBox = (props) => (
+    <Box
+        tag='header'
+        direction='column'
+        flex='grow'
+        justify='between'
+        background='light-2'
+        pad={{ vertical: 'small', horizontal: 'medium' }}
+        elevation='medium'
+        {...props}
+    />
+);
 
 export default function InfoBoard(props) {
     if (props.prData === null || props.prData === undefined) {
@@ -15,12 +28,11 @@ export default function InfoBoard(props) {
     }
     else {
         return (
-            <Container style={{ margin: '0.5rem' }}>
+            <InfoBox>
                 {props.prData.map(prDataItem =>
                     <PullRequestInfo prData={prDataItem} key={prDataItem.id} ></PullRequestInfo>
-                )
-                }
-            </Container >
+                )}
+            </InfoBox >
         );
     }
 }

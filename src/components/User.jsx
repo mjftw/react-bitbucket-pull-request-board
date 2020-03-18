@@ -1,6 +1,8 @@
 import React from 'react'
 import { Image } from 'grommet/components/Image'
 import { Box } from 'grommet/components/Box'
+import { Stack } from 'grommet/components/Stack'
+import CommentBubble from './CommentBubble'
 
 const AvatarImage = (props) => (
     <Image
@@ -9,6 +11,7 @@ const AvatarImage = (props) => (
         alignSelf='end'
         {...props}
     />
+
 );
 
 const UserBox = (props) => (
@@ -21,8 +24,13 @@ const UserBox = (props) => (
 
 export default function User(props) {
     return (
-        <UserBox>
-            <AvatarImage src={props.avatarUrl} />
-        </UserBox>
+        <Stack anchor='top-right'>
+            <UserBox>
+                <AvatarImage
+                    src={props.avatarUrl}
+                />
+            </UserBox>
+            {props.numComments ? <CommentBubble number={props.numComments} /> : null}
+        </Stack>
     )
 }

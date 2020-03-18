@@ -24,7 +24,7 @@ export default function GitInfo(props) {
                 <div style={{ 'textAlign': 'right' }}><span style={{ color: 'green' }}>+{pr.summary.linesAdded}</span> | <span style={{ color: 'red' }}>-{pr.summary.linesRemoved}</span></div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ 'textAlign': 'left' }}>Updated {pr.timeSinceUpdated}</div>
+                <div style={{ 'textAlign': 'left' }}>Updated {pr.timeSinceUpdated} ago</div>
                 <div style={{ 'textAlign': 'right' }}>{pr.mergeConflicts ? <span style={{ color: 'orange' }}>Merge conficts</span> : 'No merge conficts'} </div>
             </div>
         </Container >

@@ -42,6 +42,7 @@ export default function UserInfo(props) {
                         avatarUrl={reviewer.avatarUrl}
                         key={reviewer.profileUrl}
                         numComments={reviewer.comments}
+                        tick={reviewer.approved}
                     />
                 )}
             </UserGroup>

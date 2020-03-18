@@ -2,6 +2,7 @@ import React from 'react'
 import { Image } from 'grommet/components/Image'
 import { Box } from 'grommet/components/Box'
 import { Stack } from 'grommet/components/Stack'
+import { TiTick } from 'react-icons/ti'
 import CommentBubble from './CommentBubble'
 
 const AvatarImage = (props) => (
@@ -30,7 +31,10 @@ export default function User(props) {
                     src={props.avatarUrl}
                 />
             </UserBox>
-            {props.numComments ? <CommentBubble number={props.numComments} /> : null}
+            <Box direction='row'>
+                {props.numComments ? <CommentBubble number={props.numComments} /> : null}
+                {props.tick ? <TiTick size='2em' fill='green' /> : null}
+            </Box>
         </Stack>
     )
 }

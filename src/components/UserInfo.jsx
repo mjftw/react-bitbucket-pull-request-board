@@ -23,7 +23,7 @@ export default function UserInfo(props) {
     const pr = props.prData;
     console.log(JSON.stringify(pr, null, 4));
     return (
-        <Box direction='row'>
+        <Box direction='row' flex='shrink'>
             <UserGroup title='Author'>
                 <User
                     avatarUrl={pr.author.avatarUrl}

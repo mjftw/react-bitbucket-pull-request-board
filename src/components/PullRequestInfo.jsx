@@ -9,8 +9,10 @@ const PullRequestBox = (props) => (
         border={true}
         background='linear-gradient(45deg, #7edbff 30%, #bcf5ff 90%)'
         round='small'
+        justify='between'
+        flex={true}
         pad={{
-            vertical: 'xxsmall', horizontal: 'small'
+            vertical: 'xsmall', horizontal: 'small'
         }}
         elevation='medium'
         {...props}
@@ -21,6 +23,7 @@ export default function PullRequestInfo(props) {
     return (
         <PullRequestBox>
             <GitInfo prData={props.prData}></GitInfo>
+            <Box width='3em' />
             <UserInfo prData={props.prData}></UserInfo>
         </PullRequestBox>
     );

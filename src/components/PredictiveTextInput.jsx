@@ -1,12 +1,30 @@
 import React, { Component } from 'react'
 import { Text, Box, TextInput } from 'grommet'
+import { FaMinus, FaPlus } from 'react-icons/fa'
 
 function Suggestion(props) {
     return (
         <Box
+            direction='row'
+            justify='between'
             onClick={(event) => props.onSelected(event.target.textContent)}
             hoverIndicator={true}>
-            <Text>{props.value}</Text>
+            <Text>{props.text}</Text>
+            <FaPlus />
+        </Box>
+    );
+}
+
+function Selection(props) {
+    return (
+        <Box
+            direction='row'
+            justify='between'
+            onClick={(event) => props.onSelected(event.target.textContent)}
+            hoverIndicator={true}
+        >
+            <Text>{props.text}</Text>
+            <FaMinus />
         </Box>
     );
 }
@@ -15,62 +33,63 @@ export default class PredictiveTextInput extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
-        this.onOptionSelected = this.onOptionSelected.bind(this);
+        this.selectOption = this.selectOption.bind(this);
+        this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
-        this.getEntered = this.getEntered.bind(this);
 
         this.state = {
             inputValue: '',
-            entering: '',
-            entered: [],
+            selected: [],
             suggestions: []
         }
     }
 
     onChange(event) {
         const inputValue = event.target.value;
-        const entering = this.getEntering(inputValue);
-        const entered = this.getEntered(inputValue);
 
         this.setState({
             inputValue: inputValue,
-            entering: entering,
-            entered: entered,
-            suggestions: this.getSuggestions(entering, entered)
+            suggestions: this.getSuggestions(inputValue, this.state.selected)
         });
     }
 
-    onOptionSelected(value) {
-        console.log(value)
-        const newInputValue = `${this.state.inputValue.slice(
-            0, this.state.inputValue.length - this.state.entering.length)}${value}`
+    selectOption(value) {
+        console.log(`Select: ${value}`)
+
+        let newSelected = this.state.selected.slice();
+
+        // Check not already selected
+        if (this.state.selected.indexOf(value) < 0) {
+            newSelected.push(value);
+        }
 
         this.setState({
-            inputValue: newInputValue,
+            inputValue: '',
+            selected: newSelected,
             suggestions: []
         });
     }
 
-    getEntered(text) {
-        const values = this.splitText(text, ',');
+    deselectOption(value) {
+        console.log(`Deselect: ${value}`)
 
-        if (values.length > 1) {
-            return values.slice(0, values.length - 1);
+        let newSelected = this.state.selected.slice();
+
+        // Check selected
+        const index = this.state.selected.indexOf(value);
+        if (index >= 0) {
+            newSelected.splice(index, 1);
         }
-        else {
-            return [];
-        }
+
+        this.setState({
+            selected: newSelected,
+            suggestions: this.getSuggestions(this.state.inputValue, newSelected)
+        });
     }
 
     getEntering(text) {
         const values = this.splitText(text, ',');
-
-        if (values.length) {
-            return values[values.length - 1];
-        }
-        else {
-            return '';
-        }
+        return (values.length) ? values[values.length - 1] : '';
     }
 
     splitText(text, separator) {
@@ -78,12 +97,15 @@ export default class PredictiveTextInput extends Component {
     }
 
     getSuggestions(text, exclude) {
-        console.log(`text: "${text}", exclude: ${exclude}`)
-        return this.props.options.filter(word => (word.startsWith(text) && (exclude.indexOf(word) < 0)));
+        if (text.length) {
+            return this.props.options.filter(word => (word.startsWith(text) && (exclude.indexOf(word) < 0)));
+        }
+        else {
+            return [];
+        }
     }
 
     render() {
-        console.log(`entered="${this.state.entered}" suggestions="${this.state.suggestions}"`)
         return (
             <Box>
                 <TextInput
@@ -91,11 +113,18 @@ export default class PredictiveTextInput extends Component {
                     value={this.state.inputValue}
                     {...this.props}
                 />
+                {this.state.selected.map(text =>
+                    <Selection
+                        key={text}
+                        text={text}
+                        onSelected={this.deselectOption}
+                    />
+                )}
                 {this.state.suggestions.map(text =>
                     <Suggestion
                         key={text}
-                        value={text}
-                        onSelected={this.onOptionSelected}
+                        text={text}
+                        onSelected={this.selectOption}
                     />
                 )}
             </Box>

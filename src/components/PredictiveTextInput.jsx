@@ -2,29 +2,16 @@ import React, { Component } from 'react'
 import { Text, Box, TextInput } from 'grommet'
 import { FaMinus, FaPlus } from 'react-icons/fa'
 
-function Suggestion(props) {
+function ListItem(props) {
     return (
         <Box
             direction='row'
             justify='between'
-            onClick={(event) => props.onSelected(event.target.textContent)}
-            hoverIndicator={true}>
-            <Text>{props.text}</Text>
-            <FaPlus />
-        </Box>
-    );
-}
-
-function Selection(props) {
-    return (
-        <Box
-            direction='row'
-            justify='between'
-            onClick={(event) => props.onSelected(event.target.textContent)}
+            onClick={(event) => props.onSelected(props.text)}
             hoverIndicator={true}
         >
             <Text>{props.text}</Text>
-            <FaMinus />
+            {props.icon}
         </Box>
     );
 }
@@ -37,12 +24,12 @@ export default class PredictiveTextInput extends Component {
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
         this.focusTextInput = this.focusTextInput.bind(this);
+        this.setSelection = this.setSelection.bind(this);
 
         this.textInputRef = React.createRef();
 
         this.state = {
             inputValue: '',
-            selected: [],
             suggestions: []
         }
     }
@@ -52,50 +39,55 @@ export default class PredictiveTextInput extends Component {
 
         this.setState({
             inputValue: inputValue,
-            suggestions: this.getSuggestions(inputValue, this.state.selected)
+            suggestions: this.getSuggestions(inputValue, this.props.selected)
         });
     }
 
     selectOption(value) {
-        console.log(`Select: ${value}`)
-
-        let newSelected = this.state.selected.slice();
+        let newSelected = this.props.selected.slice();
 
         // Check not already selected
-        if (this.state.selected.indexOf(value) < 0) {
+        if (this.props.selected.indexOf(value) < 0) {
             newSelected.push(value);
         }
 
         this.setState({
             inputValue: '',
-            selected: newSelected,
             suggestions: []
         });
 
         this.focusTextInput();
+        this.setSelection(newSelected);
     }
 
     deselectOption(value) {
-        console.log(`Deselect: ${value}`)
-
-        let newSelected = this.state.selected.slice();
+        let newSelected = this.props.selected.slice();
 
         // Check selected
-        const index = this.state.selected.indexOf(value);
+        const index = this.props.selected.indexOf(value);
         if (index >= 0) {
             newSelected.splice(index, 1);
         }
 
         this.setState({
-            selected: newSelected,
             suggestions: this.getSuggestions(this.state.inputValue, newSelected)
         });
 
+        console.log(`value: "${value}", index: "${index}", selected: "${this.props.selected}" newSelected="${newSelected}"`)
+
         this.focusTextInput();
+        this.setSelection(newSelected);
     }
 
     focusTextInput() {
         this.textInputRef.current.focus();
+    }
+
+    setSelection(selection) {
+        if (this.props.onSelectionChanged !== undefined) {
+            console.log(`Updating selection: ${selection}`)
+            this.props.onSelectionChanged(selection);
+        }
     }
 
     getEntering(text) {
@@ -125,17 +117,19 @@ export default class PredictiveTextInput extends Component {
                     ref={this.textInputRef}
                     {...this.props}
                 />
-                {this.state.selected.map(text =>
-                    <Selection
+                {this.props.selected.map(text =>
+                    <ListItem
                         key={text}
                         text={text}
+                        icon={<FaMinus />}
                         onSelected={this.deselectOption}
                     />
                 )}
                 {this.state.suggestions.map(text =>
-                    <Suggestion
+                    <ListItem
                         key={text}
                         text={text}
+                        icon={<FaPlus />}
                         onSelected={this.selectOption}
                     />
                 )}

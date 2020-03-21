@@ -36,6 +36,9 @@ export default class PredictiveTextInput extends Component {
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
+        this.focusTextInput = this.focusTextInput.bind(this);
+
+        this.textInputRef = React.createRef();
 
         this.state = {
             inputValue: '',
@@ -68,6 +71,8 @@ export default class PredictiveTextInput extends Component {
             selected: newSelected,
             suggestions: []
         });
+
+        this.focusTextInput();
     }
 
     deselectOption(value) {
@@ -85,6 +90,12 @@ export default class PredictiveTextInput extends Component {
             selected: newSelected,
             suggestions: this.getSuggestions(this.state.inputValue, newSelected)
         });
+
+        this.focusTextInput();
+    }
+
+    focusTextInput() {
+        this.textInputRef.current.focus();
     }
 
     getEntering(text) {
@@ -111,6 +122,7 @@ export default class PredictiveTextInput extends Component {
                 <TextInput
                     onChange={this.onChange}
                     value={this.state.inputValue}
+                    ref={this.textInputRef}
                     {...this.props}
                 />
                 {this.state.selected.map(text =>

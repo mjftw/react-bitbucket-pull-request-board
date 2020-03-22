@@ -42,6 +42,7 @@ export default class Sidebar extends Component {
                 <Box
                     onClick={this.onClick}
                     hoverIndicator={!this.state.isOpen}
+                    flex='grow'
                     justify='around'
                 >
                     {this.state.isOpen ? openIcon : closedIcon}

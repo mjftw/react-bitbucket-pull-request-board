@@ -23,7 +23,8 @@ class App extends Component {
         this.state = {
             prData: null,
             reposFound: getEnv().bitbucket.repoNameSuggestions,
-            reposSelected: getEnv().bitbucket.repoNameSuggestions
+            reposSelected: getEnv().bitbucket.repoNameSuggestions,
+            loadingData: false
         };
     }
 
@@ -32,12 +33,17 @@ class App extends Component {
     }
 
     getReposData(repoNames) {
+        this.setState({
+            loadingData: true
+        });
+
         console.log(`Fetching data for repos: ${repoNames}`)
         getPRData(repoNames).then(prData => {
             // console.log(prData)
             this.setState({
                 prData: prData,
-                reposSelected: repoNames
+                reposSelected: repoNames,
+                loadingData: false
             });
         }).catch(error => alert(`${error}. API key expired?`))
     }
@@ -46,6 +52,7 @@ class App extends Component {
         return (
             <Grommet theme={theme}>
                 <MainWindow
+                    loadingData={this.state.loadingData}
                     prData={this.state.prData}
                     reposSelected={this.state.reposSelected}
                     repoNameSuggestions={this.state.reposFound}

@@ -9,8 +9,7 @@ const PullRequestBox = (props) => (
         border={true}
         background='linear-gradient(45deg, #7edbff 30%, #bcf5ff 90%)'
         round='small'
-        justify='between'
-        flex={true}
+        flex='shrink'
         pad={{
             vertical: 'xsmall', horizontal: 'small'
         }}

@@ -1,32 +1,34 @@
 import React from 'react'
 import { Box } from 'grommet/components/Box'
-import PullRequestInfo from './PullRequestInfo';
+import PullRequestInfo from './PullRequestInfo'
 
 const InfoBox = (props) => (
     <Box
         tag='header'
         direction='column'
         flex='grow'
-        justify='between'
+        justify='start'
         pad={{ vertical: 'small', horizontal: 'medium' }}
         elevation='medium'
         {...props}
     />
 );
 
+
 export default function InfoBoard(props) {
+    let content = null;
+
+    // Loading repo data
     if (props.prData === null || props.prData === undefined) {
-        return (
-            <h1>Repo data missing</h1>
-        );
+        content = null;
     }
+    // No open pull request data to display
     else if (props.prData.length === 0) {
-        return (
-            <h1>No open pull requests to display...</h1>
-        );
+        content = <h1>No open pull requests to display...</h1>;
     }
+    // Pull request data
     else {
-        return (
+        content = (
             <InfoBox>
                 {props.prData.map(prDataItem =>
                     <PullRequestInfo prData={prDataItem} key={prDataItem.id} ></PullRequestInfo>
@@ -34,4 +36,5 @@ export default function InfoBoard(props) {
             </InfoBox >
         );
     }
+    return content;
 }

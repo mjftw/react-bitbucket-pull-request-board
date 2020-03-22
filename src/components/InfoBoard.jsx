@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from 'grommet/components/Box'
+import { Box, Text } from 'grommet'
 import PullRequestInfo from './PullRequestInfo'
 
 const InfoBox = (props) => (
@@ -14,6 +14,37 @@ const InfoBox = (props) => (
     />
 );
 
+const Center = (props) => (
+    <Box
+        direction='column'
+        flex='grow'
+        justify='around'
+    >
+        <Box
+            direction='row'
+            flex='shrink'
+            justify='around'
+        >
+            {props.children}
+        </Box>
+    </Box>
+);
+
+const InfoBubble = (props) => (
+    <Box
+        border={true}
+        background='linear-gradient(45deg, #ffe7b3 30%, #fff7e6 90%)'
+        round='small'
+        flex='shrink'
+        pad={{
+            vertical: 'medium', horizontal: 'medium'
+        }}
+        elevation='large'
+    >
+        {props.children}
+    </Box>
+);
+
 
 export default function InfoBoard(props) {
     let content = null;
@@ -24,7 +55,16 @@ export default function InfoBoard(props) {
     }
     // No open pull request data to display
     else if (props.prData.length === 0) {
-        content = <h1>No open pull requests to display...</h1>;
+        content = (
+            <Center>
+                <InfoBubble>
+                    <Text textAlign='center'>
+                        No open pull requests to display<br />
+                        Try adding more repositories
+                    </Text>
+                </InfoBubble>
+            </Center>
+        );
     }
     // Pull request data
     else {

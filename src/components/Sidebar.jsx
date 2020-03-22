@@ -39,7 +39,11 @@ export default class Sidebar extends Component {
                 >
                     {this.props.children}
                 </Collapsible>
-                <Box onClick={this.onClick} justify='around'>
+                <Box
+                    onClick={this.onClick}
+                    hoverIndicator={!this.state.isOpen}
+                    justify='around'
+                >
                     {this.state.isOpen ? openIcon : closedIcon}
                 </Box>
             </Box>

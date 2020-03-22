@@ -8,7 +8,6 @@ const InfoBox = (props) => (
         direction='column'
         flex='grow'
         justify='between'
-        background='light-2'
         pad={{ vertical: 'small', horizontal: 'medium' }}
         elevation='medium'
         {...props}

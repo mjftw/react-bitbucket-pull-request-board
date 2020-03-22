@@ -7,7 +7,6 @@ const FilterBox = (props) => (
         direction='column'
         pad='small'
         flex='grow'
-        background='light-2'
         {...props}
     >
         {props.children}

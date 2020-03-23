@@ -8,7 +8,9 @@ import { Box } from 'grommet/components/Box'
 export default function MainWindow(props) {
     return (
         <SpinnerOverlay show={props.loadingData}>
-            <Box direction='row' height='100vh'>
+            <Box
+                direction='row'
+                flex='grow'>
                 <Sidebar>
                     <FilterMenu
                         reposSelected={props.reposSelected}

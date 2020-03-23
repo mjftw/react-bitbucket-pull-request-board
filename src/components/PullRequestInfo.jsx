@@ -13,9 +13,12 @@ const PullRequestBox = (props) => (
         pad={{
             vertical: 'xsmall', horizontal: 'small'
         }}
+        margin='0.2em'
         elevation='medium'
         {...props}
-    />
+    >
+        {props.children}
+    </Box>
 );
 
 export default function PullRequestInfo(props) {

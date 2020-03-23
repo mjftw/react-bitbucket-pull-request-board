@@ -7,10 +7,12 @@ function ListItem(props) {
         <Box
             direction='row'
             justify='between'
+            flex='grow'
             onClick={(event) => props.onSelected(props.text)}
             hoverIndicator={true}
         >
             <Text>{props.text}</Text>
+            <Box width='2em' />
             {props.icon}
         </Box>
     );

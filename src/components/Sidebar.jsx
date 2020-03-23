@@ -32,7 +32,12 @@ export default class Sidebar extends Component {
         const closedIcon = <AiOutlineMenuUnfold size={iconSize} />;
 
         return (
-            <Box direction='row' flex='shrink' elevation='small'>
+            <Box
+                direction='row'
+                flex='shrink'
+                elevation='small'
+                height={{ min: '100vh' }}
+            >
                 <Collapsible
                     direction='horizontal'
                     open={this.state.isOpen}

@@ -22,7 +22,6 @@ export default function FilterMenu(props) {
                 options={props.repoNameSuggestions}
                 onSelectionChanged={props.onSelectionChanged}
             />
-
         </FilterBox>
     );
 }

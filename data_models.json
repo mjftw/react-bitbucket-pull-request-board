@@ -12,7 +12,8 @@
         "author": {
             "name": "username",
             "profileUrl": "http://user-profile-url",
-            "avatarUrl": "http://avatar-image-url"
+            "avatarUrl": "http://avatar-image-url",
+            "comments": 3
         },
         "summary": {
             "linesAdded": 100,
@@ -23,6 +24,7 @@
                 "name": "username",
                 "profileUrl": "http://user-profile-url",
                 "avatarUrl": "http://avatar-image-url",
+                "comments": 3,
                 "approved": false
             }
         ]

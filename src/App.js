@@ -23,20 +23,25 @@ class App extends Component {
         super(props);
 
         this.getReposData = this.getReposData.bind(this);
+        this.updateReposData = this.updateReposData.bind(this);
         this.appendPRData = this.appendPRData.bind(this);
+        this.removeReposData = this.removeReposData.bind(this);
 
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
             prData: null,
             workspaceName: getEnv().bitbucket.workspaceName,
             reposFound: getEnv().bitbucket.repoNameSuggestions,
-            reposSelected: getEnv().bitbucket.repoNameSuggestions,
+            reposSelected: [],
             loadingData: false
         };
     }
 
     componentDidMount() {
-        this.getReposData(this.state.reposSelected);
+        this.setState({
+            accessToken: this.getAccessToken()
+        });
+        this.updateReposData(getEnv().bitbucket.repoNameSuggestions);
     }
 
     getAccessTokenFromURL() {
@@ -67,15 +72,56 @@ class App extends Component {
         });
     }
 
+    updateReposData(repoNames) {
+        const reposRemoved = this.state.reposSelected.filter(
+            selected => (repoNames.indexOf(selected) < 0)
+        );
+
+        const reposAdded = repoNames.filter(
+            name => (this.state.reposSelected.indexOf(name) < 0)
+        );
+
+        console.log(`repos to remove: ${reposRemoved}`);
+        console.log(`repos to add: ${reposAdded}`);
+
+        if (reposRemoved.length > 0) {
+            this.removeReposData(reposRemoved);
+        }
+
+        if (reposAdded.length > 0) {
+            this.getReposData(reposAdded);
+        }
+    }
+
+    removeReposData(repoNames) {
+        let prData = this.state.prData ? this.state.prData.slice() : [];
+        let reposSelected = this.state.reposSelected ? this.state.reposSelected.slice() : [];
+
+        // Filter out any PRs with a repo name in repoNames
+        prData = prData.filter(pr => (repoNames.indexOf(pr.repoName) < 0));
+        reposSelected = reposSelected.filter(selected => (repoNames.indexOf(selected) < 0));
+
+        console.log(`Remove: ${repoNames}`)
+        console.log(`new reposSelected: ${reposSelected}`)
+        console.log('new prData:')
+        console.log(prData)
+
+        this.setState({
+            prData: prData,
+            reposSelected
+        });
+    }
+
     getReposData(repoNames) {
         const accessToken = this.getAccessToken();
         if (!accessToken) {
             return;
         }
 
+        console.log(`Add: ${repoNames}`)
+
         this.setState({
-            loadingData: true,
-            prData: []
+            loadingData: true
         });
 
         const workspaceName = this.state.workspaceName;
@@ -95,7 +141,7 @@ class App extends Component {
 
         allPromises.then(() => {
             this.setState({
-                reposSelected: repoNames,
+                reposSelected: this.state.reposSelected.concat(repoNames),
                 loadingData: false
             })
         });
@@ -110,7 +156,7 @@ class App extends Component {
                     prData={this.state.prData}
                     reposSelected={this.state.reposSelected}
                     repoNameSuggestions={this.state.reposFound}
-                    updateRepoList={this.getReposData}
+                    updateRepoList={this.updateReposData}
                 />
             </Grommet>
         );

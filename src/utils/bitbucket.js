@@ -1,12 +1,12 @@
 import courier from './courier'
 
-async function getPRData(pullRequestUrl, accessToken) {
+async function getPRData(pullRequestUrl, accessToken, repoSlug) {
     let prData = await bitbucketCourier(pullRequestUrl, accessToken);
     let comments = await getUserCommentCount(prData.links.comments.href, accessToken);
 
     return {
         title: prData.title,
-        repoName: prData.source.repository.name,
+        repoName: repoSlug,
         id: prData.id,
         repoProjectKey: null, //FIXME: Removed field as not available in prData
         open: prData.state === 'OPEN',
@@ -46,7 +46,7 @@ export async function getRepoPRDataPromises(workspaceName, repoName, accessToken
     let pullRequestListUrl = repoData.links.pullrequests.href;
     let prListData = await bitbucketCourier(pullRequestListUrl, accessToken);
     return prListData.values.map(async prItem => (
-        await getPRData(`${pullRequestListUrl}/${prItem.id}`, accessToken)
+        await getPRData(`${pullRequestListUrl}/${prItem.id}`, accessToken, repoData.slug)
     ));
 }
 

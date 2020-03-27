@@ -1,6 +1,7 @@
 [
     {
-        "repoName": "repository name",
+        "repoName": "repository-name",
+        "repoDisplayName": "Full Repository Name",
         "repoProjectKey": "repository project name",
         "title": "PR title",
         "open": true,

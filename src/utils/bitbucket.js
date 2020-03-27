@@ -7,6 +7,7 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
     return {
         title: prData.title,
         repoName: repoSlug,
+        repoDisplayName: prData.source.repository.name,
         id: prData.id,
         repoProjectKey: null, //FIXME: Removed field as not available in prData
         open: prData.state === 'OPEN',

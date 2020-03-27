@@ -21,7 +21,7 @@ export default function GitInfo(props) {
         <Box direction='row' justify='between' flex={true}>
             <Box align='start'>
                 <LeftText>#{pr.id} {pr.title}</LeftText>
-                <LeftText>{pr.repoName}</LeftText>
+                <LeftText>{pr.repoDisplayName}</LeftText>
                 <LeftText>{pr.repoProjectKey}</LeftText>
                 <LeftText>Created {pr.timeSinceCreated} ago</LeftText>
                 <LeftText>Updated {pr.timeSinceUpdated} ago</LeftText>

@@ -34,7 +34,7 @@ async function getPRData(pullRequestUrl, accessToken) {
     };
 }
 
-export async function getRepoAllPRData(workspaceName, repoName, accessToken) {
+export async function getRepoPRDataPromises(workspaceName, repoName, accessToken) {
     let repoData = await bitbucketCourier(
         bitbucketRepoRootUrl(workspaceName, repoName), accessToken
     );
@@ -45,18 +45,9 @@ export async function getRepoAllPRData(workspaceName, repoName, accessToken) {
 
     let pullRequestListUrl = repoData.links.pullrequests.href;
     let prListData = await bitbucketCourier(pullRequestListUrl, accessToken);
-    return Promise.all(prListData.values.map(async prItem => (
+    return prListData.values.map(async prItem => (
         await getPRData(`${pullRequestListUrl}/${prItem.id}`, accessToken)
-    )));
-}
-
-export async function getReposPRData(workspaceName, repoNames, accessToken) {
-    return Promise.all(
-        repoNames.map(repoName => getRepoAllPRData(workspaceName, repoName, accessToken))
-    ).then(values => {
-        let combinedData = [].concat(...values);
-        return combinedData;
-    });
+    ));
 }
 
 async function getUserCommentCount(commentsUrl, accessToken) {

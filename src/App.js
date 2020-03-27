@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
-import { getReposPRData } from './utils/bitbucket'
+import { getRepoPRDataPromises } from './utils/bitbucket'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -23,6 +23,7 @@ class App extends Component {
         super(props);
 
         this.getReposData = this.getReposData.bind(this);
+        this.appendPRData = this.appendPRData.bind(this);
 
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
@@ -57,6 +58,15 @@ class App extends Component {
         return accessToken;
     }
 
+    appendPRData(singlePrData) {
+        let prData = this.state.prData ? this.state.prData.slice() : [];
+        prData.push(singlePrData);
+
+        this.setState({
+            prData: prData
+        });
+    }
+
     getReposData(repoNames) {
         const accessToken = this.getAccessToken();
         if (!accessToken) {
@@ -64,27 +74,31 @@ class App extends Component {
         }
 
         this.setState({
-            loadingData: true
+            loadingData: true,
+            prData: []
         });
 
         const workspaceName = this.state.workspaceName;
 
-        console.log(`Fetching data for repos: ${repoNames}`)
-        getReposPRData(workspaceName, repoNames, accessToken).then(prData => {
-            console.log('prData: ');
-            console.log(prData)
+        let allPromises = Promise.all(repoNames.map(repoName =>
+            getRepoPRDataPromises(
+                workspaceName, repoName, accessToken
+            ).then(promises => {
+                promises.map(promise =>
+                    promise.then(prData =>
+                        this.appendPRData(prData)
+                    )
+                )
+                return Promise.all(promises);
+            })
+        ))
+
+        allPromises.then(() => {
             this.setState({
-                prData: prData,
                 reposSelected: repoNames,
                 loadingData: false
-            });
-        }).catch(error => {
-            console.log(error);
-            console.log('Error fetching bitbucket data. Resetting access token.');
-            this.setState({
-                accessToken: null
             })
-        })
+        });
     }
 
     render() {

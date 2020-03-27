@@ -27,6 +27,7 @@ class App extends Component {
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
             prData: null,
+            workspaceName: getEnv().bitbucket.workspaceName,
             reposFound: getEnv().bitbucket.repoNameSuggestions,
             reposSelected: getEnv().bitbucket.repoNameSuggestions,
             loadingData: false
@@ -66,8 +67,12 @@ class App extends Component {
             loadingData: true
         });
 
+        const workspaceName = this.state.workspaceName;
+
         console.log(`Fetching data for repos: ${repoNames}`)
-        getReposPRData(repoNames, accessToken).then(prData => {
+        getReposPRData(workspaceName, repoNames, accessToken).then(prData => {
+            console.log('prData: ');
+            console.log(prData)
             this.setState({
                 prData: prData,
                 reposSelected: repoNames,

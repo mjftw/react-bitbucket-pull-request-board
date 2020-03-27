@@ -1,61 +1,62 @@
 import courier from './courier'
-import getEnv from '../env'
 
+async function getPRData(pullRequestUrl, accessToken) {
+    let prData = await bitbucketCourier(pullRequestUrl, accessToken);
+    let comments = await getUserCommentCount(prData.links.comments.href, accessToken);
 
-export async function getReposPRData(repoNames, accessToken) {
-    const workspaceName = getEnv().bitbucket.workspaceName;
+    return {
+        title: prData.title,
+        repoName: prData.source.repository.name,
+        id: prData.id,
+        repoProjectKey: null, //FIXME: Removed field as not available in prData
+        open: prData.state === 'OPEN',
+        timeSinceCreated: timeDeltaString(prData.created_on),
+        timeSinceUpdated: timeDeltaString(prData.updated_on),
+        mergeConflicts: await getConflitStatus(prData.links.diff.href, accessToken),
+        summary: await getDiffSummary(prData.links.diffstat.href, accessToken),
+        branchSource: prData.source.branch.name,
+        branchTarget: prData.destination.branch.name,
+        author: {
+            name: prData.author.display_name,
+            profileUrl: prData.author.links.html.href,
+            avatarUrl: prData.author.links.avatar.href,
+            comments: (prData.author.display_name in comments) ? comments[prData.author.display_name] : 0
+        },
+        reviewers: prData.participants.filter(p => (
+            p.role === 'REVIEWER')
+        ).map(p => ({
+            name: p.user.display_name,
+            profileUrl: p.user.links.html.href,
+            avatarUrl: p.user.links.avatar.href,
+            comments: (p.user.display_name in comments) ? comments[p.user.display_name] : 0,
+            approved: p.approved
+        }))
+    };
+}
 
-    let bbData = {};
+export async function getRepoAllPRData(workspaceName, repoName, accessToken) {
+    let repoData = await bitbucketCourier(
+        bitbucketRepoRootUrl(workspaceName, repoName), accessToken
+    );
 
-    return Promise.all(repoNames.map(async repoName => {
-        let repoData = await bitbucketCourier(
-            bitbucketRepoRootUrl(workspaceName, repoName), accessToken
-        );
+    if (!repoData.slug) {
+        return;
+    }
 
-        if (!repoData.slug) {
-            return;
-        }
+    let pullRequestListUrl = repoData.links.pullrequests.href;
+    let prListData = await bitbucketCourier(pullRequestListUrl, accessToken);
+    return Promise.all(prListData.values.map(async prItem => (
+        await getPRData(`${pullRequestListUrl}/${prItem.id}`, accessToken)
+    )));
+}
 
-        let pullRequestListUrl = repoData.links.pullrequests.href;
-        let pdListData = await bitbucketCourier(pullRequestListUrl, accessToken);
-        await Promise.all(pdListData.values.map(async prListDataItem => {
-            let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
-            let prData = await bitbucketCourier(pullRequestUrl, accessToken);
-            let comments = await getUserCommentCount(prData.links.comments.href, accessToken);
-
-            bbData[prData.id] = {
-                title: prData.title,
-                repoName: repoName,
-                id: prData.id,
-                repoProjectKey: repoData.project.key,
-                open: prData.state === 'OPEN',
-                timeSinceCreated: timeDeltaString(prData.created_on),
-                timeSinceUpdated: timeDeltaString(prData.updated_on),
-                mergeConflicts: await getConflitStatus(prData.links.diff.href, accessToken),
-                summary: await getDiffSummary(prData.links.diffstat.href, accessToken),
-                branchSource: prData.source.branch.name,
-                branchTarget: prData.destination.branch.name,
-                author: {
-                    name: prData.author.display_name,
-                    profileUrl: prData.author.links.html.href,
-                    avatarUrl: prData.author.links.avatar.href,
-                    comments: (prData.author.display_name in comments) ? comments[prData.author.display_name] : 0
-                },
-                reviewers: [],
-            };
-            prData.participants.map(p => {
-                if (p.role === 'REVIEWER') {
-                    bbData[prData.id].reviewers.push({
-                        name: p.user.display_name,
-                        profileUrl: p.user.links.html.href,
-                        avatarUrl: p.user.links.avatar.href,
-                        comments: (p.user.display_name in comments) ? comments[p.user.display_name] : 0,
-                        approved: p.approved
-                    });
-                }
-            })
-        }));
-    })).then(() => Object.keys(bbData).map(key => bbData[key]));
+export async function getReposPRData(workspaceName, repoNames, accessToken) {
+    return Promise.all(
+        repoNames.map(repoName => getRepoAllPRData(workspaceName, repoName, accessToken))
+    ).then(values => {
+        let combinedData = [].concat(...values);
+        return combinedData;
+    });
 }
 
 async function getUserCommentCount(commentsUrl, accessToken) {

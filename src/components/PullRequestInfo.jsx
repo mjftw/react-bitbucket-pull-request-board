@@ -24,16 +24,27 @@ const PullRequestBox = (props) => (
     </Box>
 );
 
-export default function PullRequestInfo(props) {
+function getApprovedStatus(reviewersInfo, policyAllMustApprove) {
     let allApproved = true;
-    props.prData.reviewers.forEach(reviewer => {
-        if (!reviewer.approved) {
+    let anyApproved = false;
+
+    reviewersInfo.forEach(reviewer => {
+        if (reviewer.approved) {
+            anyApproved = true;
+        }
+        else {
             allApproved = false;
         }
     });
 
+    return policyAllMustApprove ? allApproved : anyApproved;
+}
+
+export default function PullRequestInfo(props) {
+    const approved = getApprovedStatus(props.prData.reviewers, false);
+
     return (
-        <PullRequestBox approved={allApproved}>
+        <PullRequestBox approved={approved}>
             <GitInfo prData={props.prData}></GitInfo>
             <Box width='3em' />
             <UserInfo prData={props.prData}></UserInfo>

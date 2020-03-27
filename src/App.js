@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
-import getPRData from './dataFuncs/getPRData'
+import { getReposPRData } from './utils/bitbucket'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -67,7 +67,7 @@ class App extends Component {
         });
 
         console.log(`Fetching data for repos: ${repoNames}`)
-        getPRData(repoNames, accessToken).then(prData => {
+        getReposPRData(repoNames, accessToken).then(prData => {
             this.setState({
                 prData: prData,
                 reposSelected: repoNames,

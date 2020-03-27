@@ -2,7 +2,7 @@ import courier from './courier'
 import getEnv from '../env'
 
 
-export default async function getPRData(repoNames, accessToken) {
+export async function getReposPRData(repoNames, accessToken) {
     const workspaceName = getEnv().bitbucket.workspaceName;
 
     let bbData = {};

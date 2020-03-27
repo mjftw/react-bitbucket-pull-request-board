@@ -15,7 +15,7 @@ export default function CommentBubble(props) {
                 fill='grey'
             />
             <Text size='0.9em'>
-                {props.number}
+                <b>{props.number}</b>
             </Text>
         </Stack>
     );

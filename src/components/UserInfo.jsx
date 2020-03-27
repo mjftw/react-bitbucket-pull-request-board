@@ -35,7 +35,7 @@ export default function UserInfo(props) {
                 />
             </UserGroup>
             <Box width='0.5em' />
-            <UserGroup title='Reviewers'>
+            <UserGroup title={'Reviewer' + ((pr.reviewers.length > 1) ? 's' : '')}>
                 {pr.reviewers.map(reviewer =>
                     <User
                         avatarUrl={reviewer.avatarUrl}

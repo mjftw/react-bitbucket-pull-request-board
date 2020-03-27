@@ -73,7 +73,13 @@ class App extends Component {
                 reposSelected: repoNames,
                 loadingData: false
             });
-        }).catch(error => alert(`${error}. API key expired?`))
+        }).catch(error => {
+            console.log(error);
+            console.log('Error fetching bitbucket data. Resetting access token.');
+            this.setState({
+                accessToken: null
+            })
+        })
     }
 
     render() {

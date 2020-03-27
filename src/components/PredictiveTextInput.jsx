@@ -75,7 +75,6 @@ export default class PredictiveTextInput extends Component {
             suggestions: this.getSuggestions(this.state.inputValue, newSelected)
         });
 
-        console.log(`value: "${value}", index: "${index}", selected: "${this.props.selected}" newSelected="${newSelected}"`)
 
         this.focusTextInput();
         this.setSelection(newSelected);
@@ -87,7 +86,6 @@ export default class PredictiveTextInput extends Component {
 
     setSelection(selection) {
         if (this.props.onSelectionChanged !== undefined) {
-            console.log(`Updating selection: ${selection}`)
             this.props.onSelectionChanged(selection);
         }
     }

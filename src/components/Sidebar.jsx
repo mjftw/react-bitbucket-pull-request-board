@@ -16,7 +16,6 @@ export default class Sidebar extends Component {
     }
 
     setOpen(state) {
-        console.log(`Set state: ${state}`)
         this.setState({
             isOpen: state
         });

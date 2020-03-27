@@ -81,9 +81,6 @@ class App extends Component {
             name => (this.state.reposSelected.indexOf(name) < 0)
         );
 
-        console.log(`repos to remove: ${reposRemoved}`);
-        console.log(`repos to add: ${reposAdded}`);
-
         if (reposRemoved.length > 0) {
             this.removeReposData(reposRemoved);
         }
@@ -101,11 +98,6 @@ class App extends Component {
         prData = prData.filter(pr => (repoNames.indexOf(pr.repoName) < 0));
         reposSelected = reposSelected.filter(selected => (repoNames.indexOf(selected) < 0));
 
-        console.log(`Remove: ${repoNames}`)
-        console.log(`new reposSelected: ${reposSelected}`)
-        console.log('new prData:')
-        console.log(prData)
-
         this.setState({
             prData: prData,
             reposSelected
@@ -117,8 +109,6 @@ class App extends Component {
         if (!accessToken) {
             return;
         }
-
-        console.log(`Add: ${repoNames}`)
 
         this.setState({
             loadingData: true

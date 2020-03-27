@@ -2,14 +2,14 @@ import courier from './courier'
 import getEnv from '../env'
 
 
-export default async function getPRData(repoNames) {
+export default async function getPRData(repoNames, accessToken) {
     const workspaceName = getEnv().bitbucket.workspaceName;
 
     let bbData = {};
 
     return Promise.all(repoNames.map(async repoName => {
         let repoData = await bitbucketCourier(
-            bitbucketRepoRootUrl(workspaceName, repoName)
+            bitbucketRepoRootUrl(workspaceName, repoName), accessToken
         );
 
         if (!repoData.slug) {
@@ -17,11 +17,11 @@ export default async function getPRData(repoNames) {
         }
 
         let pullRequestListUrl = repoData.links.pullrequests.href;
-        let pdListData = await bitbucketCourier(pullRequestListUrl);
+        let pdListData = await bitbucketCourier(pullRequestListUrl, accessToken);
         await Promise.all(pdListData.values.map(async prListDataItem => {
             let pullRequestUrl = `${pullRequestListUrl}/${prListDataItem.id}`;
-            let prData = await bitbucketCourier(pullRequestUrl);
-            let comments = await getUserCommentCount(prData.links.comments.href);
+            let prData = await bitbucketCourier(pullRequestUrl, accessToken);
+            let comments = await getUserCommentCount(prData.links.comments.href, accessToken);
 
             bbData[prData.id] = {
                 title: prData.title,
@@ -31,8 +31,8 @@ export default async function getPRData(repoNames) {
                 open: prData.state === 'OPEN',
                 timeSinceCreated: timeDeltaString(prData.created_on),
                 timeSinceUpdated: timeDeltaString(prData.updated_on),
-                mergeConflicts: await getConflitStatus(prData.links.diff.href),
-                summary: await getDiffSummary(prData.links.diffstat.href),
+                mergeConflicts: await getConflitStatus(prData.links.diff.href, accessToken),
+                summary: await getDiffSummary(prData.links.diffstat.href, accessToken),
                 branchSource: prData.source.branch.name,
                 branchTarget: prData.destination.branch.name,
                 author: {
@@ -58,8 +58,8 @@ export default async function getPRData(repoNames) {
     })).then(() => Object.keys(bbData).map(key => bbData[key]));
 }
 
-async function getUserCommentCount(commentsUrl) {
-    let comments = await bitbucketCourier(commentsUrl);
+async function getUserCommentCount(commentsUrl, accessToken) {
+    let comments = await bitbucketCourier(commentsUrl, accessToken);
     let userCommentCount = {};
     comments.values.forEach(comment => {
         let userName = comment.user.display_name;
@@ -73,13 +73,13 @@ async function getUserCommentCount(commentsUrl) {
     return userCommentCount;
 }
 
-async function getConflitStatus(diffUrl) {
-    let diff = await bitbucketCourier(diffUrl);
+async function getConflitStatus(diffUrl, accessToken) {
+    let diff = await bitbucketCourier(diffUrl, accessToken);
     return diff.includes('<<<<<<<');
 }
 
-async function getDiffSummary(diffstatUrl) {
-    let diffstat = await bitbucketCourier(diffstatUrl);
+async function getDiffSummary(diffstatUrl, accessToken) {
+    let diffstat = await bitbucketCourier(diffstatUrl, accessToken);
     let summary = {
         linesAdded: 0,
         linesRemoved: 0
@@ -124,9 +124,9 @@ function timeDeltaString(timestamp) {
     return timeString;
 }
 
-function bitbucketCourier(url) {
+function bitbucketCourier(url, accessToken) {
     let params = {
-        access_token: getEnv().bitbucket.accessToken
+        access_token: accessToken
     };
     return courier(url, null, params);
 }

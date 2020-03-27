@@ -5,7 +5,7 @@ import { FaLevelDownAlt } from 'react-icons/fa'
 
 function LeftText(props) {
     return (
-        <Text textAlign='left' size='medium'>{props.children}</Text>
+        <Text textAlign='start' size='medium'>{props.children}</Text>
     );
 }
 

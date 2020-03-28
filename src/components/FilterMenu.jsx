@@ -33,15 +33,18 @@ export default function FilterMenu(props) {
     return (
         <FilterBox>
             {avatar}
-            <Box height='1em' />
+            <Box height='0.1em' />
             <Menu
+                alignSelf='center'
                 label='Workspace'
                 items={props.workspaceSuggestions.map(workspace => ({
                     label: workspace.displayName,
                     onClick: (() => props.setWorkspaceSelection(workspace))
                 }))}
             />
+            <hr size='1' width='100%' align='center' />
             <Box height='1em' />
+
             <Text>Repo names</Text>
             <PredictiveTextInput
                 selected={props.reposSelected}

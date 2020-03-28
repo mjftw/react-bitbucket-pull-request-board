@@ -67,6 +67,17 @@ async function getUserCommentCount(commentsUrl, accessToken) {
     return userCommentCount;
 }
 
+export async function getWorkspaces(accessToken) {
+    let teamsData = await bitbucketCourier(`${getEnv().bitbucket.apiBaseUrl}/teams`,
+        accessToken, { role: 'member' });
+
+    return teamsData.values.map(value => ({
+        name: value.username,
+        displayName: value.display_name,
+        avatarUrl: value.links.avatar.href
+    }))
+}
+
 async function getConflitStatus(diffUrl, accessToken) {
     let diff = await bitbucketCourier(diffUrl, accessToken);
     return diff.includes('<<<<<<<');
@@ -118,11 +129,11 @@ function timeDeltaString(timestamp) {
     return timeString;
 }
 
-function bitbucketCourier(url, accessToken) {
-    let params = {
+function bitbucketCourier(url, accessToken, params) {
+    let extraParams = {
         access_token: accessToken
     };
-    return courier(url, null, params);
+    return courier(url, null, { ...params, ...extraParams });
 }
 
 function bitbucketRepoRootUrl(workspaceName, repoName) {

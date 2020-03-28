@@ -20,7 +20,10 @@ export default function MainWindow(props) {
                         <FilterMenu
                             reposSelected={props.reposSelected}
                             repoNameSuggestions={props.repoNameSuggestions}
-                            onSelectionChanged={props.updateRepoList}
+                            setReposSelection={props.setReposSelection}
+                            workspaceSelected={props.workspaceSelected}
+                            workspaceSuggestions={props.workspaceSuggestions}
+                            setWorkspaceSelection={props.setWorkspaceSelection}
                         />
                     </Sidebar>
                     <InfoBoard

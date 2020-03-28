@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
-import { getRepoPRDataPromises } from './utils/bitbucket'
+import { getRepoPRDataPromises, getWorkspaces } from './utils/bitbucket'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -28,22 +28,43 @@ class App extends Component {
         this.updateReposData = this.updateReposData.bind(this);
         this.appendPRData = this.appendPRData.bind(this);
         this.removeReposData = this.removeReposData.bind(this);
+        this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
 
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
             prData: null,
-            workspaceName: getEnv().bitbucket.workspaceName,
             reposFound: getEnv().bitbucket.repoNameSuggestions,
             reposSelected: [],
+            workspaceSelected: null,
+            workspacesFound: [],
             loadingData: false
         };
     }
 
     componentDidMount() {
+        const accessToken = this.getAccessToken();
         this.setState({
-            accessToken: this.getAccessToken()
+            accessToken: accessToken
         });
-        this.updateReposData(getEnv().bitbucket.repoNameSuggestions);
+
+        getWorkspaces(accessToken).then(workspaces => {
+            // Select first workspace found
+            const workspaceSelected = workspaces.length ? workspaces[0] : null;
+
+            this.setState({
+                workspacesFound: workspaces,
+                workspaceSelected: workspaceSelected
+            });
+            console.log('Workspaces: ')
+            console.log(workspaces)
+
+            if (workspaceSelected) {
+                this.updateReposData(
+                    getEnv().bitbucket.repoNameSuggestions,
+                    workspaceSelected);
+            }
+            //TODO: Display info about no workspaces found
+        })
     }
 
     getAccessTokenFromURL() {
@@ -74,7 +95,7 @@ class App extends Component {
         });
     }
 
-    updateReposData(repoNames) {
+    updateReposData(repoNames, workspace) {
         const reposRemoved = this.state.reposSelected.filter(
             selected => (repoNames.indexOf(selected) < 0)
         );
@@ -88,7 +109,7 @@ class App extends Component {
         }
 
         if (reposAdded.length > 0) {
-            this.getReposData(reposAdded);
+            this.getReposData(reposAdded, workspace);
         }
     }
 
@@ -106,17 +127,17 @@ class App extends Component {
         });
     }
 
-    getReposData(repoNames) {
+    getReposData(repoNames, workspace) {
         const accessToken = this.getAccessToken();
         if (!accessToken) {
             return;
         }
 
+        const workspaceName = workspace ? workspace.name : this.state.workspace.name;
+
         this.setState({
             loadingData: true
         });
-
-        const workspaceName = this.state.workspaceName;
 
         let allPromises = Promise.all(repoNames.map(repoName =>
             getRepoPRDataPromises(
@@ -157,6 +178,12 @@ class App extends Component {
         });
     }
 
+    setWorkspaceSelection(workspace) {
+        this.setState({
+            workspaceSelected: workspace
+        });
+    }
+
     render() {
         return (
             <Grommet theme={theme}>
@@ -166,7 +193,10 @@ class App extends Component {
                     prData={this.state.prData}
                     reposSelected={this.state.reposSelected}
                     repoNameSuggestions={this.state.reposFound}
-                    updateRepoList={this.updateReposData}
+                    setReposSelection={this.updateReposData}
+                    workspaceSelected={this.state.workspaceSelected}
+                    workspaceSuggestions={this.state.workspacesFound}
+                    setWorkspaceSelection={this.setWorkspaceSelection}
                 />
             </Grommet>
         );

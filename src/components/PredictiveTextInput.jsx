@@ -85,8 +85,8 @@ export default class PredictiveTextInput extends Component {
     }
 
     setSelection(selection) {
-        if (this.props.onSelectionChanged !== undefined) {
-            this.props.onSelectionChanged(selection);
+        if (this.props.setSelection !== undefined) {
+            this.props.setSelection(selection);
         }
     }
 

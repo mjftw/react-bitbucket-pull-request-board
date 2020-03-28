@@ -54,8 +54,6 @@ class App extends Component {
                 workspacesFound: workspaces,
                 workspaceSelected: workspaceSelected
             });
-            console.log('Workspaces: ')
-            console.log(workspaces)
 
             if (workspaceSelected) {
                 this.updateReposData(

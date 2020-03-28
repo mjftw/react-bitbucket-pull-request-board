@@ -78,6 +78,35 @@ export async function getWorkspaces(accessToken) {
     }))
 }
 
+export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
+    let pageData = null;
+
+    if (!pageUrl) {
+        // Get first page of workspace repository list, last updated first
+        pageData = await bitbucketCourier(
+            `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}`,
+            accessToken,
+            { sort: '-updated_on' }
+        )
+    }
+    else {
+        pageData = await courier(pageUrl);
+    }
+
+    // Check if another page of data is available, and create
+    // a promise to get if it is
+    let getNextPage = null;
+    if (pageData.next !== undefined) {
+        getNextPage = getRepoListPage(workspaceName, pageData.next, accessToken);
+    }
+
+    // Return the repo names from the current page, and a promise to get the next
+    return {
+        repoNames: pageData.values.map(repo => repo.slug),
+        getNextPage: getNextPage
+    }
+}
+
 async function getConflitStatus(diffUrl, accessToken) {
     let diff = await bitbucketCourier(diffUrl, accessToken);
     return diff.includes('<<<<<<<');

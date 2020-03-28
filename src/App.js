@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
-import { getRepoPRDataPromises, getWorkspaces } from './utils/bitbucket'
+import { getRepoPRDataPromises, getWorkspaces, getRepoListPage } from './utils/bitbucket'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -32,11 +32,12 @@ class App extends Component {
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
             prData: null,
-            reposFound: getEnv().bitbucket.repoNameSuggestions,
+            reposFound: null,
             reposSelected: [],
             workspaceSelected: null,
             workspacesFound: [],
-            loadingData: false
+            loadingData: false,
+            loadingReposList: false
         };
     }
 
@@ -56,12 +57,40 @@ class App extends Component {
             });
 
             if (workspaceSelected) {
-                this.updateReposData(
-                    getEnv().bitbucket.repoNameSuggestions,
-                    workspaceSelected);
+                this.getRepoSuggestions(
+                    workspaceSelected.name
+                ).then(repoNameSuggestions => {
+                    this.updateReposData(repoNameSuggestions, workspaceSelected);
+                })
             }
             //TODO: Display info about no workspaces found
         }).catch(this.handleRequestError)
+
+    }
+
+    async getRepoSuggestions(workspaceName) {
+        this.setState({ loadingReposList: true });
+
+        let reposFound = [];
+        let repoNameListPage = null;
+        let getNextPage = getRepoListPage(
+            workspaceName, null, this.getAccessToken());
+
+        do {
+            repoNameListPage = await getNextPage;
+            getNextPage = repoNameListPage.getNextPage;
+
+            reposFound.push(...repoNameListPage.repoNames)
+
+            console.log(reposFound);
+
+            this.setState({
+                reposFound: reposFound
+            });
+        } while (getNextPage)
+
+        this.setState({ loadingReposList: false });
+        return reposFound;
     }
 
     getAccessTokenFromURL() {
@@ -130,7 +159,7 @@ class App extends Component {
             return;
         }
 
-        const workspaceName = workspace ? workspace.name : this.state.workspace.name;
+        const workspaceName = workspace ? workspace.name : this.state.workspaceSelected.name;
 
         this.setState({
             loadingData: true
@@ -189,6 +218,7 @@ class App extends Component {
                 <MainWindow
                     missingBitbucketAuth={this.state.accessToken ? false : true}
                     loadingData={this.state.loadingData}
+                    loadingReposSuggestions={this.state.loadingReposList}
                     prData={this.state.prData}
                     reposSelected={this.state.reposSelected}
                     repoNameSuggestions={this.state.reposFound}

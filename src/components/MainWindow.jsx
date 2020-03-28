@@ -24,6 +24,7 @@ export default function MainWindow(props) {
                             workspaceSelected={props.workspaceSelected}
                             workspaceSuggestions={props.workspaceSuggestions}
                             setWorkspaceSelection={props.setWorkspaceSelection}
+                            loadingReposSuggestions={props.loadingReposSuggestions}
                         />
                     </Sidebar>
                     <InfoBoard

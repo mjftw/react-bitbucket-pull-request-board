@@ -18,6 +18,8 @@ const theme = {
     },
 };
 
+//TODO: Get new access token if request returns 401 - Not authorized.
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -134,6 +136,24 @@ class App extends Component {
                 reposSelected: this.state.reposSelected.concat(repoNames),
                 loadingData: false
             })
+        }).catch(error => {
+            console.log(JSON.stringify(error));
+
+            const notAuthorizedMsg = 'Request failed with status code 401';
+
+            if (error.message === notAuthorizedMsg) {
+                if (this.state.accessToken) {
+                    // Access token probably expired, get new one
+
+                    // Clear access token from state
+                    this.setState({
+                        accessToken: null
+                    })
+
+                    // Redirect to Bitbucket to get new token
+                    window.location.replace(getEnv().bitbucket.oauthUrl);
+                }
+            }
         });
     }
 

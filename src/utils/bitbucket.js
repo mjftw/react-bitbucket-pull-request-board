@@ -1,4 +1,5 @@
 import courier from './courier'
+import getEnv from '../env';
 
 async function getPRData(pullRequestUrl, accessToken, repoSlug) {
     let prData = await bitbucketCourier(pullRequestUrl, accessToken);
@@ -125,8 +126,7 @@ function bitbucketCourier(url, accessToken) {
 }
 
 function bitbucketRepoRootUrl(workspaceName, repoName) {
-    const bitbucket_api_basurl = 'https://api.bitbucket.org/2.0';
-    return `${bitbucket_api_basurl}/repositories/${workspaceName}/${repoName}`
+    return `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}/${repoName}`
 }
 
 

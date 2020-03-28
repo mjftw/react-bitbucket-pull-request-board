@@ -18,8 +18,6 @@ const theme = {
     },
 };
 
-//TODO: Get new access token if request returns 401 - Not authorized.
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -29,6 +27,7 @@ class App extends Component {
         this.appendPRData = this.appendPRData.bind(this);
         this.removeReposData = this.removeReposData.bind(this);
         this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
+        this.handleRequestError = this.handleRequestError.bind(this);
 
         this.state = {
             accessToken: getEnv().bitbucket.accessToken,
@@ -64,7 +63,7 @@ class App extends Component {
                     workspaceSelected);
             }
             //TODO: Display info about no workspaces found
-        })
+        }).catch(this.handleRequestError)
     }
 
     getAccessTokenFromURL() {
@@ -157,25 +156,27 @@ class App extends Component {
                 reposSelected: this.state.reposSelected.concat(repoNames),
                 loadingData: false
             })
-        }).catch(error => {
-            console.log(JSON.stringify(error));
+        }).catch(this.handleRequestError);
+    }
 
-            const notAuthorizedMsg = 'Request failed with status code 401';
+    handleRequestError(error) {
+        console.log(JSON.stringify(error));
 
-            if (error.message === notAuthorizedMsg) {
-                if (this.state.accessToken) {
-                    // Access token probably expired, get new one
+        const notAuthorizedMsg = 'Request failed with status code 401';
 
-                    // Clear access token from state
-                    this.setState({
-                        accessToken: null
-                    })
+        if (error.message === notAuthorizedMsg) {
+            if (this.state.accessToken) {
+                // Access token probably expired, get new one
 
-                    // Redirect to Bitbucket to get new token
-                    window.location.replace(getEnv().bitbucket.oauthUrl);
-                }
+                // Clear access token from state
+                this.setState({
+                    accessToken: null
+                })
+
+                // Redirect to Bitbucket to get new token
+                window.location.replace(getEnv().bitbucket.oauthUrl);
             }
-        });
+        }
     }
 
     setWorkspaceSelection(workspace) {

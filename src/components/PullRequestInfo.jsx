@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from 'grommet/components/Box'
+import { Box } from 'grommet'
 import GitInfo from './GitInfo'
 import UserInfo from './UserInfo'
 

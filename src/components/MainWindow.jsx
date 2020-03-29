@@ -4,7 +4,7 @@ import FilterMenu from './FilterMenu'
 import Sidebar from './Sidebar'
 import SpinnerOverlay from './SpinnerOverlay'
 import BitbucketLink from './BitbucketLink'
-import { Box } from 'grommet/components/Box'
+import { Box } from 'grommet'
 
 export default function MainWindow(props) {
     if (props.missingBitbucketAuth) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Text, Layer, Button } from 'grommet'
+import { Box, Layer, Button } from 'grommet'
 import { FaBitbucket } from 'react-icons/fa'
 import getEnv from '../env'
 

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Box } from 'grommet/components/Box'
-import { Text } from 'grommet/components/Text'
+import { Box, Text } from 'grommet'
 import User from './User'
 
 function UserGroup(props) {

@@ -1,7 +1,5 @@
 import React from 'react'
-import { Image } from 'grommet/components/Image'
-import { Box } from 'grommet/components/Box'
-import { Stack } from 'grommet/components/Stack'
+import { Image, Box, Stack } from 'grommet'
 import { TiTick } from 'react-icons/ti'
 import CommentBubble from './CommentBubble'
 

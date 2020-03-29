@@ -1,6 +1,5 @@
 import React from 'react'
-import { Text } from 'grommet/components/Text'
-import { Stack } from 'grommet/components/Stack'
+import { Text, Stack } from 'grommet'
 import { FaCommentAlt, FaRegCommentAlt } from 'react-icons/fa'
 
 export default function CommentBubble(props) {

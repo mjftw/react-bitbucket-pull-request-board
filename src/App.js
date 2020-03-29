@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
-import { getRepoPRDataPromises, getWorkspaces, getRepoListPage } from './utils/bitbucket'
+import { getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid } from './utils/bitbucket'
 import { cancelRequests } from './utils/courier'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
@@ -109,6 +109,16 @@ class App extends Component {
     }
 
     appendPRData(singlePrData) {
+        const prUid = getPrUid(singlePrData);
+
+        // Do not append duplicate data
+        if (this.state.prData &&
+            this.state.prData.map(getPrUid).indexOf(prUid) >= 0
+        ) {
+            console.log(`Not adding duplicate data: ${prUid}`)
+            return;
+        }
+
         let prData = this.state.prData ? this.state.prData.slice() : [];
         prData.push(singlePrData);
 

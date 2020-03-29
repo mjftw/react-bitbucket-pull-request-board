@@ -52,6 +52,10 @@ export async function getRepoPRDataPromises(workspaceName, repoName, accessToken
     ));
 }
 
+export function getPrUid(prItem) {
+    return `${prItem.repoName}#${prItem.id}`;
+}
+
 async function getUserCommentCount(commentsUrl, accessToken) {
     let comments = await bitbucketCourier(commentsUrl, accessToken);
     let userCommentCount = {};

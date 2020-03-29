@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Text } from 'grommet'
 import PullRequestInfo from './PullRequestInfo'
+import { getPrUid } from '../utils/bitbucket'
 
 const InfoBox = (props) => (
     <Box
@@ -69,7 +70,7 @@ export default function InfoBoard(props) {
                 {props.prData.map(prDataItem =>
                     <PullRequestInfo
                         prData={prDataItem}
-                        key={`${prDataItem.repoName}#${prDataItem.id}`}
+                        key={getPrUid(prDataItem)}
                     />
                 )}
             </InfoBox >

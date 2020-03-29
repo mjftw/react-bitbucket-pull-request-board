@@ -3,7 +3,6 @@ import { Grommet } from 'grommet';
 import getEnv from './env'
 import { getRepoPRDataPromises, getWorkspaces, getRepoListPage } from './utils/bitbucket'
 import { cancelRequests } from './utils/courier'
-import { delay } from './utils/promise'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -211,16 +210,14 @@ class App extends Component {
         if (workspace.name !== this.state.workspaceSelected.name) {
             cancelRequests();
 
-            delay(1000).then(() => {
-                this.setState({
-                    workspaceSelected: workspace,
-                    reposFound: [],
-                    reposSelected: [],
-                    prData: null
-                });
+            this.setState({
+                workspaceSelected: workspace,
+                reposFound: [],
+                reposSelected: [],
+                prData: null
+            });
 
-                this.getRepoSuggestions(workspace.name);
-            })
+            this.getRepoSuggestions(workspace.name);
         }
     }
 

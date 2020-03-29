@@ -80,8 +80,6 @@ class App extends Component {
 
             reposFound.push(...repoNameListPage.repoNames)
 
-            console.log(reposFound);
-
             this.setState({
                 reposFound: reposFound
             });

@@ -78,8 +78,6 @@ export default class PredictiveTextInput extends Component {
     getSuggestions(text, exclude) {
         const strippedText = text.replace(/^[\s-]+|\s+$/g, '');
 
-        console.log(text)
-
         if (strippedText.length && this.props.options) {
             return this.props.options.filter(option => {
                 if (strippedText.indexOf('-') > 0) {

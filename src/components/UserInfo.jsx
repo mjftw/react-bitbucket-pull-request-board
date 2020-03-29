@@ -24,16 +24,9 @@ function UserGroup(props) {
 
 export default function UserInfo(props) {
     const pr = props.prData;
-    return (
-        <Box direction='row' flex='shrink'>
-            <UserGroup title='Author'>
-                <User
-                    avatarUrl={pr.author.avatarUrl}
-                    name={pr.author.name}
-                    numComments={pr.author.comments}
-                />
-            </UserGroup>
-            <Box width='0.5em' />
+
+    const reviewersGroup = (pr.reviewers && pr.reviewers.length) ?
+        (
             <UserGroup title={'Reviewer' + ((pr.reviewers.length > 1) ? 's' : '')}>
                 {pr.reviewers.map(reviewer =>
                     <User
@@ -44,6 +37,19 @@ export default function UserInfo(props) {
                     />
                 )}
             </UserGroup>
+        ) : null;
+
+    return (
+        <Box direction='row' flex='shrink'>
+            <UserGroup title='Author'>
+                <User
+                    avatarUrl={pr.author.avatarUrl}
+                    name={pr.author.name}
+                    numComments={pr.author.comments}
+                />
+            </UserGroup>
+            <Box width='0.5em' />
+            {reviewersGroup}
         </Box>
     );
 }

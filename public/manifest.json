@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Bitbucket PR Board",
+  "name": "Bitbucket Pull Requests Board",
   "icons": [
     {
       "src": "favicon.ico",

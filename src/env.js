@@ -4,9 +4,7 @@ export default function getEnv() {
             oauthClientId: 'rN6C9PzUsHhcprwKSW',
             apiBaseUrl: 'https://api.bitbucket.org/2.0',
             oauthUrl: null,
-            accessToken: null,
-            workspaceName: '',
-            repoNameSuggestions: []
+            defaultAccessToken: null
         }
     }
     env.bitbucket.oauthUrl = `https://bitbucket.org/site/oauth2/authorize` +

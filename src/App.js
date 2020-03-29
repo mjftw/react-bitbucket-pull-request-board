@@ -30,7 +30,7 @@ class App extends Component {
         this.handleRequestError = this.handleRequestError.bind(this);
 
         this.state = {
-            accessToken: getEnv().bitbucket.accessToken,
+            accessToken: getEnv().bitbucket.defaultAccessToken,
             prData: null,
             reposFound: null,
             reposSelected: [],
@@ -59,9 +59,7 @@ class App extends Component {
             if (workspaceSelected) {
                 this.getRepoSuggestions(
                     workspaceSelected.name
-                ).then(repoNameSuggestions => {
-                    this.updateReposData(repoNameSuggestions, workspaceSelected);
-                })
+                )
             }
             //TODO: Display info about no workspaces found
         }).catch(this.handleRequestError)

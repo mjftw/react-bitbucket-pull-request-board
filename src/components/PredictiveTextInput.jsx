@@ -117,11 +117,19 @@ export default class PredictiveTextInput extends Component {
             )
         }
 
+        let options = [];
+        if (this.state.suggestions && this.state.suggestions.length) {
+            options = this.state.suggestions;
+        }
+        else if (this.props.options && this.props.options.length) {
+            options = this.props.options;
+        }
+
         return (
             <Box>
                 <FormField label={this.props.label}>
                     <Select
-                        options={this.state.suggestions.length ? this.state.suggestions : this.props.options}
+                        options={options}
                         onChange={option => this.selectOption(option.value)}
                         closeOnChange={false}
                         searchPlaceholder={this.props.placeholder}

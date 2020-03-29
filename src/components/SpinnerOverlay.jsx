@@ -6,7 +6,7 @@ export default function SpinnerOverlay(props) {
     const spinnerLayer = (
         <Layer
             full={false}
-            modal={true}
+            modal={false}
             animate={true}
             animation='fadeIn'
             plain={true}

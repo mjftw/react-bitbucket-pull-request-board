@@ -67,7 +67,10 @@ export default function InfoBoard(props) {
         content = (
             <InfoBox>
                 {props.prData.map(prDataItem =>
-                    <PullRequestInfo prData={prDataItem} key={prDataItem.id} ></PullRequestInfo>
+                    <PullRequestInfo
+                        prData={prDataItem}
+                        key={`${prDataItem.repoName}#${prDataItem.id}`}
+                    />
                 )}
             </InfoBox >
         );

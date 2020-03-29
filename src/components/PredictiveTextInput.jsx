@@ -4,7 +4,6 @@ import { Box, FormField, Menu, Select } from 'grommet'
 export default class PredictiveTextInput extends Component {
     constructor(props) {
         super(props);
-        this.onChange = this.onChange.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
@@ -12,32 +11,17 @@ export default class PredictiveTextInput extends Component {
         this.updateSuggestions = this.updateSuggestions.bind(this);
 
         this.state = {
-            inputValue: '',
             suggestions: []
         }
-    }
-
-    onChange(event) {
-        const inputValue = event.target.value;
-
-        this.setState({
-            inputValue: inputValue,
-        });
     }
 
     selectOption(value) {
         let newSelected = this.props.selected.slice();
 
-        console.log(value);
-
         // Check not already selected
         if (this.props.selected.indexOf(value) < 0) {
             newSelected.push(value);
         }
-
-        this.setState({
-            inputValue: '',
-        });
 
         this.setSelection(newSelected);
     }
@@ -125,27 +109,24 @@ export default class PredictiveTextInput extends Component {
                 <Menu
                     label='Remove selected'
                     justifyContent='between'
-                    items={
-                        this.props.selected.map(text => (
-                            {
-                                label: text,
-                                onClick: (() => this.deselectOption(text))
-                            })
-                        )
-                    }
+                    items={this.props.selected.map(text => (
+                        {
+                            label: text,
+                            onClick: (() => this.deselectOption(text))
+                        })
+                    )}
                 />
             )
         }
 
         return (
             <Box>
-                <FormField
-                    label={this.props.label}
-                    onSubmit={alert}
-                >
+                <FormField label={this.props.label}>
                     <Select
                         options={this.state.suggestions.length ? this.state.suggestions : this.props.options}
                         onChange={option => this.selectOption(option.value)}
+                        closeOnChange={false}
+                        searchPlaceholder={this.props.placeholder}
                         onSearch={text => this.updateSuggestions(text, this.props.selected)}
                     />
                 </FormField>

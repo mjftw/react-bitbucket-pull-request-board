@@ -1,29 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Box, TextInput, FormField, Menu, Select } from 'grommet'
-import { truncate } from '../utils/string'
-
-function ListItem(props) {
-    const text = props.length ?
-        truncate(props.text, props.length, true) : props.text;
-
-    return (
-        <Box
-            direction='row'
-            justify='between'
-            flex='grow'
-            onClick={(event) => props.onSelected(props.text)}
-            hoverIndicator={true}
-        >
-            <Text>
-                <span style={{ whiteSpace: 'nowrap' }}>
-                    {text}
-                </span>
-            </Text>
-            <Box width='2em' />
-            {props.icon}
-        </Box>
-    );
-}
+import { Box, FormField, Menu, Select } from 'grommet'
 
 export default class PredictiveTextInput extends Component {
     constructor(props) {

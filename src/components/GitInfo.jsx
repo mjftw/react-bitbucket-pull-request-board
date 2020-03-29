@@ -35,7 +35,7 @@ export default function GitInfo(props) {
                 </Box>
                 <RightText>{pr.branchTarget}</RightText>
                 <RightText><span style={{ color: 'green' }}>+{pr.summary.linesAdded}</span> | <span style={{ color: 'red' }}>-{pr.summary.linesRemoved}</span></RightText>
-                <RightText>{pr.mergeConflicts ? <span style={{ color: 'orange' }}>Merge conficts</span> : 'No merge conficts'} </RightText>
+                <RightText>{pr.mergeConflicts ? <span style={{ color: 'orange' }}>Merge conflicts</span> : 'No merge conflicts'} </RightText>
             </Box>
         </Box >
     );

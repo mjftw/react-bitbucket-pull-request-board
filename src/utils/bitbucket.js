@@ -14,7 +14,7 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
         open: prData.state === 'OPEN',
         timeSinceCreated: timeDeltaString(prData.created_on),
         timeSinceUpdated: timeDeltaString(prData.updated_on),
-        mergeConflicts: await getConflitStatus(prData.links.diff.href, accessToken),
+        mergeConflicts: await getConflictStatus(prData.links.diff.href, accessToken),
         summary: await getDiffSummary(prData.links.diffstat.href, accessToken),
         branchSource: prData.source.branch.name,
         branchTarget: prData.destination.branch.name,
@@ -110,7 +110,7 @@ export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
     }
 }
 
-async function getConflitStatus(diffUrl, accessToken) {
+async function getConflictStatus(diffUrl, accessToken) {
     let diff = await bitbucketCourier(diffUrl, accessToken);
     return diff.includes('<<<<<<<');
 }

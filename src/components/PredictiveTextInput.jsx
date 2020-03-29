@@ -31,8 +31,7 @@ export default class PredictiveTextInput extends Component {
         this.textInputRef = React.createRef();
 
         this.state = {
-            inputValue: '',
-            suggestions: []
+            inputValue: ''
         }
     }
 
@@ -41,7 +40,6 @@ export default class PredictiveTextInput extends Component {
 
         this.setState({
             inputValue: inputValue,
-            suggestions: this.getSuggestions(inputValue, this.props.selected)
         });
     }
 
@@ -55,7 +53,6 @@ export default class PredictiveTextInput extends Component {
 
         this.setState({
             inputValue: '',
-            suggestions: []
         });
 
         this.focusTextInput();
@@ -70,11 +67,6 @@ export default class PredictiveTextInput extends Component {
         if (index >= 0) {
             newSelected.splice(index, 1);
         }
-
-        this.setState({
-            suggestions: this.getSuggestions(this.state.inputValue, newSelected)
-        });
-
 
         this.focusTextInput();
         this.setSelection(newSelected);
@@ -100,8 +92,9 @@ export default class PredictiveTextInput extends Component {
     }
 
     getSuggestions(text, exclude) {
-        if (text.length) {
-            return this.props.options.filter(word => (word.startsWith(text) && (exclude.indexOf(word) < 0)));
+        if (text.length && this.props.options) {
+            return this.props.options.filter(word =>
+                (word.startsWith(text) && (exclude.indexOf(word) < 0)));
         }
         else {
             return [];
@@ -109,6 +102,9 @@ export default class PredictiveTextInput extends Component {
     }
 
     render() {
+        const suggestions = this.getSuggestions(
+            this.state.inputValue, this.props.selected);
+
         return (
             <Box>
                 <TextInput
@@ -125,7 +121,7 @@ export default class PredictiveTextInput extends Component {
                         onSelected={this.deselectOption}
                     />
                 )}
-                {this.state.suggestions.map(text =>
+                {suggestions.map(text =>
                     <ListItem
                         key={text}
                         text={text}

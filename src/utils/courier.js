@@ -7,7 +7,7 @@ export default function courier(url, payload, params) {
     // console.log(`GET: ${url}`)
 
     // If cancel token used, reset it for new requests
-    if (cancelSource.token.reason) {
+    if (requestsAreCancelled()) {
         cancelSource = axios.CancelToken.source();
     }
 
@@ -21,10 +21,14 @@ export function cancelRequests() {
     cancelSource.cancel('Request cancelled by user');
 }
 
+export function requestsAreCancelled() {
+    return cancelSource.token.reason !== undefined;
+}
+
 function retryFailedRequest(error) {
     const tooManyRequestsErrMsg = 'Request failed with status code 429';
 
-    // If request cancelled by user do not continue
+    // If request cancelled by user log message
     if (axios.isCancel(error)) {
         console.log(error.message);
         throw error;

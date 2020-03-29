@@ -99,10 +99,40 @@ export default class PredictiveTextInput extends Component {
         return text.split(separator).map(value => value.trim());
     }
 
+    checkStartsWith(text, checkMatch, exclude) {
+        return (checkMatch.startsWith(text) && (exclude.indexOf(checkMatch) < 0));
+    }
+
+    checkWordsStartWith(text, checkMatch, exclude) {
+        const checkMatchWord = checkMatch.split('-');
+
+        // Search split text for one that starts with checkMatch
+        //  and isn't in exclusions
+        for (let i = 0; i < checkMatchWord.length; i++) {
+            if (checkMatchWord[i].startsWith(text) && (exclude.indexOf(checkMatch) < 0)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    checkWordIn(text, checkMatch, exclude) {
+        return (checkMatch.indexOf(text) >= 0 && exclude.indexOf(checkMatch) < 0);
+    }
+
     getSuggestions(text, exclude) {
-        if (text.length && this.props.options) {
-            return this.props.options.filter(word =>
-                (word.startsWith(text) && (exclude.indexOf(word) < 0)));
+        const strippedText = text.replace(/^[\s-]+|\s+$/g, '');
+
+        if (strippedText.length && this.props.options) {
+            return this.props.options.filter(option => {
+                if (strippedText.indexOf('-') > 0) {
+                    return this.checkWordIn(strippedText, option, exclude);
+                }
+                else {
+                    return this.checkWordsStartWith(strippedText, option, exclude);
+                }
+            })
         }
         else {
             return [];

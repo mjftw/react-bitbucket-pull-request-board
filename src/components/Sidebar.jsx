@@ -35,7 +35,6 @@ export default class Sidebar extends Component {
                 direction='row'
                 flex='shrink'
                 elevation='small'
-                height={{ min: '100vh' }}
             >
                 <Collapsible
                     direction='horizontal'

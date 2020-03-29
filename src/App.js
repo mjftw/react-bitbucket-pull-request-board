@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Grommet } from 'grommet';
 import getEnv from './env'
 import { getRepoPRDataPromises, getWorkspaces, getRepoListPage } from './utils/bitbucket'
+import { cancelRequests } from './utils/courier'
+import { delay } from './utils/promise'
 import MainWindow from './components/MainWindow'
 import qs from 'qs'
 
@@ -63,7 +65,6 @@ class App extends Component {
             }
             //TODO: Display info about no workspaces found
         }).catch(this.handleRequestError)
-
     }
 
     async getRepoSuggestions(workspaceName) {
@@ -205,9 +206,22 @@ class App extends Component {
     }
 
     setWorkspaceSelection(workspace) {
-        this.setState({
-            workspaceSelected: workspace
-        });
+        // If changed workspace, also reset repos found & selected & prData
+        // We also need to cancel any ongoing bitbucket API requests
+        if (workspace.name !== this.state.workspaceSelected.name) {
+            cancelRequests();
+
+            delay(1000).then(() => {
+                this.setState({
+                    workspaceSelected: workspace,
+                    reposFound: [],
+                    reposSelected: [],
+                    prData: null
+                });
+
+                this.getRepoSuggestions(workspace.name);
+            })
+        }
     }
 
     render() {

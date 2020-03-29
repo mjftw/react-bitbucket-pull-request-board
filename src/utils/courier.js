@@ -1,17 +1,34 @@
 import axios from 'axios'
+import { delay } from './promise'
+
+let cancelSource = axios.CancelToken.source();
 
 export default function courier(url, payload, params) {
     // console.log(`GET: ${url}`)
-    return axios.get(url, { params })
-        .then(response => response.data);
+
+    // If cancel token used, reset it for new requests
+    if (cancelSource.token.reason) {
+        cancelSource = axios.CancelToken.source();
+    }
+
+    return axios.get(url, {
+        params,
+        cancelToken: cancelSource.token
+    }).then(response => response.data);
 }
 
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+export function cancelRequests() {
+    cancelSource.cancel('Request cancelled by user');
 }
 
 function retryFailedRequest(error) {
     const tooManyRequestsErrMsg = 'Request failed with status code 429';
+
+    // If request cancelled by user do not continue
+    if (axios.isCancel(error)) {
+        console.log(error.message);
+        throw error;
+    }
 
     // If error is "Too many requests", wait 5s and retry
     if (error.message === tooManyRequestsErrMsg) {

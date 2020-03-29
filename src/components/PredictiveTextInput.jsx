@@ -144,7 +144,7 @@ export default class PredictiveTextInput extends Component {
                     onSubmit={alert}
                 >
                     <Select
-                        options={this.state.suggestions}
+                        options={this.state.suggestions.length ? this.state.suggestions : this.props.options}
                         onChange={option => this.selectOption(option.value)}
                         onSearch={text => this.updateSuggestions(text, this.props.selected)}
                     />

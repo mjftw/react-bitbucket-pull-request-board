@@ -49,12 +49,8 @@ const InfoBubble = (props) => (
 export default function InfoBoard(props) {
     let content = null;
 
-    // Loading repo data
-    if (props.prData === null || props.prData === undefined) {
-        content = null;
-    }
     // No open pull request data to display
-    else if (props.prData.length === 0) {
+    if (props.prData === null || props.prData === undefined || props.prData.length === 0) {
         content = (
             <Center>
                 <InfoBubble>

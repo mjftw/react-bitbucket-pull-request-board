@@ -32,17 +32,25 @@ export default function FilterMenu(props) {
     }
 
     let spinner = null;
-    let textInputPlaceholder = null;
     if (props.loadingReposSuggestions) {
-        spinner = <PulseLoader color='navy' size='0.7em' />;
-        textInputPlaceholder = 'Loading repository list...'
+        spinner = <PulseLoader color='steelBlue' size='0.5em' />;
     }
+
+    const textInputLabel = (
+        <Box
+            direction='row'
+            justify='between'
+        >
+            <Text>Select repositories</Text>
+            {spinner}
+        </Box>
+    );
 
     return (
         <FilterBox>
             {avatar}
             <Box height='0.1em' />
-            < Menu
+            <Menu
                 alignSelf='center'
                 label='Workspace'
                 items={
@@ -54,19 +62,12 @@ export default function FilterMenu(props) {
             />
             <hr size='1' width='100%' align='center' />
             <Box height='1em' />
-
-            <Box
-                direction='row'
-                justify='between'
-            >
-                <Text>Repo names</Text>
-                {spinner}
-            </Box>
             <PredictiveTextInput
+                label={textInputLabel}
                 selected={props.reposSelected}
                 options={props.repoNameSuggestions}
                 setSelection={props.setReposSelection}
-                placeholder={textInputPlaceholder}
+                placeholder='Start typing to see options...'
                 maxLength={30}
             />
         </FilterBox >

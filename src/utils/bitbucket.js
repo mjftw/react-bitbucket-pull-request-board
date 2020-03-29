@@ -86,7 +86,10 @@ export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
         pageData = await bitbucketCourier(
             `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}`,
             accessToken,
-            { sort: '-updated_on' }
+            {
+                sort: '-updated_on',
+                pagelen: 100
+            }
         )
     }
     else {
@@ -160,8 +163,7 @@ function timeDeltaString(timestamp) {
 
 function bitbucketCourier(url, accessToken, params) {
     let extraParams = {
-        access_token: accessToken,
-        pagelen: 100
+        access_token: accessToken
     };
     return courier(url, null, { ...params, ...extraParams });
 }

@@ -160,7 +160,8 @@ function timeDeltaString(timestamp) {
 
 function bitbucketCourier(url, accessToken, params) {
     let extraParams = {
-        access_token: accessToken
+        access_token: accessToken,
+        pagelen: 100
     };
     return courier(url, null, { ...params, ...extraParams });
 }

@@ -67,6 +67,7 @@ export default function FilterMenu(props) {
                 options={props.repoNameSuggestions}
                 setSelection={props.setReposSelection}
                 placeholder={textInputPlaceholder}
+                maxLength={30}
             />
         </FilterBox >
     );

@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { Text, Box, TextInput } from 'grommet'
 import { FaMinus, FaPlus } from 'react-icons/fa'
+import { truncate } from '../utils/string'
 
 function ListItem(props) {
+    const text = props.length ?
+        truncate(props.text, props.length, true) : props.text;
+
     return (
         <Box
             direction='row'
@@ -11,7 +15,11 @@ function ListItem(props) {
             onClick={(event) => props.onSelected(props.text)}
             hoverIndicator={true}
         >
-            <Text>{props.text}</Text>
+            <Text>
+                <span style={{ whiteSpace: 'nowrap' }}>
+                    {text}
+                </span>
+            </Text>
             <Box width='2em' />
             {props.icon}
         </Box>
@@ -117,6 +125,7 @@ export default class PredictiveTextInput extends Component {
                     <ListItem
                         key={text}
                         text={text}
+                        length={this.props.maxLength}
                         icon={<FaMinus />}
                         onSelected={this.deselectOption}
                     />
@@ -125,6 +134,7 @@ export default class PredictiveTextInput extends Component {
                     <ListItem
                         key={text}
                         text={text}
+                        length={this.props.maxLength}
                         icon={<FaPlus />}
                         onSelected={this.selectOption}
                     />

@@ -32,8 +32,10 @@ export default function FilterMenu(props) {
     }
 
     let spinner = null;
+    let textInputPlaceholder = null;
     if (props.loadingReposSuggestions) {
         spinner = <PulseLoader color='navy' size='0.7em' />;
+        textInputPlaceholder = 'Loading repository list...'
     }
 
     return (
@@ -64,6 +66,7 @@ export default function FilterMenu(props) {
                 selected={props.reposSelected}
                 options={props.repoNameSuggestions}
                 setSelection={props.setReposSelection}
+                placeholder={textInputPlaceholder}
             />
         </FilterBox >
     );

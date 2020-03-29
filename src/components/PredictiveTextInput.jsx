@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Box, TextInput } from 'grommet'
+import { Text, Box, TextInput, FormField, Menu } from 'grommet'
 import { FaMinus, FaPlus } from 'react-icons/fa'
 import { truncate } from '../utils/string'
 
@@ -145,30 +145,32 @@ export default class PredictiveTextInput extends Component {
 
         return (
             <Box>
-                <TextInput
-                    onChange={this.onChange}
-                    value={this.state.inputValue}
-                    ref={this.textInputRef}
-                    {...this.props}
+                <Menu
+                    label='Remove selected'
+                    items={
+                        this.props.selected.map(text => (
+                            {
+                                label: text,
+                                onClick: (() => this.deselectOption(text))
+                            })
+                        )
+                    }
                 />
-                {this.props.selected.map(text =>
-                    <ListItem
-                        key={text}
-                        text={text}
-                        length={this.props.maxLength}
-                        icon={<FaMinus />}
-                        onSelected={this.deselectOption}
+
+                <FormField
+                    label={this.props.label}
+                    onSubmit={alert}
+                >
+                    <TextInput
+                        onChange={this.onChange}
+                        onSelect={selected => this.selectOption(selected.suggestion)}
+                        value={this.state.inputValue}
+                        ref={this.textInputRef}
+                        suggestions={suggestions}
+                        icon={this.props.icon}
+                        {...this.props}
                     />
-                )}
-                {suggestions.map(text =>
-                    <ListItem
-                        key={text}
-                        text={text}
-                        length={this.props.maxLength}
-                        icon={<FaPlus />}
-                        onSelected={this.selectOption}
-                    />
-                )}
+                </FormField>
             </Box>
         );
     }

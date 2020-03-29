@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Box, TextInput, FormField, Menu } from 'grommet'
-import { FaMinus, FaPlus } from 'react-icons/fa'
+import { Text, Box, TextInput, FormField, Menu, Select } from 'grommet'
 import { truncate } from '../utils/string'
 
 function ListItem(props) {
@@ -33,13 +32,12 @@ export default class PredictiveTextInput extends Component {
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
-        this.focusTextInput = this.focusTextInput.bind(this);
         this.setSelection = this.setSelection.bind(this);
-
-        this.textInputRef = React.createRef();
+        this.updateSuggestions = this.updateSuggestions.bind(this);
 
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            suggestions: []
         }
     }
 
@@ -54,6 +52,8 @@ export default class PredictiveTextInput extends Component {
     selectOption(value) {
         let newSelected = this.props.selected.slice();
 
+        console.log(value);
+
         // Check not already selected
         if (this.props.selected.indexOf(value) < 0) {
             newSelected.push(value);
@@ -63,7 +63,6 @@ export default class PredictiveTextInput extends Component {
             inputValue: '',
         });
 
-        this.focusTextInput();
         this.setSelection(newSelected);
     }
 
@@ -76,12 +75,7 @@ export default class PredictiveTextInput extends Component {
             newSelected.splice(index, 1);
         }
 
-        this.focusTextInput();
         this.setSelection(newSelected);
-    }
-
-    focusTextInput() {
-        this.textInputRef.current.focus();
     }
 
     setSelection(selection) {
@@ -124,6 +118,8 @@ export default class PredictiveTextInput extends Component {
     getSuggestions(text, exclude) {
         const strippedText = text.replace(/^[\s-]+|\s+$/g, '');
 
+        console.log(text)
+
         if (strippedText.length && this.props.options) {
             return this.props.options.filter(option => {
                 if (strippedText.indexOf('-') > 0) {
@@ -139,14 +135,20 @@ export default class PredictiveTextInput extends Component {
         }
     }
 
-    render() {
-        const suggestions = this.getSuggestions(
-            this.state.inputValue, this.props.selected);
+    updateSuggestions(text, exclude) {
+        this.setState({
+            suggestions: this.getSuggestions(text, exclude)
+        })
+    }
 
-        return (
-            <Box>
+    render() {
+        let removeSelectedMenu = null;
+
+        if (this.props.selected && this.props.selected.length) {
+            removeSelectedMenu = (
                 <Menu
                     label='Remove selected'
+                    justifyContent='between'
                     items={
                         this.props.selected.map(text => (
                             {
@@ -156,21 +158,22 @@ export default class PredictiveTextInput extends Component {
                         )
                     }
                 />
+            )
+        }
 
+        return (
+            <Box>
                 <FormField
                     label={this.props.label}
                     onSubmit={alert}
                 >
-                    <TextInput
-                        onChange={this.onChange}
-                        onSelect={selected => this.selectOption(selected.suggestion)}
-                        value={this.state.inputValue}
-                        ref={this.textInputRef}
-                        suggestions={suggestions}
-                        icon={this.props.icon}
-                        {...this.props}
+                    <Select
+                        options={this.state.suggestions}
+                        onChange={option => this.selectOption(option.value)}
+                        onSearch={text => this.updateSuggestions(text, this.props.selected)}
                     />
                 </FormField>
+                {removeSelectedMenu}
             </Box>
         );
     }

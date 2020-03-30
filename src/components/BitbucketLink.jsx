@@ -12,9 +12,9 @@ export default function BitbucketLink() {
                 flex='shrink'
             >
                 <Button
-                    icon={<FaBitbucket color='navy' />}
+                    icon={<FaBitbucket color='steelBlue' />}
                     label='Connect to Bitbucket'
-                    onClick={() => window.open(getEnv().bitbucket.oauthUrl)}
+                    onClick={() => window.location.replace(getEnv().bitbucket.oauthUrl)}
                 />
             </Box>
         </Layer>

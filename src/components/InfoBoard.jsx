@@ -7,10 +7,9 @@ const InfoBox = (props) => (
     <Box
         tag='header'
         direction='column'
-        flex='grow'
+        flex='shrink'
         justify='start'
         pad={{ vertical: 'small', horizontal: 'medium' }}
-        elevation='medium'
         {...props}
     />
 );

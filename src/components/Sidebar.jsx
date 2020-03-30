@@ -40,7 +40,11 @@ export default class Sidebar extends Component {
                     direction='horizontal'
                     open={this.state.isOpen}
                 >
-                    {this.props.children}
+                    <Box
+                        flex='grow'
+                    >
+                        {this.props.children}
+                    </Box>
                 </Collapsible>
                 <Box
                     onClick={this.onClick}

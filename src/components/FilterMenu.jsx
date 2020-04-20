@@ -27,9 +27,13 @@ const AvatarImage = (props) => (
 
 export default function FilterMenu(props) {
     let avatar = null;
+    let workspaceName = null;
     if (props.workspaceSelected) {
         avatar = <AvatarImage src={props.workspaceSelected.avatarUrl} />
+        workspaceName = props.workspaceSelected.displayName
     }
+
+    
 
     let spinner = null;
     if (props.loadingReposSuggestions) {
@@ -52,7 +56,7 @@ export default function FilterMenu(props) {
             <Box height='0.1em' />
             <Menu
                 alignSelf='center'
-                label='Workspace'
+                label={workspaceName}
                 items={
                     props.workspaceSuggestions.map(workspace => ({
                         label: workspace.displayName,

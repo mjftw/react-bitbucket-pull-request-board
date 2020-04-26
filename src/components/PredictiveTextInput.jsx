@@ -1,9 +1,23 @@
 import React, { Component } from 'react'
-import { Box, FormField, Menu, Select } from 'grommet'
+import { Box, Select, CheckBox, Text } from 'grommet'
+
+
+function MenuOption(props) {
+    return (
+        <Box direction='row'>
+            <CheckBox
+                checked={props.checked}
+            />
+            <Box width='1em'/>
+            <Text>{props.text}</Text>  
+        </Box>
+    );
+}
 
 export default class PredictiveTextInput extends Component {
     constructor(props) {
         super(props);
+        this.onChange = this.onChange.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
@@ -11,7 +25,17 @@ export default class PredictiveTextInput extends Component {
         this.updateSuggestions = this.updateSuggestions.bind(this);
 
         this.state = {
+            searchText: '',
             suggestions: []
+        }
+    }
+
+    onChange(option) {
+        if(option.props.checked) {
+            this.deselectOption(option.props.text);
+        }
+        else {
+            this.selectOption(option.props.text);
         }
     }
 
@@ -22,7 +46,6 @@ export default class PredictiveTextInput extends Component {
         if (this.props.selected.indexOf(value) < 0) {
             newSelected.push(value);
         }
-
         this.setSelection(newSelected);
     }
 
@@ -42,6 +65,7 @@ export default class PredictiveTextInput extends Component {
         if (this.props.setSelection !== undefined) {
             this.props.setSelection(selection);
         }
+        this.updateSuggestions(this.state.searchText, selection)
     }
 
     getEntering(text) {
@@ -95,24 +119,20 @@ export default class PredictiveTextInput extends Component {
 
     updateSuggestions(text, exclude) {
         this.setState({
+            searchText: text,
             suggestions: this.getSuggestions(text, exclude)
         })
     }
 
     render() {
-        let removeSelectedMenu = null;
+        let selected = [];
 
         if (this.props.selected && this.props.selected.length) {
-            removeSelectedMenu = (
-                <Menu
-                    label='Remove selected'
-                    justifyContent='between'
-                    items={this.props.selected.map(text => (
-                        {
-                            label: text,
-                            onClick: (() => this.deselectOption(text))
-                        })
-                    )}
+            selected = this.props.selected.map(text =>
+                <MenuOption
+                    key={text}
+                    text={text}
+                    checked={true}
                 />
             )
         }
@@ -125,18 +145,24 @@ export default class PredictiveTextInput extends Component {
             options = this.props.options;
         }
 
+        options = options.map(text =>
+            <MenuOption
+                key={text}
+                text={text}
+                checked={false}
+            />
+        )
+
         return (
             <Box>
-                <FormField label={this.props.label}>
-                    <Select
-                        options={options}
-                        onChange={option => this.selectOption(option.value)}
-                        closeOnChange={false}
-                        searchPlaceholder={this.props.placeholder}
-                        onSearch={text => this.updateSuggestions(text, this.props.selected)}
-                    />
-                </FormField>
-                {removeSelectedMenu}
+                <Select
+                    options={[...selected, ...options]}
+                    onChange={option => this.onChange(option.value)}
+                    valueLabel={this.props.label}
+                    closeOnChange={false}
+                    searchPlaceholder={this.props.placeholder}
+                    onSearch={text => this.updateSuggestions(text, this.props.selected)}
+                />
             </Box>
         );
     }

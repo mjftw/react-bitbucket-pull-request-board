@@ -56,15 +56,16 @@ export default function FilterMenu(props) {
             />
             <hr size='1' width='100%' align='center' />
             <Box height='1em' />
-            <PredictiveSelect
-                label='Select repositories'
-                selected={props.reposSelected}
-                options={props.repoNameSuggestions}
-                setSelection={props.setReposSelection}
-                placeholder='Start typing to filter list...'
-                maxLength={30}
-            />
-            <Box align='center'>
+            <Box direction='row'>
+                <PredictiveSelect
+                    label='Select repositories'
+                    selected={props.reposSelected}
+                    options={props.repoNameSuggestions}
+                    setSelection={props.setReposSelection}
+                    placeholder='Start typing to filter list...'
+                    maxLength={30}
+                />
+                <Box width='0.5em'/>
                 {spinner}
             </Box>
         </FilterBox >

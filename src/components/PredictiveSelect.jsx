@@ -18,11 +18,11 @@ export default class PredictiveSelect extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.onSearch = this.onSearch.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
         this.setSelection = this.setSelection.bind(this);
-        this.updateSuggestions = this.updateSuggestions.bind(this);
 
         this.state = {
             searchText: '',
@@ -65,7 +65,6 @@ export default class PredictiveSelect extends Component {
         if (this.props.setSelection !== undefined) {
             this.props.setSelection(selection);
         }
-        this.updateSuggestions(this.state.searchText, selection)
     }
 
     getEntering(text) {
@@ -116,11 +115,10 @@ export default class PredictiveSelect extends Component {
             return [];
         }
     }
-
-    updateSuggestions(text, exclude) {
+    
+    onSearch(text) {
         this.setState({
-            searchText: text,
-            suggestions: this.getSuggestions(text, exclude)
+            searchText: text
         })
     }
 
@@ -138,8 +136,8 @@ export default class PredictiveSelect extends Component {
         }
 
         let options = [];
-        if (this.state.suggestions && this.state.suggestions.length) {
-            options = this.state.suggestions;
+        if (this.state.searchText && this.state.searchText.length) {
+            options = this.getSuggestions(this.state.searchText, this.props.selected);
         }
         else if (this.props.options && this.props.options.length) {
             options = this.props.options;
@@ -161,7 +159,7 @@ export default class PredictiveSelect extends Component {
                     valueLabel={this.props.label}
                     closeOnChange={false}
                     searchPlaceholder={this.props.placeholder}
-                    onSearch={text => this.updateSuggestions(text, this.props.selected)}
+                    onSearch={this.onSearch}
                 />
             </Box>
         );

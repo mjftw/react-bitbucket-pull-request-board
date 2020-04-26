@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Text, Menu, Image } from 'grommet'
+import { Box, Menu, Image } from 'grommet'
 import { PulseLoader } from 'react-spinners'
 import PredictiveTextInput from './PredictiveTextInput'
 
@@ -40,16 +40,6 @@ export default function FilterMenu(props) {
         spinner = <PulseLoader color='steelBlue' size='0.5em' />;
     }
 
-    const textInputLabel = (
-        <Box
-            direction='row'
-            justify='between'
-        >
-            <Text>Select repositories</Text>
-            {spinner}
-        </Box>
-    );
-
     return (
         <FilterBox>
             {avatar}
@@ -67,13 +57,16 @@ export default function FilterMenu(props) {
             <hr size='1' width='100%' align='center' />
             <Box height='1em' />
             <PredictiveTextInput
-                label={textInputLabel}
+                label='Select repositories'
                 selected={props.reposSelected}
                 options={props.repoNameSuggestions}
                 setSelection={props.setReposSelection}
                 placeholder='Start typing to filter list...'
                 maxLength={30}
             />
+            <Box align='center'>
+                {spinner}
+            </Box>
         </FilterBox >
     );
 }

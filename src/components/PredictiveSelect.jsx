@@ -78,14 +78,6 @@ export default class PredictiveSelect extends Component {
         }
     }
 
-    splitText(text, separator) {
-        return text.split(separator).map(value => value.trim());
-    }
-
-    checkStartsWith(text, checkMatch, exclude) {
-        return (checkMatch.startsWith(text) && (exclude.indexOf(checkMatch) < 0));
-    }
-
     checkWordsStartWith(text, checkMatch, exclude) {
         const checkMatchWord = checkMatch.split('-');
 

@@ -14,7 +14,7 @@ function MenuOption(props) {
     );
 }
 
-export default class PredictiveTextInput extends Component {
+export default class PredictiveSelect extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Menu, Image } from 'grommet'
 import { PulseLoader } from 'react-spinners'
-import PredictiveTextInput from './PredictiveTextInput'
+import PredictiveSelect from './PredictiveSelect'
 
 const FilterBox = (props) => (
     <Box
@@ -56,7 +56,7 @@ export default function FilterMenu(props) {
             />
             <hr size='1' width='100%' align='center' />
             <Box height='1em' />
-            <PredictiveTextInput
+            <PredictiveSelect
                 label='Select repositories'
                 selected={props.reposSelected}
                 options={props.repoNameSuggestions}

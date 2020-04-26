@@ -19,6 +19,7 @@ export default class PredictiveSelect extends Component {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.onSearch = this.onSearch.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
         this.getEntering = this.getEntering.bind(this);
@@ -37,6 +38,18 @@ export default class PredictiveSelect extends Component {
         else {
             this.selectOption(option.props.text);
         }
+    }
+
+    onSearch(text) {
+        this.setState({
+            searchText: text
+        })
+    }
+
+    onClose() {
+        this.setState({
+            searchText: ''
+        })
     }
 
     selectOption(value) {
@@ -116,12 +129,6 @@ export default class PredictiveSelect extends Component {
         }
     }
     
-    onSearch(text) {
-        this.setState({
-            searchText: text
-        })
-    }
-
     render() {
         let selected = [];
 
@@ -155,11 +162,12 @@ export default class PredictiveSelect extends Component {
             <Box>
                 <Select
                     options={[...selected, ...options]}
-                    onChange={option => this.onChange(option.value)}
                     valueLabel={this.props.label}
                     closeOnChange={false}
                     searchPlaceholder={this.props.placeholder}
+                    onChange={option => this.onChange(option.value)}
                     onSearch={this.onSearch}
+                    onClose={this.onClose}
                 />
             </Box>
         );

@@ -22,12 +22,10 @@ export default class PredictiveSelect extends Component {
         this.onClose = this.onClose.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.deselectOption = this.deselectOption.bind(this);
-        this.getEntering = this.getEntering.bind(this);
         this.setSelection = this.setSelection.bind(this);
 
         this.state = {
-            searchText: '',
-            suggestions: []
+            searchText: ''
         }
     }
 
@@ -78,11 +76,6 @@ export default class PredictiveSelect extends Component {
         if (this.props.setSelection !== undefined) {
             this.props.setSelection(selection);
         }
-    }
-
-    getEntering(text) {
-        const values = this.splitText(text, ',');
-        return (values.length) ? values[values.length - 1] : '';
     }
 
     splitText(text, separator) {

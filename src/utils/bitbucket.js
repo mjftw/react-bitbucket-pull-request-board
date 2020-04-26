@@ -12,8 +12,8 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
         id: prData.id,
         repoProjectKey: null, //FIXME: Removed field as not available in prData
         open: prData.state === 'OPEN',
-        timeSinceCreated: timeDeltaString(prData.created_on),
-        timeSinceUpdated: timeDeltaString(prData.updated_on),
+        dateCreated: prData.created_on,
+        dateUpdated: prData.updated_on,
         mergeConflicts: await getConflictStatus(prData.links.diff.href, accessToken),
         summary: await getDiffSummary(prData.links.diffstat.href, accessToken),
         branchSource: prData.source.branch.name,
@@ -136,33 +136,6 @@ async function getDiffSummary(diffstatUrl, accessToken) {
     });
 
     return summary;
-}
-
-function timeDeltaString(timestamp) {
-    let nowTime = Date.now();
-    let thenTime = Date.parse(timestamp);
-    let msecs = (nowTime - thenTime);
-    let secs = Math.floor(msecs / 1000) % 60;
-    let mins = Math.floor((msecs / (1000 * 60)) % 60);
-    let hours = Math.floor((msecs / (1000 * 60 * 60)) % 24);
-    let days = Math.floor((msecs / (1000 * 60 * 60 * 24)) % 7);
-
-    let daysString = () => `${days} day` + (days === 1 ? '' : 's');
-    let hoursString = () => `${hours} hour` + (hours === 1 ? '' : 's');
-    let minsString = () => `${mins} min` + (mins === 1 ? '' : 's');
-    let secsString = () => `${secs} sec` + (secs === 1 ? '' : 's');
-
-    let timeString = '';
-    if (days) {
-        timeString = `${daysString()}, ${hoursString()}`;
-    }
-    else if (hours) {
-        timeString = `${hoursString()}, ${minsString()}`;
-    }
-    else if (mins) {
-        timeString = `${minsString()}, ${secsString()}`;
-    }
-    return timeString;
 }
 
 function bitbucketCourier(url, accessToken, params) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Box, Text } from 'grommet'
 import { FaLevelDownAlt } from 'react-icons/fa'
 
@@ -22,8 +23,8 @@ export default function GitInfo(props) {
                 <LeftText>#{pr.id} {pr.title}</LeftText>
                 <LeftText>{pr.repoDisplayName}</LeftText>
                 <LeftText>{pr.repoProjectKey}</LeftText>
-                <LeftText>Created {pr.timeSinceCreated} ago</LeftText>
-                <LeftText>Updated {pr.timeSinceUpdated} ago</LeftText>
+                <LeftText>Created {moment(pr.dateCreated).fromNow()}</LeftText>
+                <LeftText>Updated {moment(pr.dateUpdated).fromNow()}</LeftText>
             </Box>
             <Box width='2em' />
             <Box align='end'>

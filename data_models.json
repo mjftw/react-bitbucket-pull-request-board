@@ -6,8 +6,8 @@
         "title": "PR title",
         "open": true,
         "mergeConflicts": false,
-        "timeSinceCreated": "2 days, 3 hours ago",
-        "timeSinceUpdated": "1 hour, 2 mins ago",
+        "dateCreated": "2020-04-26T21:17:45+00:00",
+        "dateUpdated": "2020-04-26T21:21:50+00:00",
         "branchSource": "source-branch-name",
         "branchTarget": "target-branch-name",
         "author": {

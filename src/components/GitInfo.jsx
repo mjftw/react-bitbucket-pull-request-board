@@ -20,8 +20,12 @@ export default function GitInfo(props) {
     return (
         <Box direction='row' justify='between' flex={true}>
             <Box align='start'>
-                <LeftText>#{pr.id} {pr.title}</LeftText>
-                <LeftText>{pr.repoDisplayName}</LeftText>
+                <Box onClick={() => window.open(pr.prUrl)}>
+                    <LeftText>#{pr.id} {pr.title}</LeftText>
+                </Box>
+                <Box onClick={() => window.open(pr.repoUrl)}>
+                    <LeftText>{pr.repoDisplayName}</LeftText>
+                </Box>
                 <LeftText>{pr.repoProjectKey}</LeftText>
                 <LeftText>Created {moment(pr.dateCreated).fromNow()}</LeftText>
                 <LeftText>Updated {moment(pr.dateUpdated).fromNow()}</LeftText>

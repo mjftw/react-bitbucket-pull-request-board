@@ -10,6 +10,8 @@
         "dateUpdated": "2020-04-26T21:21:50+00:00",
         "branchSource": "source-branch-name",
         "branchTarget": "target-branch-name",
+        "prUrl": "http://pull-reqest-url",
+        "repoUrl": "http://repo-url",
         "author": {
             "name": "username",
             "profileUrl": "http://user-profile-url",

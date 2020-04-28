@@ -7,6 +7,8 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
 
     return {
         title: prData.title,
+        prUrl: prData.links.html.href,
+        repoUrl: prData.source.repository.links.html.href,
         repoName: repoSlug,
         repoDisplayName: prData.source.repository.name,
         id: prData.id,

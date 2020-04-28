@@ -96,8 +96,12 @@ export default class PredictiveSelect extends Component {
         return (checkMatch.indexOf(text) >= 0 && exclude.indexOf(checkMatch) < 0);
     }
 
-    getSuggestions(text, exclude) {
-        const strippedText = text.replace(/^[\s-]+|\s+$/g, '');
+    getSuggestions(text, exclude, ignoreCase) {
+        let strippedText = text.replace(/^[\s-]+|\s+$/g, '');
+        
+        if(ignoreCase) {
+            strippedText = strippedText.toLowerCase();
+        }
 
         if (strippedText.length && this.props.options) {
             return this.props.options.filter(option => {
@@ -129,7 +133,11 @@ export default class PredictiveSelect extends Component {
 
         let options = [];
         if (this.state.searchText && this.state.searchText.length) {
-            options = this.getSuggestions(this.state.searchText, this.props.selected);
+            options = this.getSuggestions(
+                this.state.searchText,
+                this.props.selected,
+                this.props.ignoreCase
+            );
         }
         else if (this.props.options && this.props.options.length) {
             options = this.props.options;

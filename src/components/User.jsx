@@ -24,15 +24,15 @@ const UserBox = (props) => (
 export default function User(props) {
     return (
         <Stack anchor='top-right'>
-            <UserBox>
-                <AvatarImage
-                    src={props.avatarUrl}
-                />
-            </UserBox>
+                <UserBox>
+                    <AvatarImage
+                        src={props.avatarUrl}
+                    />
+                </UserBox>,
             <Box direction='row'>
                 {props.numComments ? <CommentBubble number={props.numComments} /> : null}
                 {props.tick ? <TiTick size='2em' fill='green' /> : null}
             </Box>
         </Stack>
-    )
+    );
 }

@@ -3,9 +3,9 @@ import ReactTooltip from 'react-tooltip'
 
 let next_tooltip_id = 0;
 
-export default function withTooltip(element, tooltip, tooltipProps) {
-    if(tooltip === undefined) {
-        return element;
+export default function WithTooltip(props) {
+    if(props.tooltip === undefined) {
+        return props.children;
     }
 
     const tooltip_id = (next_tooltip_id++).toString();
@@ -13,9 +13,11 @@ export default function withTooltip(element, tooltip, tooltipProps) {
     return(
         <Fragment>
             <div data-tip data-for={tooltip_id}>
-                {element}
+                {props.children}
             </div>
-            <ReactTooltip {...tooltipProps} id={tooltip_id}>{tooltip}</ReactTooltip>
+            <ReactTooltip {...props.tooltipProps} id={tooltip_id}>
+                {props.tooltip}
+            </ReactTooltip>
         </Fragment>
     );
 }

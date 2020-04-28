@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Text } from 'grommet'
 import User from './User'
-import withTooltip from '../hocs/tooltip'
+import WithTooltip from './WithTooltip'
 
 
 function UserGroup(props) {
@@ -30,31 +30,33 @@ export default function UserInfo(props) {
     const reviewersGroup = (pr.reviewers && pr.reviewers.length) ?
         (
             <UserGroup title={'Reviewer' + ((pr.reviewers.length > 1) ? 's' : '')}>
-                {pr.reviewers.map(reviewer => withTooltip(
-                    <User
-                        avatarUrl={reviewer.avatarUrl}
-                        profileUrl={reviewer.profileUrl}
+                {pr.reviewers.map(reviewer =>
+                    <WithTooltip
                         key={reviewer.profileUrl}
-                        numComments={reviewer.comments}
-                        tick={reviewer.approved}
-                    />,
-                    reviewer.name
-                ))}
+                        tooltip={reviewer.name}
+                    >
+                        <User
+                            avatarUrl={reviewer.avatarUrl}
+                            profileUrl={reviewer.profileUrl}
+                            numComments={reviewer.comments}
+                            tick={reviewer.approved}
+                        />
+                    </WithTooltip>
+                )}
             </UserGroup>
         ) : null;
 
     return (
         <Box direction='row' flex='shrink'>
             <UserGroup title='Author'>
-                {withTooltip(
+                <WithTooltip tooltip={pr.author.name}>
                     <User
                         avatarUrl={pr.author.avatarUrl}
                         profileUrl={pr.author.profileUrl}
                         name={pr.author.name}
                         numComments={pr.author.comments}
-                    />,
-                    pr.author.name
-                )}
+                    />
+                </WithTooltip>
             </UserGroup>
             <Box width='0.5em' />
             {reviewersGroup}

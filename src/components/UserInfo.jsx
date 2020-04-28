@@ -33,6 +33,7 @@ export default function UserInfo(props) {
                 {pr.reviewers.map(reviewer => withTooltip(
                     <User
                         avatarUrl={reviewer.avatarUrl}
+                        profileUrl={reviewer.profileUrl}
                         key={reviewer.profileUrl}
                         numComments={reviewer.comments}
                         tick={reviewer.approved}
@@ -48,6 +49,7 @@ export default function UserInfo(props) {
                 {withTooltip(
                     <User
                         avatarUrl={pr.author.avatarUrl}
+                        profileUrl={pr.author.profileUrl}
                         name={pr.author.name}
                         numComments={pr.author.comments}
                     />,

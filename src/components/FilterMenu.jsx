@@ -63,7 +63,6 @@ export default function FilterMenu(props) {
                     options={props.repoNameSuggestions}
                     setSelection={props.setReposSelection}
                     placeholder='Start typing to filter list...'
-                    maxLength={30}
                     ignoreCase={true}
                 />
                 <Box width='0.5em'/>

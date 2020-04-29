@@ -80,7 +80,8 @@ export async function getWorkspaces(accessToken) {
     return teamsData.values.map(value => ({
         name: value.username,
         displayName: value.display_name,
-        avatarUrl: value.links.avatar.href
+        avatarUrl: value.links.avatar.href,
+        workspaceUrl: value.links.html.href
     }))
 }
 

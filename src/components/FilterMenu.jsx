@@ -3,37 +3,23 @@ import { Box, Menu, Image } from 'grommet'
 import { PulseLoader } from 'react-spinners'
 import PredictiveSelect from './PredictiveSelect'
 
-const FilterBox = (props) => (
-    <Box
-        direction='column'
-        pad='small'
-        flex='grow'
-        {...props}
-    >
-        {props.children}
-    </Box >
-);
-
-const AvatarImage = (props) => (
-    <Box
-        height='10em'
-    >
-        <Image
-            fit='contain'
-            {...props}
-        />
-    </Box>
-);
-
 export default function FilterMenu(props) {
     let avatar = null;
     let workspaceName = null;
     if (props.workspaceSelected) {
-        avatar = <AvatarImage src={props.workspaceSelected.avatarUrl} />
-        workspaceName = props.workspaceSelected.displayName
+        avatar = (
+            <Box
+                height='10em'
+                onClick={() => window.open(props.workspaceSelected.workspaceUrl)}
+            >
+                <Image
+                    fit='contain'
+                    src={props.workspaceSelected.avatarUrl}
+                />
+            </Box>
+        );
+        workspaceName = props.workspaceSelected.displayName;
     }
-
-    
 
     let spinner = null;
     if (props.loadingReposSuggestions) {
@@ -41,7 +27,11 @@ export default function FilterMenu(props) {
     }
 
     return (
-        <FilterBox>
+        <Box
+            direction='column'
+            pad='small'
+            flex='grow'
+        >
             {avatar}
             <Box height='0.1em' />
             <Menu
@@ -68,6 +58,6 @@ export default function FilterMenu(props) {
                 <Box width='0.5em'/>
                 {spinner}
             </Box>
-        </FilterBox >
+        </Box >
     );
 }

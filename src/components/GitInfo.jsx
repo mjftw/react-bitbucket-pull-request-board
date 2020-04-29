@@ -18,14 +18,15 @@ function RightText(props) {
 export default function GitInfo(props) {
     const pr = props.prData;
     return (
-        <Box direction='row' justify='between' flex={true}>
+        <Box
+            direction='row'
+            justify='between'
+            flex={true}
+            onClick={() => window.open(pr.prUrl)}
+        >
             <Box align='start'>
-                <Box onClick={() => window.open(pr.prUrl)}>
-                    <LeftText>#{pr.id} {pr.title}</LeftText>
-                </Box>
-                <Box onClick={() => window.open(pr.repoUrl)}>
-                    <LeftText>{pr.repoDisplayName}</LeftText>
-                </Box>
+                <LeftText>#{pr.id} {pr.title}</LeftText>
+                <LeftText>{pr.repoDisplayName}</LeftText>
                 <LeftText>{pr.repoProjectKey}</LeftText>
                 <LeftText>Created {moment(pr.dateCreated).fromNow()}</LeftText>
                 <LeftText>Updated {moment(pr.dateUpdated).fromNow()}</LeftText>

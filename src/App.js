@@ -14,7 +14,8 @@ const theme = {
             height: '20px',
         },
         colors: {
-            background: 'light-1'
+            background: 'light-1',
+            focus: 'brand'
         }
     },
 };

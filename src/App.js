@@ -15,7 +15,7 @@ const theme = {
         },
         colors: {
             background: 'light-1',
-            focus: 'brand'
+            focus: 'neutral-3'
         }
     },
 };

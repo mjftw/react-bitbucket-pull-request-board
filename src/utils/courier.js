@@ -25,16 +25,14 @@ export function requestsAreCancelled() {
     return cancelSource.token.reason !== undefined;
 }
 
-function retryFailedRequest(error) {
-    const tooManyRequestsErrMsg = 'Request failed with status code 429';
-
+function handleRequestError(error) {
     // If request cancelled by user log message
     if (axios.isCancel(error)) {
-        console.log(error.message);
-        throw error;
+        throw error.message;
     }
 
     // If error is "Too many requests", wait 5s and retry
+    const tooManyRequestsErrMsg = 'Request failed with status code 429';
     if (error.message === tooManyRequestsErrMsg) {
         const waitTimeMs = 5000;
         console.log(`GET failed: ${error.config.url}\nStatus 429: Too many requests.\nRetrying in ${waitTimeMs}ms...`);
@@ -45,4 +43,4 @@ function retryFailedRequest(error) {
     throw error;
 }
 
-axios.interceptors.response.use(undefined, retryFailedRequest);
+axios.interceptors.response.use(undefined, handleRequestError);

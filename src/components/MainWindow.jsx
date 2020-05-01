@@ -1,15 +1,15 @@
-import React from 'react'
-import InfoBoard from './InfoBoard'
-import FilterMenu from './FilterMenu'
-import Sidebar from './Sidebar'
-import SpinnerOverlay from './SpinnerOverlay'
-import BitbucketLink from './BitbucketLink'
-import Footer from './Footer'
-import { Box } from 'grommet'
+import React from 'react';
+import InfoBoard from './InfoBoard';
+import FilterMenu from './FilterMenu';
+import Sidebar from './Sidebar';
+import SpinnerOverlay from './SpinnerOverlay';
+import BitbucketLink from './BitbucketLink';
+import Footer from './Footer';
+import {Box} from 'grommet';
 
 export default function MainWindow(props) {
     if (props.missingBitbucketAuth) {
-        return <BitbucketLink />
+        return <BitbucketLink />;
     }
     else {
         return (

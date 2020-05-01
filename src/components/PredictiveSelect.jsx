@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Box, Select, CheckBox, Text } from 'grommet'
+import React, {Component} from 'react';
+import {Box, Select, CheckBox, Text} from 'grommet';
 
 
 function MenuOption(props) {
@@ -8,8 +8,8 @@ function MenuOption(props) {
             <CheckBox
                 checked={props.checked}
             />
-            <Box width='1em'/>
-            <Text>{props.text}</Text>  
+            <Box width='1em' />
+            <Text>{props.text}</Text>
         </Box>
     );
 }
@@ -26,11 +26,11 @@ export default class PredictiveSelect extends Component {
 
         this.state = {
             searchText: ''
-        }
+        };
     }
 
     onChange(option) {
-        if(option.props.checked) {
+        if (option.props.checked) {
             this.deselectOption(option.props.text);
         }
         else {
@@ -41,13 +41,13 @@ export default class PredictiveSelect extends Component {
     onSearch(text) {
         this.setState({
             searchText: text
-        })
+        });
     }
 
     onClose() {
         this.setState({
             searchText: ''
-        })
+        });
     }
 
     selectOption(value) {
@@ -84,7 +84,7 @@ export default class PredictiveSelect extends Component {
         // Search split text for one that starts with checkMatch
         //  and isn't in exclusions
         for (let i = 0; i < checkMatchWord.length; i++) {
-            if (checkMatchWord[i].startsWith(text) && (exclude.indexOf(checkMatch) < 0)) {
+            if (checkMatchWord[ i ].startsWith(text) && (exclude.indexOf(checkMatch) < 0)) {
                 return true;
             }
         }
@@ -98,8 +98,8 @@ export default class PredictiveSelect extends Component {
 
     getSuggestions(text, exclude, ignoreCase) {
         let strippedText = text.replace(/^[\s-]+|\s+$/g, '');
-        
-        if(ignoreCase) {
+
+        if (ignoreCase) {
             strippedText = strippedText.toLowerCase();
         }
 
@@ -111,13 +111,13 @@ export default class PredictiveSelect extends Component {
                 else {
                     return this.checkWordsStartWith(strippedText, option, exclude);
                 }
-            })
+            });
         }
         else {
             return [];
         }
     }
-    
+
     render() {
         let selected = [];
 
@@ -128,7 +128,7 @@ export default class PredictiveSelect extends Component {
                     text={text}
                     checked={true}
                 />
-            )
+            );
         }
 
         let options = [];
@@ -149,11 +149,11 @@ export default class PredictiveSelect extends Component {
                 text={text}
                 checked={false}
             />
-        )
+        );
 
         return (
             <Select
-                options={[...selected, ...options]}
+                options={[ ...selected, ...options ]}
                 valueLabel={this.props.label}
                 closeOnChange={false}
                 searchPlaceholder={this.props.placeholder}

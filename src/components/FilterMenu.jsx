@@ -1,7 +1,7 @@
-import React from 'react'
-import { Box, Menu, Image } from 'grommet'
-import { PulseLoader } from 'react-spinners'
-import PredictiveSelect from './PredictiveSelect'
+import React from 'react';
+import {Box, Menu, Image} from 'grommet';
+import {PulseLoader} from 'react-spinners';
+import PredictiveSelect from './PredictiveSelect';
 
 export default function FilterMenu(props) {
     let avatar = null;
@@ -55,7 +55,7 @@ export default function FilterMenu(props) {
                     placeholder='Start typing to filter list...'
                     ignoreCase={true}
                 />
-                <Box width='0.5em'/>
+                <Box width='0.5em' />
                 {spinner}
             </Box>
         </Box >

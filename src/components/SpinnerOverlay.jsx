@@ -1,6 +1,6 @@
-import React from 'react'
-import RingLoader from 'react-spinners/RingLoader'
-import { Layer } from 'grommet'
+import React from 'react';
+import RingLoader from 'react-spinners/RingLoader';
+import {Layer} from 'grommet';
 
 export default function SpinnerOverlay(props) {
     const spinnerLayer = (

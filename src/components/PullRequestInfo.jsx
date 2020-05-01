@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box } from 'grommet'
-import GitInfo from './GitInfo'
-import UserInfo from './UserInfo'
+import {Box} from 'grommet';
+import GitInfo from './GitInfo';
+import UserInfo from './UserInfo';
 
 const PullRequestBox = (props) => (
     <Box

@@ -1,7 +1,7 @@
-import React from 'react'
-import { Box, Text } from 'grommet'
-import User from './User'
-import WithTooltip from './WithTooltip'
+import React from 'react';
+import {Box, Text} from 'grommet';
+import User from './User';
+import WithTooltip from './WithTooltip';
 
 
 function UserGroup(props) {

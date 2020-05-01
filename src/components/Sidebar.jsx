@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Box, Collapsible } from 'grommet'
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai'
+import React, {Component} from 'react';
+import {Box, Collapsible} from 'grommet';
+import {AiOutlineMenuFold, AiOutlineMenuUnfold} from 'react-icons/ai';
 
 
 export default class Sidebar extends Component {
@@ -12,7 +12,7 @@ export default class Sidebar extends Component {
 
         this.state = {
             isOpen: true
-        }
+        };
     }
 
     setOpen(state) {
@@ -26,7 +26,7 @@ export default class Sidebar extends Component {
     }
 
     render() {
-        const iconSize = '2.5em'
+        const iconSize = '2.5em';
         const openIcon = <AiOutlineMenuFold size={iconSize} />;
         const closedIcon = <AiOutlineMenuUnfold size={iconSize} />;
 

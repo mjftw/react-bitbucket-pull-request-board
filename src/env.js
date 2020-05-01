@@ -6,9 +6,9 @@ export default function getEnv() {
             oauthUrl: null,
             defaultAccessToken: null
         }
-    }
+    };
     env.bitbucket.oauthUrl = `https://bitbucket.org/site/oauth2/authorize` +
-        `?client_id=${env.bitbucket.oauthClientId}&response_type=token`
+        `?client_id=${env.bitbucket.oauthClientId}&response_type=token`;
 
     return env;
 }

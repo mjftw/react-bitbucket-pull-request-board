@@ -5,9 +5,9 @@ export function truncate(string, length, addEllipsis) {
     if (addEllipsis) {
         newLength = length - 3;
         if (newLength < string.length) {
-            ellipsis = '...'
+            ellipsis = '...';
         }
     }
 
-    return `${string.substring(0, length)}${ellipsis}`
+    return `${string.substring(0, length)}${ellipsis}`;
 }

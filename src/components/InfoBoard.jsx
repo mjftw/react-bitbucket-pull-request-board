@@ -1,7 +1,7 @@
-import React from 'react'
-import { Box, Text } from 'grommet'
-import PullRequestInfo from './PullRequestInfo'
-import { getPrUid } from '../utils/bitbucket'
+import React from 'react';
+import {Box, Text} from 'grommet';
+import PullRequestInfo from './PullRequestInfo';
+import {getPrUid} from '../utils/bitbucket';
 
 const InfoBox = (props) => (
     <Box
@@ -9,7 +9,7 @@ const InfoBox = (props) => (
         direction='column'
         flex='shrink'
         justify='start'
-        pad={{ vertical: 'small', horizontal: 'medium' }}
+        pad={{vertical: 'small', horizontal: 'medium'}}
         {...props}
     />
 );

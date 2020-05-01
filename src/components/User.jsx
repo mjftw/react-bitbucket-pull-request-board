@@ -1,7 +1,7 @@
-import React from 'react'
-import { Image, Box, Stack } from 'grommet'
-import { TiTick } from 'react-icons/ti'
-import CommentBubble from './CommentBubble'
+import React from 'react';
+import {Image, Box, Stack} from 'grommet';
+import {TiTick} from 'react-icons/ti';
+import CommentBubble from './CommentBubble';
 
 export default function User(props) {
     return (

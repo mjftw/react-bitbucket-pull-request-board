@@ -1,7 +1,7 @@
-import React from 'react'
-import { Box, Layer, Button } from 'grommet'
-import { FaBitbucket } from 'react-icons/fa'
-import getEnv from '../env'
+import React from 'react';
+import {Box, Layer, Button} from 'grommet';
+import {FaBitbucket} from 'react-icons/fa';
+import getEnv from '../env';
 
 
 export default function BitbucketLink() {
@@ -18,5 +18,5 @@ export default function BitbucketLink() {
                 />
             </Box>
         </Layer>
-    )
+    );
 }

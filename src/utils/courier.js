@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { delay } from './promise'
+import axios from 'axios';
+import {delay} from './promise';
 
 let cancelSource = axios.CancelToken.source();
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import { Text, Box } from 'grommet'
-import { FaRegCopyright } from 'react-icons/fa'
+import React from 'react';
+import {Text, Box} from 'grommet';
+import {FaRegCopyright} from 'react-icons/fa';
 
 export default function Footer(props) {
     const color = 'grey';

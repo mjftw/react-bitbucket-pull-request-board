@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { Box, Text } from 'grommet'
-import { FaLevelDownAlt } from 'react-icons/fa'
+import {Box, Text} from 'grommet';
+import {FaLevelDownAlt} from 'react-icons/fa';
 
 function LeftText(props) {
     return (
@@ -39,8 +39,8 @@ export default function GitInfo(props) {
                     <FaLevelDownAlt />
                 </Box>
                 <RightText>{pr.branchTarget}</RightText>
-                <RightText><span style={{ color: 'green' }}>+{pr.summary.linesAdded}</span> | <span style={{ color: 'red' }}>-{pr.summary.linesRemoved}</span></RightText>
-                <RightText>{pr.mergeConflicts ? <span style={{ color: 'orange' }}>Merge conflicts</span> : 'No merge conflicts'} </RightText>
+                <RightText><span style={{color: 'green'}}>+{pr.summary.linesAdded}</span> | <span style={{color: 'red'}}>-{pr.summary.linesRemoved}</span></RightText>
+                <RightText>{pr.mergeConflicts ? <span style={{color: 'orange'}}>Merge conflicts</span> : 'No merge conflicts'} </RightText>
             </Box>
         </Box >
     );

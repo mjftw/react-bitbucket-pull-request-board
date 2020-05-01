@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Grommet } from 'grommet';
-import getEnv from './env'
-import { getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid } from './utils/bitbucket'
-import { cancelRequests } from './utils/courier'
-import MainWindow from './components/MainWindow'
-import qs from 'qs'
+import React, {Component} from 'react';
+import {Grommet} from 'grommet';
+import getEnv from './env';
+import {getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid} from './utils/bitbucket';
+import {cancelRequests} from './utils/courier';
+import MainWindow from './components/MainWindow';
+import qs from 'qs';
 
 const theme = {
     global: {
@@ -51,7 +51,7 @@ class App extends Component {
 
         getWorkspaces(accessToken).then(workspaces => {
             // Select first workspace found
-            const workspaceSelected = workspaces.length ? workspaces[0] : null;
+            const workspaceSelected = workspaces.length ? workspaces[ 0 ] : null;
 
             this.setState({
                 workspacesFound: workspaces,
@@ -61,14 +61,14 @@ class App extends Component {
             if (workspaceSelected) {
                 this.getRepoSuggestions(
                     workspaceSelected.name
-                )
+                );
             }
             //TODO: Display info about no workspaces found
-        }).catch(this.handleRequestError)
+        }).catch(this.handleRequestError);
     }
 
     async getRepoSuggestions(workspaceName) {
-        this.setState({ loadingReposList: true });
+        this.setState({loadingReposList: true});
 
         let reposFound = [];
         let repoNameListPage = null;
@@ -79,14 +79,14 @@ class App extends Component {
             repoNameListPage = await getNextPage;
             getNextPage = repoNameListPage.getNextPage;
 
-            reposFound.push(...repoNameListPage.repoNames)
+            reposFound.push(...repoNameListPage.repoNames);
 
             this.setState({
                 reposFound: reposFound
             });
-        } while (getNextPage)
+        } while (getNextPage);
 
-        this.setState({ loadingReposList: false });
+        this.setState({loadingReposList: false});
         return reposFound;
     }
 
@@ -100,7 +100,7 @@ class App extends Component {
         if (accessToken) {
             this.setState({
                 accessToken: accessToken
-            })
+            });
         }
         else {
             accessToken = this.state.accessToken;
@@ -116,7 +116,7 @@ class App extends Component {
         if (this.state.prData &&
             this.state.prData.map(getPrUid).indexOf(prUid) >= 0
         ) {
-            console.log(`Not adding duplicate data: ${prUid}`)
+            console.log(`Not adding duplicate data: ${prUid}`);
             return;
         }
 
@@ -180,16 +180,16 @@ class App extends Component {
                     promise.then(prData =>
                         this.appendPRData(prData)
                     )
-                )
+                );
                 return Promise.all(promises);
             })
-        ))
+        ));
 
         allPromises.then(() => {
             this.setState({
                 reposSelected: this.state.reposSelected.concat(repoNames),
                 loadingData: false
-            })
+            });
         }).catch(this.handleRequestError);
     }
 
@@ -205,7 +205,7 @@ class App extends Component {
                 // Clear access token from state
                 this.setState({
                     accessToken: null
-                })
+                });
 
                 // Redirect to Bitbucket to get new token
                 window.location.replace(getEnv().bitbucket.oauthUrl);

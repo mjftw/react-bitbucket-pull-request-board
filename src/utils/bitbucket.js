@@ -1,4 +1,4 @@
-import courier from './courier'
+import courier from './courier';
 import getEnv from '../env';
 
 async function getPRData(pullRequestUrl, accessToken, repoSlug) {
@@ -24,7 +24,7 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
             name: prData.author.display_name,
             profileUrl: prData.author.links.html.href,
             avatarUrl: prData.author.links.avatar.href,
-            comments: (prData.author.display_name in comments) ? comments[prData.author.display_name] : 0
+            comments: (prData.author.display_name in comments) ? comments[ prData.author.display_name ] : 0
         },
         reviewers: prData.participants.filter(p => (
             p.role === 'REVIEWER')
@@ -32,7 +32,7 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
             name: p.user.display_name,
             profileUrl: p.user.links.html.href,
             avatarUrl: p.user.links.avatar.href,
-            comments: (p.user.display_name in comments) ? comments[p.user.display_name] : 0,
+            comments: (p.user.display_name in comments) ? comments[ p.user.display_name ] : 0,
             approved: p.approved
         }))
     };
@@ -64,12 +64,12 @@ async function getUserCommentCount(commentsUrl, accessToken) {
     comments.values.forEach(comment => {
         let userName = comment.user.display_name;
         if (!(userName in userCommentCount)) {
-            userCommentCount[userName] = 1;
+            userCommentCount[ userName ] = 1;
         }
         else {
-            userCommentCount[userName]++;
+            userCommentCount[ userName ]++;
         }
-    })
+    });
     return userCommentCount;
 }
 
@@ -86,7 +86,7 @@ export async function getWorkspaces(accessToken) {
         displayName: value.display_name,
         avatarUrl: value.links.avatar.href,
         workspaceUrl: value.links.html.href
-    }))
+    }));
 }
 
 export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
@@ -101,7 +101,7 @@ export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
                 sort: '-updated_on',
                 pagelen: 100
             }
-        )
+        );
     }
     else {
         pageData = await courier(pageUrl);
@@ -118,7 +118,7 @@ export async function getRepoListPage(workspaceName, pageUrl, accessToken) {
     return {
         repoNames: pageData.values.map(repo => repo.slug),
         getNextPage: getNextPage
-    }
+    };
 }
 
 async function getConflictStatus(diffUrl, accessToken) {
@@ -149,11 +149,11 @@ function bitbucketCourier(url, accessToken, params) {
     let extraParams = {
         access_token: accessToken
     };
-    return courier(url, null, { ...params, ...extraParams });
+    return courier(url, null, {...params, ...extraParams});
 }
 
 function bitbucketRepoRootUrl(workspaceName, repoName) {
-    return `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}/${repoName}`
+    return `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}/${repoName}`;
 }
 
 

@@ -186,8 +186,13 @@ class App extends Component {
         ));
 
         allPromises.then(() => {
+            let newReposSelected = this.state.reposSelected.concat(repoNames);
+
+            // Prevent selecting duplicate repos
+            newReposSelected = [ ...new Set(newReposSelected) ];
+
             this.setState({
-                reposSelected: this.state.reposSelected.concat(repoNames),
+                reposSelected: newReposSelected,
                 loadingData: false
             });
         }).catch(this.handleRequestError);

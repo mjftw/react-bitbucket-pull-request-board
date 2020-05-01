@@ -32,6 +32,10 @@ export default function MainWindow(props) {
                                 workspaceSuggestions={props.workspaceSuggestions}
                                 setWorkspaceSelection={props.setWorkspaceSelection}
                                 loadingReposSuggestions={props.loadingReposSuggestions}
+                                setrefreshMins={props.setrefreshMins}
+                                refreshMins={props.refreshMins}
+                                setShouldDataRefresh={props.setShouldDataRefresh}
+                                shouldDataRefresh={props.shouldDataRefresh}
                             />
                         </Sidebar>
                         <InfoBoard

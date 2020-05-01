@@ -2,6 +2,8 @@ import React from 'react';
 import {Box, Menu, Image} from 'grommet';
 import {PulseLoader} from 'react-spinners';
 import PredictiveSelect from './PredictiveSelect';
+import IntervalPicker from './IntervalPicker';
+
 
 export default function FilterMenu(props) {
     let avatar = null;
@@ -58,6 +60,13 @@ export default function FilterMenu(props) {
                 <Box width='0.5em' />
                 {spinner}
             </Box>
+            <Box height='2em' />
+            <IntervalPicker
+                setInterval={props.setrefreshMins}
+                interval={props.refreshMins}
+                setEnabled={props.setShouldDataRefresh}
+                enabled={props.shouldDataRefresh}
+            />
         </Box >
     );
 }

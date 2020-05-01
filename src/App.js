@@ -31,6 +31,9 @@ class App extends Component {
         this.removeReposData = this.removeReposData.bind(this);
         this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
         this.handleRequestError = this.handleRequestError.bind(this);
+        this.setRefeshIntervalTimer = this.setRefeshIntervalTimer.bind(this);
+        this.setrefreshMins = this.setrefreshMins.bind(this);
+        this.setShouldDataRefresh = this.setShouldDataRefresh.bind(this);
 
         this.state = {
             accessToken: getEnv().bitbucket.defaultAccessToken,
@@ -40,12 +43,17 @@ class App extends Component {
             workspaceSelected: null,
             workspacesFound: [],
             loadingData: false,
-            loadingReposList: false
+            loadingReposList: false,
+            shouldDataRefresh: true,
+            refreshMins: 10
         };
 
         // List of all repo names which have ongoing data fetches
         this.fetchingRepos = [];
         this.fetchListMutex = new Mutex();
+
+        this.updateTimer = null;
+        this.updateTimerInterval = null;
     }
 
     componentDidMount() {
@@ -70,6 +78,10 @@ class App extends Component {
             }
             //TODO: Display info about no workspaces found
         }).catch(this.handleRequestError);
+    }
+
+    componentWillUnmount() {
+        this.disableRefreshData();
     }
 
     async getRepoSuggestions(workspaceName) {
@@ -112,6 +124,43 @@ class App extends Component {
         }
 
         return accessToken;
+    }
+
+    setrefreshMins(mins) {
+        this.setState({
+            refreshMins: mins
+        });
+    }
+
+    setShouldDataRefresh(yesNo) {
+        this.setState({
+            shouldDataRefresh: yesNo ? true : false
+        });
+    }
+
+    disableRefreshData() {
+        if (this.updateTimerInterval) {
+            console.log('Disabling data refresh');
+
+            clearInterval(this.updateTimer);
+            this.updateTimerInterval = null;
+        }
+    }
+
+    setRefeshIntervalTimer(mins) {
+        if (this.updateTimerInterval === mins) {
+            return;
+        }
+
+        this.disableRefreshData();
+
+        console.log(`Setting data refresh rate to ${mins} mins`);
+        this.updateTimerInterval = mins;
+        this.updateTimer = setInterval(() => (
+            this.getReposData(
+                this.state.reposSelected,
+                this.state.workspace)),
+            this.updateTimerInterval * 1000 * 60);
     }
 
     updatePRData(singlePrData) {
@@ -264,6 +313,13 @@ class App extends Component {
     }
 
     render() {
+        if (this.state.shouldDataRefresh) {
+            this.setRefeshIntervalTimer(this.state.refreshMins);
+        }
+        else {
+            this.disableRefreshData();
+        }
+
         return (
             <Grommet theme={theme}>
                 <MainWindow
@@ -277,6 +333,10 @@ class App extends Component {
                     workspaceSelected={this.state.workspaceSelected}
                     workspaceSuggestions={this.state.workspacesFound}
                     setWorkspaceSelection={this.setWorkspaceSelection}
+                    setrefreshMins={this.setrefreshMins}
+                    refreshMins={this.state.refreshMins}
+                    setShouldDataRefresh={this.setShouldDataRefresh}
+                    shouldDataRefresh={this.state.shouldDataRefresh}
                 />
             </Grommet>
         );

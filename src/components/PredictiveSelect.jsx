@@ -152,17 +152,15 @@ export default class PredictiveSelect extends Component {
         )
 
         return (
-            <Box>
-                <Select
-                    options={[...selected, ...options]}
-                    valueLabel={this.props.label}
-                    closeOnChange={false}
-                    searchPlaceholder={this.props.placeholder}
-                    onChange={option => this.onChange(option.value)}
-                    onSearch={this.onSearch}
-                    onClose={this.onClose}
-                />
-            </Box>
+            <Select
+                options={[...selected, ...options]}
+                valueLabel={this.props.label}
+                closeOnChange={false}
+                searchPlaceholder={this.props.placeholder}
+                onChange={option => this.onChange(option.value)}
+                onSearch={this.onSearch}
+                onClose={this.onClose}
+            />
         );
     }
 }

@@ -27,7 +27,7 @@ class App extends Component {
 
         this.getReposData = this.getReposData.bind(this);
         this.updateReposData = this.updateReposData.bind(this);
-        this.appendPRData = this.appendPRData.bind(this);
+        this.updatePRData = this.updatePRData.bind(this);
         this.removeReposData = this.removeReposData.bind(this);
         this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
         this.handleRequestError = this.handleRequestError.bind(this);
@@ -114,19 +114,19 @@ class App extends Component {
         return accessToken;
     }
 
-    appendPRData(singlePrData) {
+    updatePRData(singlePrData) {
         const prUid = getPrUid(singlePrData);
-
-        // Do not append duplicate data
-        if (this.state.prData &&
-            this.state.prData.map(getPrUid).indexOf(prUid) >= 0
-        ) {
-            console.log(`Not adding duplicate data: ${prUid}`);
-            return;
-        }
-
         let prData = this.state.prData ? this.state.prData.slice() : [];
-        prData.push(singlePrData);
+
+        // If PR on board, update data rather than adding new
+        const dataIndex = prData.map(getPrUid).indexOf(prUid);
+        if (dataIndex >= 0) {
+            console.log(`Updating data for pull request ${prUid}`);
+            prData[ dataIndex ] = singlePrData;
+        }
+        else {
+            prData.push(singlePrData);
+        }
 
         this.setState({
             prData: prData
@@ -197,7 +197,7 @@ class App extends Component {
             ).then(promises => {
                 promises.map(promise =>
                     promise.then(prData =>
-                        this.appendPRData(prData)
+                        this.updatePRData(prData)
                     )
                 );
                 return Promise.all(promises);

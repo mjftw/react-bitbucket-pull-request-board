@@ -6,6 +6,7 @@ async function getPRData(pullRequestUrl, accessToken, repoSlug) {
     let comments = await getUserCommentCount(prData.links.comments.href, accessToken);
 
     return {
+        dataFetchDate: new Date().toISOString(),
         title: prData.title,
         prUrl: prData.links.html.href,
         repoUrl: prData.source.repository.links.html.href,
@@ -55,7 +56,7 @@ export async function getRepoPRDataPromises(workspaceName, repoName, accessToken
 }
 
 export function getPrUid(prItem) {
-    return `${prItem.repoName}#${prItem.id}`;
+    return `${prItem.repoName} #${prItem.id}`;
 }
 
 async function getUserCommentCount(commentsUrl, accessToken) {

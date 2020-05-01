@@ -1,7 +1,8 @@
 import React from 'react';
-import {Box} from 'grommet';
+import {Box, Text} from 'grommet';
 import GitInfo from './GitInfo';
 import UserInfo from './UserInfo';
+import LiveTimeSince from './LiveTimeSince';
 
 const PullRequestBox = (props) => (
     <Box
@@ -45,9 +46,15 @@ export default function PullRequestInfo(props) {
 
     return (
         <PullRequestBox approved={approved}>
-            <GitInfo prData={props.prData}></GitInfo>
+            <Box flex='grow' direction='column'>
+                <GitInfo prData={props.prData} />
+                <Box height='0.5em' />
+                <Text size='1em' color='dark-3'>
+                    Refreshed <LiveTimeSince timestamp={props.prData.dataFetchDate} />
+                </Text>
+            </Box>
             <Box width='3em' />
-            <UserInfo prData={props.prData}></UserInfo>
+            <UserInfo prData={props.prData} />
         </PullRequestBox>
     );
 }

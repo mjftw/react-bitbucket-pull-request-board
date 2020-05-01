@@ -75,7 +75,11 @@ async function getUserCommentCount(commentsUrl, accessToken) {
 
 export async function getWorkspaces(accessToken) {
     let teamsData = await bitbucketCourier(`${getEnv().bitbucket.apiBaseUrl}/teams`,
-        accessToken, { role: 'member' });
+        accessToken,
+        {
+            role: 'member',
+            pagelen: 100
+        });
 
     return teamsData.values.map(value => ({
         name: value.username,

@@ -5,6 +5,7 @@ import {getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid} from '.
 import {cancelRequests} from './utils/courier';
 import MainWindow from './components/MainWindow';
 import qs from 'qs';
+import {Mutex} from 'async-mutex';
 
 const theme = {
     global: {
@@ -41,6 +42,10 @@ class App extends Component {
             loadingData: false,
             loadingReposList: false
         };
+
+        // List of all repo names which have ongoing data fetches
+        this.fetchingRepos = [];
+        this.fetchListMutex = new Mutex();
     }
 
     componentDidMount() {
@@ -172,8 +177,22 @@ class App extends Component {
             loadingData: true
         });
 
-        let allPromises = Promise.all(repoNames.map(repoName =>
-            getRepoPRDataPromises(
+        let allPromises = Promise.all(repoNames.map(async repoName => {
+            // Prevent creating a duplicate request promises
+            if (this.fetchingRepos.indexOf(repoName) >= 0) {
+                console.log(`Preventing fetch data for ${repoName} as fetch in progress`);
+                return null;
+            }
+
+            const release = await this.fetchListMutex.acquire();
+            try {
+                this.fetchingRepos.push(repoName);
+            }
+            finally {
+                release();
+            }
+
+            return getRepoPRDataPromises(
                 workspaceName, repoName, accessToken
             ).then(promises => {
                 promises.map(promise =>
@@ -182,23 +201,32 @@ class App extends Component {
                     )
                 );
                 return Promise.all(promises);
-            })
-        ));
-
-        allPromises.then(() => {
-            let newReposSelected = this.state.reposSelected.concat(repoNames);
-
-            // Prevent selecting duplicate repos
-            newReposSelected = [ ...new Set(newReposSelected) ];
-
-            this.setState({
-                reposSelected: newReposSelected,
-                loadingData: false
             });
-        }).catch(this.handleRequestError);
+        }));
+
+        allPromises.then(() => this.fetchListMutex.acquire())
+            .then(release => {
+                // Remove repoNames from list of repos being fetched
+                this.fetchingRepos = this.fetchingRepos.filter(repoName =>
+                    repoNames.indexOf(repoName) < 0
+                );
+                release();
+            })
+            .then(() => {
+                let newReposSelected = this.state.reposSelected.concat(repoNames);
+
+                // Prevent selecting duplicate repos
+                newReposSelected = [ ...new Set(newReposSelected) ];
+
+                this.setState({
+                    reposSelected: newReposSelected,
+                    loadingData: false
+                });
+            });
     }
 
     handleRequestError(error) {
+        console.log(error);
         console.log(JSON.stringify(error));
 
         const notAuthorizedMsg = 'Request failed with status code 401';

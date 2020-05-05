@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, Text} from 'grommet';
 import PullRequestInfo from './PullRequestInfo';
 import {getPrUid} from '../utils/bitbucket';
+import {connect} from 'react-redux';
 
 const InfoBox = (props) => (
     <Box
@@ -46,7 +47,7 @@ const InfoBubble = (props) => (
 );
 
 
-export default function InfoBoard(props) {
+function InfoBoard(props) {
     let content = null;
 
     // No open pull request data to display
@@ -77,3 +78,9 @@ export default function InfoBoard(props) {
     }
     return content;
 }
+
+export default connect(
+    (state) => ({
+        prData: state.pullRequests.all
+    })
+)(InfoBoard);

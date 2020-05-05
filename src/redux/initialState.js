@@ -1,7 +1,7 @@
 const initialState = {
-    "pull_requests": {
+    "pullRequests": {
         "loading": false,
-        "byId": []
+        "all": []
     },
     "repos": {
         "loading": false,

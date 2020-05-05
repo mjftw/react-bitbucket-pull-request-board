@@ -1,7 +1,7 @@
 {
-    "pull_requests": {
+    "pullRequests": {
         "loading": false,
-        "byId": [
+        "all": [
             {
                 "dataFetchDate": "2020-04-26T21:22:00+00:00",
                 "repoName": "repository-name",

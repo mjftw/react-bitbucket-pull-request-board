@@ -6,8 +6,9 @@ import SpinnerOverlay from './SpinnerOverlay';
 import BitbucketLink from './BitbucketLink';
 import Footer from './Footer';
 import {Box} from 'grommet';
+import {connect} from 'react-redux';
 
-export default function MainWindow(props) {
+function MainWindow(props) {
     if (props.missingBitbucketAuth) {
         return <BitbucketLink />;
     }
@@ -50,3 +51,10 @@ export default function MainWindow(props) {
         );
     }
 }
+
+export default connect(
+    (state) => ({
+        missingBitbucketAuth: state.external.bitbucket.accessToken ? false : true,
+        loadingData: state.pullRequests.loading
+    })
+)(MainWindow);

@@ -5,7 +5,7 @@ import {
     SET_SHOULD_DATA_REFRESH
 } from './actionTypes';
 
-export const updateReposData = (repoNames) => ({
+export const setReposSelection = (repoNames) => ({
     type: SET_REPOS_SELECTION,
     payload: {
         repoNames

@@ -11,7 +11,7 @@ export function rootReducer(state, action) {
 
     switch (action.type) {
         case SET_REPOS_SELECTION:
-            //TODO:
+            newState.repos.selected = action.payload.repoNames;
             break;
         case SET_WORKSPACE_SELECTION:
             //TODO:

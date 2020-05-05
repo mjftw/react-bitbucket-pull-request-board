@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Box, Select, CheckBox, Text} from 'grommet';
-
+import {connect} from 'react-redux';
+import {setReposSelection} from '../redux/actions';
 
 function MenuOption(props) {
     return (
@@ -14,7 +15,7 @@ function MenuOption(props) {
     );
 }
 
-export default class PredictiveSelect extends Component {
+class PredictiveSelect extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
@@ -164,3 +165,16 @@ export default class PredictiveSelect extends Component {
         );
     }
 }
+
+export default connect(
+    (state, ownProps) => ({
+        selected: state.repos.selected,
+        options: state.repos.found,
+        ignoreCase: ownProps.ignoreCase,
+        label: ownProps.label,
+        placeholder: ownProps.placeholder
+    }),
+    {
+        setSelection: setReposSelection
+    }
+)(PredictiveSelect);

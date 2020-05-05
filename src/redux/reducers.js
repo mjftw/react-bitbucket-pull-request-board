@@ -17,10 +17,10 @@ export function rootReducer(state, action) {
             //TODO:
             break;
         case SET_REFRESH_MINS:
-            //TODO:
+            newState.refresh.mins = action.payload.mins;
             break;
         case SET_SHOULD_DATA_REFRESH:
-            //TODO:
+            newState.refresh.shouldDataRefresh = action.payload.yesNo;
             break;
         default:
             break;

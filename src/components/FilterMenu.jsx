@@ -62,7 +62,7 @@ export default function FilterMenu(props) {
             </Box>
             <Box height='2em' />
             <IntervalPicker
-                setInterval={props.setrefreshMins}
+                setInterval={props.setRefreshMins}
                 interval={props.refreshMins}
                 setEnabled={props.setShouldDataRefresh}
                 enabled={props.shouldDataRefresh}

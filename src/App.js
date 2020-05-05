@@ -6,6 +6,8 @@ import {cancelRequests} from './utils/courier';
 import MainWindow from './components/MainWindow';
 import qs from 'qs';
 import {Mutex} from 'async-mutex';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
 const theme = {
     global: {
@@ -32,7 +34,7 @@ class App extends Component {
         this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
         this.handleRequestError = this.handleRequestError.bind(this);
         this.setRefeshIntervalTimer = this.setRefeshIntervalTimer.bind(this);
-        this.setrefreshMins = this.setrefreshMins.bind(this);
+        this.setRefreshMins = this.setRefreshMins.bind(this);
         this.setShouldDataRefresh = this.setShouldDataRefresh.bind(this);
 
         this.state = {
@@ -126,7 +128,7 @@ class App extends Component {
         return accessToken;
     }
 
-    setrefreshMins(mins) {
+    setRefreshMins(mins) {
         this.setState({
             refreshMins: mins
         });
@@ -271,7 +273,7 @@ class App extends Component {
                     reposSelected: newReposSelected,
                     loadingData: false
                 });
-            });
+            }).catch(this.handleRequestError);
     }
 
     handleRequestError(error) {
@@ -321,24 +323,26 @@ class App extends Component {
         }
 
         return (
-            <Grommet theme={theme}>
-                <MainWindow
-                    missingBitbucketAuth={this.state.accessToken ? false : true}
-                    loadingData={this.state.loadingData}
-                    loadingReposSuggestions={this.state.loadingReposList}
-                    prData={this.state.prData}
-                    reposSelected={this.state.reposSelected}
-                    repoNameSuggestions={this.state.reposFound}
-                    setReposSelection={this.updateReposData}
-                    workspaceSelected={this.state.workspaceSelected}
-                    workspaceSuggestions={this.state.workspacesFound}
-                    setWorkspaceSelection={this.setWorkspaceSelection}
-                    setrefreshMins={this.setrefreshMins}
-                    refreshMins={this.state.refreshMins}
-                    setShouldDataRefresh={this.setShouldDataRefresh}
-                    shouldDataRefresh={this.state.shouldDataRefresh}
-                />
-            </Grommet>
+            <Provider store={store}>
+                <Grommet theme={theme}>
+                    <MainWindow
+                        missingBitbucketAuth={this.state.accessToken ? false : true}
+                        loadingData={this.state.loadingData}
+                        loadingReposSuggestions={this.state.loadingReposList}
+                        prData={this.state.prData}
+                        reposSelected={this.state.reposSelected}
+                        repoNameSuggestions={this.state.reposFound}
+                        setReposSelection={this.updateReposData}
+                        workspaceSelected={this.state.workspaceSelected}
+                        workspaceSuggestions={this.state.workspacesFound}
+                        setWorkspaceSelection={this.setWorkspaceSelection}
+                        setRefreshMins={this.setRefreshMins}
+                        refreshMins={this.state.refreshMins}
+                        setShouldDataRefresh={this.setShouldDataRefresh}
+                        shouldDataRefresh={this.state.shouldDataRefresh}
+                    />
+                </Grommet>
+            </Provider>
         );
     }
 }

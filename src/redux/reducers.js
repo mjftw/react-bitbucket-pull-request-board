@@ -14,7 +14,10 @@ export function rootReducer(state, action) {
             newState.repos.selected = action.payload.repoNames;
             break;
         case SET_WORKSPACE_SELECTION:
-            //TODO:
+            newState.workspaces.selected = action.payload.workspace;
+            newState.repos.found = [];
+            newState.repos.selected = [];
+            newState.pullRequests.all = [];
             break;
         case SET_REFRESH_MINS:
             newState.refresh.mins = action.payload.mins;

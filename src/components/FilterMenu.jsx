@@ -3,9 +3,11 @@ import {Box, Menu, Image} from 'grommet';
 import {PulseLoader} from 'react-spinners';
 import PredictiveSelect from './PredictiveSelect';
 import IntervalPicker from './IntervalPicker';
+import {connect} from 'react-redux';
+import {setWorkspaceSelection} from '../redux/actions';
 
 
-export default function FilterMenu(props) {
+function FilterMenu(props) {
     let avatar = null;
     let workspaceName = null;
     if (props.workspaceSelected) {
@@ -70,3 +72,17 @@ export default function FilterMenu(props) {
         </Box >
     );
 }
+
+
+export default connect(
+    (state) => ({
+        workspaceSelected: state.workspaces.selected,
+        loadingReposSuggestions: state.repos.loading,
+        workspaceSuggestions: state.workspaces.found,
+        reposSelected: state.repos.selected,
+        repoNameSuggestions: state.repos.found,
+    }),
+    {
+        setWorkspaceSelection
+    }
+)(FilterMenu);

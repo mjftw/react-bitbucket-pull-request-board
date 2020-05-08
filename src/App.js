@@ -3,7 +3,7 @@ import {Grommet} from 'grommet';
 import getEnv from './env';
 import {getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid} from './utils/bitbucket';
 import {cancelRequests} from './utils/courier';
-import MainWindow from './components/MainWindow';
+import MainWindow from './presenters/MainWindow';
 import qs from 'qs';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';

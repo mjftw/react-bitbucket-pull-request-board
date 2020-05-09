@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Grommet} from 'grommet';
 import getEnv from './env';
-import {getRepoPRDataPromises, getWorkspaces, getRepoListPage, getPrUid} from './utils/bitbucket';
-import {cancelRequests} from './utils/courier';
+import {getRepoPRDataPromises, getRepoListPage, getPrUid} from './utils/bitbucket';
 import MainWindow from './presenters/MainWindow';
+import BitbucketFetchManager from './containers/BitbucketFetchManager';
 import qs from 'qs';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';
@@ -31,7 +31,6 @@ class App extends Component {
         this.updateReposData = this.updateReposData.bind(this);
         this.updatePRData = this.updatePRData.bind(this);
         this.removeReposData = this.removeReposData.bind(this);
-        this.setWorkspaceSelection = this.setWorkspaceSelection.bind(this);
         this.handleRequestError = this.handleRequestError.bind(this);
         this.setRefeshIntervalTimer = this.setRefeshIntervalTimer.bind(this);
         this.setRefreshMins = this.setRefreshMins.bind(this);
@@ -42,8 +41,6 @@ class App extends Component {
             prData: null,
             reposFound: null,
             reposSelected: [],
-            workspaceSelected: null,
-            workspacesFound: [],
             loadingData: false,
             loadingReposList: false,
             shouldDataRefresh: true,
@@ -63,23 +60,6 @@ class App extends Component {
         this.setState({
             accessToken: accessToken
         });
-
-        getWorkspaces(accessToken).then(workspaces => {
-            // Select first workspace found
-            const workspaceSelected = workspaces.length ? workspaces[ 0 ] : null;
-
-            this.setState({
-                workspacesFound: workspaces,
-                workspaceSelected: workspaceSelected
-            });
-
-            if (workspaceSelected) {
-                this.getRepoSuggestions(
-                    workspaceSelected.name
-                );
-            }
-            //TODO: Display info about no workspaces found
-        }).catch(this.handleRequestError);
     }
 
     componentWillUnmount() {
@@ -297,23 +277,6 @@ class App extends Component {
         }
     }
 
-    setWorkspaceSelection(workspace) {
-        // If changed workspace, also reset repos found & selected & prData
-        // We also need to cancel any ongoing bitbucket API requests
-        if (workspace.name !== this.state.workspaceSelected.name) {
-            cancelRequests();
-
-            this.setState({
-                workspaceSelected: workspace,
-                reposFound: [],
-                reposSelected: [],
-                prData: null
-            });
-
-            this.getRepoSuggestions(workspace.name);
-        }
-    }
-
     render() {
         if (this.state.shouldDataRefresh) {
             this.setRefeshIntervalTimer(this.state.refreshMins);
@@ -324,6 +287,7 @@ class App extends Component {
 
         return (
             <Provider store={store}>
+                <BitbucketFetchManager />
                 <Grommet theme={theme}>
                     <MainWindow
                         missingBitbucketAuth={this.state.accessToken ? false : true}
@@ -333,9 +297,6 @@ class App extends Component {
                         reposSelected={this.state.reposSelected}
                         repoNameSuggestions={this.state.reposFound}
                         setReposSelection={this.updateReposData}
-                        workspaceSelected={this.state.workspaceSelected}
-                        workspaceSuggestions={this.state.workspacesFound}
-                        setWorkspaceSelection={this.setWorkspaceSelection}
                         setRefreshMins={this.setRefreshMins}
                         refreshMins={this.state.refreshMins}
                         setShouldDataRefresh={this.setShouldDataRefresh}

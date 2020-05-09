@@ -169,7 +169,7 @@ class PredictiveSelect extends Component {
 export default connect(
     (state, ownProps) => ({
         selected: state.repos.selected,
-        options: state.repos.found,
+        options: state.repos.all,
         ignoreCase: ownProps.ignoreCase,
         label: ownProps.label,
         placeholder: ownProps.placeholder

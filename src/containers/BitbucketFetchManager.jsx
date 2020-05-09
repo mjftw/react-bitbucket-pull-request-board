@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
+import {fetchWorkspaces} from '../redux/actions';
 
 /* TODO: Move functionality from App.js
 *   - Workspace fetching
@@ -17,9 +18,14 @@ class BitbucketFetchManager extends Component {
         accessToken: null
     };
 
+    componentDidMount() {
+        this.props.dispatch(fetchWorkspaces());
+    }
     render() {return null;}
 }
 
 export default connect(
-
+    (store) => ({
+        accessToken: store.external.bitbucket.accessToken
+    })
 )(BitbucketFetchManager);

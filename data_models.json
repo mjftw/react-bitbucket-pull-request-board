@@ -40,7 +40,7 @@
     },
     "repos": {
         "loading": false,
-        "found": [
+        "all": [
             "repo-name1",
             "repo-name2"
         ],
@@ -49,8 +49,10 @@
         ]
     },
     "workspaces": {
+        "loading": false,
+        "fetchError": null,
         "selected": "workspace-name",
-        "found": [
+        "all": [
             {
                 "name": "workspace-name",
                 "displayName": "display-name",

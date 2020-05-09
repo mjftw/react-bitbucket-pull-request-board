@@ -5,16 +5,18 @@ const initialState = {
     },
     "repos": {
         "loading": false,
-        "found": [],
+        "all": [],
         "selected": []
     },
     "workspaces": {
+        "loading": false,
+        "fetchError": null,
         "selected": null,
-        "found": []
+        "all": []
     },
     "external": {
         "bitbucket": {
-            "accessToken": null
+            "accessToken": null //FIXME: Must manually supply access token as app has no way to get itself one
         }
     },
     "refresh": {

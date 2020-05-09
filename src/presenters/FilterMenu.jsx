@@ -78,9 +78,9 @@ export default connect(
     (state) => ({
         workspaceSelected: state.workspaces.selected,
         loadingReposSuggestions: state.repos.loading,
-        workspaceSuggestions: state.workspaces.found,
+        workspaceSuggestions: state.workspaces.all,
         reposSelected: state.repos.selected,
-        repoNameSuggestions: state.repos.found,
+        repoNameSuggestions: state.repos.all,
     }),
     {
         setWorkspaceSelection

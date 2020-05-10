@@ -1,6 +1,4 @@
-import store from './store';
 import {getWorkspaces, getRepoListPage} from '../utils/bitbucket';
-import {cancelRequests} from '../utils/courier';
 
 import {
     SET_REPOS_SELECTION,
@@ -25,8 +23,6 @@ export const setReposSelection = (repoNames) => ({
 });
 
 export const setWorkspaceSelection = (workspace) => {
-    cancelRequests();
-
     return {
         type: SET_WORKSPACE_SELECTION,
         payload: {
@@ -57,8 +53,8 @@ export const setAccessToken = (accessToken) => ({
 });
 
 export const fetchWorkspaces = () => {
-    return dispatch => {
-        const state = store.getState();
+    return (dispatch, getState) => {
+        const state = getState();
         const accessToken = state.external.bitbucket.accessToken;
 
         dispatch(fetchWorkspacesBegin());
@@ -106,17 +102,10 @@ export const fetchReposPagesStart = () => {
 };
 
 export const fetchReposPageBegin = (pageUrl) => {
-    let accessToken = null;
-    let workspaceName = null;
-
-    // If no page URL, then we need enough info to get first repo page
-    if (!pageUrl) {
-        const state = store.getState();
-        accessToken = state.external.bitbucket.accessToken;
-        workspaceName = state.workspaces.selected.name;
-    }
-
-    return dispatch => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const accessToken = state.external.bitbucket.accessToken;
+        const workspaceName = state.workspaces.selected.name;
         // Get next page if page URL, otherwise first page
         getRepoListPage(pageUrl, workspaceName, accessToken)
             .then(reposPage => {

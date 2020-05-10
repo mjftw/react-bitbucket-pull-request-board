@@ -4,6 +4,7 @@ import getEnv from './env';
 import {getRepoPRDataPromises, getRepoListPage, getPrUid} from './utils/bitbucket';
 import MainWindow from './presenters/MainWindow';
 import BitbucketFetchManager from './containers/BitbucketFetchManager';
+import BitbucketReposManager from './containers/BitbucketReposManager';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';
 import store from './redux/store';
@@ -260,6 +261,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <BitbucketFetchManager />
+                <BitbucketReposManager />
                 <Grommet theme={theme}>
                     <MainWindow
                         missingBitbucketAuth={this.state.accessToken ? false : true}

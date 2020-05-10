@@ -6,9 +6,13 @@ import {
     FETCH_WORKSPACES_BEGIN,
     FETCH_WORKSPACES_SUCCESS,
     FETCH_WORKSPACES_FAILURE,
-    SET_ACCESS_TOKEN
+    SET_ACCESS_TOKEN,
+    FETCH_REPOS_PAGES_BEGIN,
+    FETCH_REPOS_PAGE_SUCCESS,
+    FETCH_REPOS_PAGE_FAILURE,
+    FETCH_REPOS_PAGES_END
 } from './actionTypes';
-import {errorIs401, cancelRequests} from '../utils/courier';
+import {errorIs401} from '../utils/courier';
 export function rootReducer(state, action) {
     let newState = {...state};
 
@@ -19,12 +23,6 @@ export function rootReducer(state, action) {
 
         case SET_WORKSPACE_SELECTION:
             newState.workspaces.selected = action.payload.workspace;
-            newState.repos.all = [];
-            newState.repos.selected = [];
-            newState.pullRequests.all = [];
-
-            // Changing workspace, so cancel all ongoing requests
-            cancelRequests();
             break;
 
         case SET_REFRESH_MINS:
@@ -37,11 +35,12 @@ export function rootReducer(state, action) {
 
         case FETCH_WORKSPACES_BEGIN:
             newState.workspaces.loading = true;
-            newState.workspaces.fetchError = null;
             break;
 
         case FETCH_WORKSPACES_SUCCESS:
             newState.workspaces.loading = false;
+            newState.workspaces.fetchError = null;
+            newState.external.bitbucket.gotNoAuthFetchError = false;
             newState.workspaces.all = action.payload.workspaces;
             break;
 
@@ -55,6 +54,32 @@ export function rootReducer(state, action) {
         case SET_ACCESS_TOKEN:
             newState.external.bitbucket.accessToken = action.payload.accessToken;
             newState.external.bitbucket.gotNoAuthFetchError = false;
+            break;
+
+        case FETCH_REPOS_PAGES_BEGIN:
+            newState.repos.all = [];
+            newState.repos.selected = null;
+            newState.repos.loading = true;
+            break;
+
+        case FETCH_REPOS_PAGE_SUCCESS:
+            newState.repos.all = [
+                ...newState.repos.all,
+                ...action.payload.repos
+            ];
+            newState.repos.fetchError = null;
+            newState.external.bitbucket.gotNoAuthFetchError = false;
+            break;
+
+        case FETCH_REPOS_PAGE_FAILURE:
+            newState.repos.all = [];
+            newState.repos.loading = false;
+            newState.repos.fetchError = action.payload.error;
+            newState.external.bitbucket.gotNoAuthFetchError = errorIs401(action.payload.error);
+            break;
+
+        case FETCH_REPOS_PAGES_END:
+            newState.repos.loading = false;
             break;
 
         default:

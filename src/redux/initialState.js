@@ -5,6 +5,7 @@ const initialState = {
     },
     "repos": {
         "loading": false,
+        "fetchError": null,
         "all": [],
         "selected": []
     },

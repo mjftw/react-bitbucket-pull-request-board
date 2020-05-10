@@ -40,6 +40,7 @@
     },
     "repos": {
         "loading": false,
+        "fetchError": null,
         "all": [
             "repo-name1",
             "repo-name2"
@@ -51,7 +52,12 @@
     "workspaces": {
         "loading": false,
         "fetchError": null,
-        "selected": "workspace-name",
+        "selected": {
+            "name": "workspace-name",
+            "displayName": "display-name",
+            "avatarUrl": "http://avatar-image-url",
+            "workspaceUrl": "http://workspace-url"
+        },
         "all": [
             {
                 "name": "workspace-name",

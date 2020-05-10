@@ -52,9 +52,6 @@ export const fetchWorkspaces = () => {
         const state = store.getState();
         const accessToken = state.external.bitbucket.accessToken;
 
-        //TODO: dispatch action to cancel ongoing requests
-        // (see utils.courier.cancelRequests())
-
         dispatch(fetchWorkspacesBegin());
         return getWorkspaces(accessToken)
             .then(workspaces => {

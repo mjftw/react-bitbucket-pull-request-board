@@ -8,8 +8,7 @@ import {
     FETCH_WORKSPACES_FAILURE,
     SET_ACCESS_TOKEN
 } from './actionTypes';
-import {errorIs401} from '../utils/courier';
-
+import {errorIs401, cancelRequests} from '../utils/courier';
 export function rootReducer(state, action) {
     let newState = {...state};
 
@@ -23,6 +22,9 @@ export function rootReducer(state, action) {
             newState.repos.all = [];
             newState.repos.selected = [];
             newState.pullRequests.all = [];
+
+            // Changing workspace, so cancel all ongoing requests
+            cancelRequests();
             break;
 
         case SET_REFRESH_MINS:

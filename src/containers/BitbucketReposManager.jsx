@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchReposPagesStart} from '../redux/actions';
+import {fetchReposPages} from '../redux/actions';
+import {cancelRequests} from '../utils/courier';
 
 // Dispatch action to fetch repos list if workspace selected
 class BitbucketReposManager extends Component {
@@ -8,7 +9,8 @@ class BitbucketReposManager extends Component {
     // Called when new workspace selected
     render() {
         if (this.props.workspaceSelected) {
-            this.props.dispatch(fetchReposPagesStart());
+            cancelRequests();
+            this.props.dispatch(fetchReposPages());
         }
 
         return null;

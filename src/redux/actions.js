@@ -12,8 +12,10 @@ import {
     FETCH_REPOS_PAGES_BEGIN,
     FETCH_REPOS_PAGE_SUCCESS,
     FETCH_REPOS_PAGE_FAILURE,
+    FETCH_REPOS_PAGE_CANCELLED,
     FETCH_REPOS_PAGES_END
 } from './actionTypes';
+import {errorIsRequestCancelled} from '../utils/courier';
 
 export const setReposSelection = (repoNames) => ({
     type: SET_REPOS_SELECTION,
@@ -91,15 +93,16 @@ export const fetchWorkspacesFailure = (error) => ({
     }
 });
 
-export const fetchReposPagesStart = () => {
+export const fetchReposPages = () => {
     return dispatch => {
+        dispatch(fetchReposPagesStart());
         dispatch(fetchReposPageBegin());
-
-        return {
-            type: FETCH_REPOS_PAGES_BEGIN
-        };
     };
 };
+
+export const fetchReposPagesStart = () => ({
+    type: FETCH_REPOS_PAGES_BEGIN
+});
 
 export const fetchReposPageBegin = (pageUrl) => {
     return (dispatch, getState) => {
@@ -117,13 +120,17 @@ export const fetchReposPageBegin = (pageUrl) => {
                     dispatch(fetchReposPagesEnd());
                 }
             })
-            .catch(error => dispatch(fetchReposPageFailure(error)));
+            .catch(error => {
+                if (errorIsRequestCancelled(error)) {
+                    dispatch(fetchReposPageCancelled());
+                }
+                else {
+                    dispatch(fetchReposPageFailure(error));
+                }
+            });
     };
 };
 
-// if (nextPageUrl) {
-//     dispatch(fetchReposPageBegin(nextPageUrl));
-// }
 export const fetchReposPageSuccess = (repos) => ({
     type: FETCH_REPOS_PAGE_SUCCESS,
     payload: {
@@ -136,6 +143,10 @@ export const fetchReposPageFailure = (error) => ({
     payload: {
         error
     }
+});
+
+export const fetchReposPageCancelled = () => ({
+    type: FETCH_REPOS_PAGE_CANCELLED
 });
 
 export const fetchReposPagesEnd = () => ({

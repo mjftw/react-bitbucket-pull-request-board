@@ -3,7 +3,7 @@ import {Grommet} from 'grommet';
 import getEnv from './env';
 import {getRepoPRDataPromises, getRepoListPage, getPrUid} from './utils/bitbucket';
 import MainWindow from './presenters/MainWindow';
-import BitbucketFetchManager from './containers/BitbucketFetchManager';
+import BitbucketKeyManager from './containers/BitbucketKeyManager';
 import BitbucketReposManager from './containers/BitbucketReposManager';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';
@@ -175,7 +175,7 @@ class App extends Component {
         //     return;
         // }
 
-        const workspaceName = workspace ? workspace.name : this.state.workspaceSelected.name;
+        const workspaceName = null; //workspace ? workspace.name : this.state.workspaceSelected.name;
 
         this.setState({
             loadingData: true
@@ -260,7 +260,7 @@ class App extends Component {
 
         return (
             <Provider store={store}>
-                <BitbucketFetchManager />
+                <BitbucketKeyManager />
                 <BitbucketReposManager />
                 <Grommet theme={theme}>
                     <MainWindow

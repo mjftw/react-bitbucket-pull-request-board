@@ -6,7 +6,7 @@ import {getAccessTokenFromURL, redirectBitbucketOauthUrl} from '../utils/bitbuck
 
 // Handles getting API access token, and performing initial fetches
 // when we get a new access token.
-class BitbucketFetchManager extends Component {
+class BitbucketKeyManager extends Component {
     // Called if accessToken changes or is invalidated
     render() {
         // If access token invalid, get a new one
@@ -41,4 +41,4 @@ export default connect(
         accessToken: state.external.bitbucket.accessToken,
         accessTokenInvalid: state.external.bitbucket.gotNoAuthFetchError
     })
-)(BitbucketFetchManager);
+)(BitbucketKeyManager);

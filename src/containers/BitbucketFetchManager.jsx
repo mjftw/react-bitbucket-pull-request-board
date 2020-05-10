@@ -12,10 +12,12 @@ class BitbucketFetchManager extends Component {
         // If access token invalid, get a new one
         if (this.props.accessTokenInvalid) {
             // Function does not return
+            console.log('Access token invalid, redirecting to Bitbucket');
             redirectBitbucketOauthUrl();
         }
         // If we have an access token, fetch workspaces
         else if (this.props.accessToken) {
+            console.log('New access token. Performing initial fetches');
             this.props.dispatch(fetchWorkspaces());
         }
         // No access token, can we get one from URL args?
@@ -23,6 +25,7 @@ class BitbucketFetchManager extends Component {
             // If access token available in URL, save this to store
             const accessToken = getAccessTokenFromURL();
             if (accessToken) {
+                console.log('Got access token from URL');
                 this.props.dispatch(setAccessToken(accessToken));
             }
         }

@@ -16,7 +16,8 @@ const initialState = {
     },
     "external": {
         "bitbucket": {
-            "accessToken": null //FIXME: Must manually supply access token as app has no way to get itself one
+            "accessToken": null,
+            "gotNoAuthFetchError": false
         }
     },
     "refresh": {

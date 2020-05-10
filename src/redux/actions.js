@@ -8,7 +8,8 @@ import {
     SET_SHOULD_DATA_REFRESH,
     FETCH_WORKSPACES_BEGIN,
     FETCH_WORKSPACES_SUCCESS,
-    FETCH_WORKSPACES_FAILURE
+    FETCH_WORKSPACES_FAILURE,
+    SET_ACCESS_TOKEN
 } from './actionTypes';
 
 export const setReposSelection = (repoNames) => ({
@@ -39,15 +40,17 @@ export const setShouldDataRefresh = (yesNo) => ({
     }
 });
 
+export const setAccessToken = (accessToken) => ({
+    type: SET_ACCESS_TOKEN,
+    payload: {
+        accessToken
+    }
+});
+
 export const fetchWorkspaces = () => {
     return dispatch => {
         const state = store.getState();
         const accessToken = state.external.bitbucket.accessToken;
-
-        if (!accessToken) {
-            //TODO: dispatch action to get new accessToken
-            // (see App.getAccessToken())
-        }
 
         //TODO: dispatch action to cancel ongoing requests
         // (see utils.courier.cancelRequests())

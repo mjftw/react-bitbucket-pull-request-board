@@ -67,7 +67,8 @@
     },
     "external": {
         "bitbucket": {
-            "accessToken": "qwertyuiop1234567890"
+            "accessToken": "qwertyuiop1234567890",
+            "gotNoAuthFetchError": false
         }
     }
 }

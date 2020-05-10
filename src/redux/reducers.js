@@ -5,9 +5,10 @@ import {
     SET_SHOULD_DATA_REFRESH,
     FETCH_WORKSPACES_BEGIN,
     FETCH_WORKSPACES_SUCCESS,
-    FETCH_WORKSPACES_FAILURE
+    FETCH_WORKSPACES_FAILURE,
+    SET_ACCESS_TOKEN
 } from './actionTypes';
-
+import {errorIs401} from '../utils/courier';
 
 export function rootReducer(state, action) {
     let newState = {...state};
@@ -46,7 +47,14 @@ export function rootReducer(state, action) {
             newState.workspaces.loading = false;
             newState.workspaces.all = [];
             newState.workspaces.fetchError = action.payload.error;
+            newState.external.bitbucket.gotNoAuthFetchError = errorIs401(action.payload.error);
             break;
+
+        case SET_ACCESS_TOKEN:
+            newState.external.bitbucket.accessToken = action.payload.accessToken;
+            newState.external.bitbucket.gotNoAuthFetchError = false;
+            break;
+
         default:
             break;
     }

@@ -1,3 +1,4 @@
+import qs from 'qs';
 import courier from './courier';
 import getEnv from '../env';
 
@@ -157,7 +158,11 @@ function bitbucketRepoRootUrl(workspaceName, repoName) {
     return `${getEnv().bitbucket.apiBaseUrl}/repositories/${workspaceName}/${repoName}`;
 }
 
+export function getAccessTokenFromURL() {
+    const hashArgs = qs.parse(window.location.hash.slice(1));
+    return hashArgs.access_token || null;
+}
 
-
-
-
+export function redirectBitbucketOauthUrl() {
+    window.location.replace(getEnv().bitbucket.oauthUrl);
+}

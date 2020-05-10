@@ -4,7 +4,6 @@ import getEnv from './env';
 import {getRepoPRDataPromises, getRepoListPage, getPrUid} from './utils/bitbucket';
 import MainWindow from './presenters/MainWindow';
 import BitbucketFetchManager from './containers/BitbucketFetchManager';
-import qs from 'qs';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';
 import store from './redux/store';
@@ -37,7 +36,6 @@ class App extends Component {
         this.setShouldDataRefresh = this.setShouldDataRefresh.bind(this);
 
         this.state = {
-            accessToken: getEnv().bitbucket.defaultAccessToken,
             prData: null,
             reposFound: null,
             reposSelected: [],
@@ -55,13 +53,6 @@ class App extends Component {
         this.updateTimerInterval = null;
     }
 
-    componentDidMount() {
-        const accessToken = this.getAccessToken();
-        this.setState({
-            accessToken: accessToken
-        });
-    }
-
     componentWillUnmount() {
         this.disableRefreshData();
     }
@@ -72,7 +63,7 @@ class App extends Component {
         let reposFound = [];
         let repoNameListPage = null;
         let getNextPage = getRepoListPage(
-            workspaceName, null, this.getAccessToken());
+            workspaceName, null/*, this.getAccessToken()*/);
 
         do {
             repoNameListPage = await getNextPage;
@@ -87,25 +78,6 @@ class App extends Component {
 
         this.setState({loadingReposList: false});
         return reposFound;
-    }
-
-    getAccessTokenFromURL() {
-        const hashArgs = qs.parse(window.location.hash.slice(1));
-        return hashArgs.access_token;
-    }
-
-    getAccessToken() {
-        let accessToken = this.getAccessTokenFromURL();
-        if (accessToken) {
-            this.setState({
-                accessToken: accessToken
-            });
-        }
-        else {
-            accessToken = this.state.accessToken;
-        }
-
-        return accessToken;
     }
 
     setRefreshMins(mins) {
@@ -197,10 +169,10 @@ class App extends Component {
     }
 
     getReposData(repoNames, workspace) {
-        const accessToken = this.getAccessToken();
-        if (!accessToken) {
-            return;
-        }
+        // const accessToken = this.getAccessToken();
+        // if (!accessToken) {
+        //     return;
+        // }
 
         const workspaceName = workspace ? workspace.name : this.state.workspaceSelected.name;
 
@@ -224,7 +196,7 @@ class App extends Component {
             }
 
             return getRepoPRDataPromises(
-                workspaceName, repoName, accessToken
+                workspaceName, repoName/*, accessToken*/
             ).then(promises => {
                 promises.map(promise =>
                     promise.then(prData =>

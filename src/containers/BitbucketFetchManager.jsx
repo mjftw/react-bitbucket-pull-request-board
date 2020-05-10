@@ -1,23 +1,41 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchWorkspaces} from '../redux/actions';
+import {fetchWorkspaces, setAccessToken} from '../redux/actions';
+import {getAccessTokenFromURL, redirectBitbucketOauthUrl} from '../utils/bitbucket';
 
-/* TODO: Move functionality from App.js
-*   - Workspace fetching
-*   - Repo list fetching
-*   - Pull request fetching
-*   - Refresh timer handling
-* TODO: Different types of fetch manager, returned by HOC
-*   - bitbucketFetchManager for Bitbucket data
-*   - githubFetchManager for Github data
-*   - ...
-*/
 
+// Handles getting API access token, and performing initial fetches
+// when we get a new access token.
 class BitbucketFetchManager extends Component {
-    componentDidMount() {
-        this.props.dispatch(fetchWorkspaces());
+    // Called if accessToken changes or is invalidated
+    render() {
+        // If access token invalid, get a new one
+        if (this.props.accessTokenInvalid) {
+            // Function does not return
+            redirectBitbucketOauthUrl();
+        }
+        // If we have an access token, fetch workspaces
+        else if (this.props.accessToken) {
+            this.props.dispatch(fetchWorkspaces());
+        }
+        // No access token, can we get one from URL args?
+        else {
+            // If access token available in URL, save this to store
+            const accessToken = getAccessTokenFromURL();
+            if (accessToken) {
+                this.props.dispatch(setAccessToken(accessToken));
+            }
+        }
+        // If still no accessToken, do nothing.
+        // Leave it up to UI to display "Connect to Bitbucket" button
+
+        return null;
     }
-    render() {return null;}
 }
 
-export default connect()(BitbucketFetchManager);
+export default connect(
+    (state) => ({
+        accessToken: state.external.bitbucket.accessToken,
+        accessTokenInvalid: state.external.bitbucket.gotNoAuthFetchError
+    })
+)(BitbucketFetchManager);

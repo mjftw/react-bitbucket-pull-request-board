@@ -43,4 +43,8 @@ function handleRequestError(error) {
     throw error;
 }
 
+export function errorIs401(error) {
+    return error.message === "Request failed with status code 401";
+}
+
 axios.interceptors.response.use(undefined, handleRequestError);

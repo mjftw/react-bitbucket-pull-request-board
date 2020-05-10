@@ -14,18 +14,10 @@ import {fetchWorkspaces} from '../redux/actions';
 */
 
 class BitbucketFetchManager extends Component {
-    static defaultProps = {
-        accessToken: null
-    };
-
     componentDidMount() {
         this.props.dispatch(fetchWorkspaces());
     }
     render() {return null;}
 }
 
-export default connect(
-    (store) => ({
-        accessToken: store.external.bitbucket.accessToken
-    })
-)(BitbucketFetchManager);
+export default connect()(BitbucketFetchManager);

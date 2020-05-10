@@ -59,7 +59,7 @@ export function rootReducer(state, action) {
 
         case FETCH_REPOS_PAGES_BEGIN:
             newState.repos.all = [];
-            newState.repos.selected = null;
+            newState.repos.selected = [];
             newState.repos.loading = true;
             newState.repos.fetchError = null;
             newState.external.bitbucket.gotNoAuthFetchError = false;

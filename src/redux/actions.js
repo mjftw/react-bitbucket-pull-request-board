@@ -1,4 +1,9 @@
-import {getWorkspaces, getRepoListPage} from '../utils/bitbucket';
+import {
+    getWorkspaces,
+    getRepoListPage,
+    redirectBitbucketOauthUrl
+} from '../utils/bitbucket';
+import {cancelRequests} from '../utils/courier';
 
 import {
     SET_REPOS_SELECTION,
@@ -15,7 +20,7 @@ import {
     FETCH_REPOS_PAGE_CANCELLED,
     FETCH_REPOS_PAGES_END
 } from './actionTypes';
-import {errorIsRequestCancelled} from '../utils/courier';
+import {errorIsRequestCancelled, errorIs401} from '../utils/courier';
 
 export const setReposSelection = (repoNames) => ({
     type: SET_REPOS_SELECTION,
@@ -25,11 +30,17 @@ export const setReposSelection = (repoNames) => ({
 });
 
 export const setWorkspaceSelection = (workspace) => {
-    return {
+    const action = {
         type: SET_WORKSPACE_SELECTION,
         payload: {
             workspace
         }
+    };
+
+    return dispatch => {
+        dispatch(action);
+        cancelRequests();
+        dispatch(fetchReposPages());
     };
 };
 
@@ -47,12 +58,34 @@ export const setShouldDataRefresh = (yesNo) => ({
     }
 });
 
-export const setAccessToken = (accessToken) => ({
-    type: SET_ACCESS_TOKEN,
-    payload: {
-        accessToken
+export const setAccessToken = (accessToken) => {
+    const action = {
+        type: SET_ACCESS_TOKEN,
+        payload: {
+            accessToken
+        }
+    };
+
+    console.log('New access token. Performing initial fetches');
+
+    // If we have an access token, fetch workspaces
+    return dispatch => {
+        dispatch(action);
+        dispatch(fetchWorkspaces());
+    };
+};
+
+export const handleRequestError = (dispatch, error, errorAction, cancelledAction) => {
+    if (errorIsRequestCancelled(error) && cancelledAction !== undefined) {
+        dispatch(cancelledAction(error));
     }
-});
+    else if (errorIs401(error)) {
+        redirectBitbucketOauthUrl();
+    }
+    else if (errorAction !== undefined) {
+        dispatch(errorAction());
+    }
+};
 
 export const fetchWorkspaces = () => {
     return (dispatch, getState) => {
@@ -71,7 +104,9 @@ export const fetchWorkspaces = () => {
 
                 return workspaces;
             })
-            .catch(error => dispatch(fetchWorkspacesFailure(error)));
+            .catch(error =>
+                handleRequestError(dispatch, error,
+                    fetchWorkspacesFailure));
     };
 };
 
@@ -94,15 +129,15 @@ export const fetchWorkspacesFailure = (error) => ({
 });
 
 export const fetchReposPages = () => {
+    const action = {
+        type: FETCH_REPOS_PAGES_BEGIN
+    };
+
     return dispatch => {
-        dispatch(fetchReposPagesStart());
+        dispatch(action);
         dispatch(fetchReposPageBegin());
     };
 };
-
-export const fetchReposPagesStart = () => ({
-    type: FETCH_REPOS_PAGES_BEGIN
-});
 
 export const fetchReposPageBegin = (pageUrl) => {
     return (dispatch, getState) => {
@@ -120,14 +155,9 @@ export const fetchReposPageBegin = (pageUrl) => {
                     dispatch(fetchReposPagesEnd());
                 }
             })
-            .catch(error => {
-                if (errorIsRequestCancelled(error)) {
-                    dispatch(fetchReposPageCancelled());
-                }
-                else {
-                    dispatch(fetchReposPageFailure(error));
-                }
-            });
+            .catch(error =>
+                handleRequestError(dispatch, error,
+                    fetchReposPageFailure, fetchReposPageCancelled));
     };
 };
 

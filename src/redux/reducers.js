@@ -13,7 +13,7 @@ import {
     FETCH_REPOS_PAGE_CANCELLED,
     FETCH_REPOS_PAGES_END
 } from './actionTypes';
-import {errorIs401} from '../utils/courier';
+
 export function rootReducer(state, action) {
     let newState = {...state};
 
@@ -37,7 +37,6 @@ export function rootReducer(state, action) {
         case FETCH_WORKSPACES_BEGIN:
             newState.workspaces.loading = true;
             newState.workspaces.fetchError = null;
-            newState.external.bitbucket.gotNoAuthFetchError = false;
             break;
 
         case FETCH_WORKSPACES_SUCCESS:
@@ -49,12 +48,10 @@ export function rootReducer(state, action) {
             newState.workspaces.loading = false;
             newState.workspaces.all = [];
             newState.workspaces.fetchError = action.payload.error;
-            newState.external.bitbucket.gotNoAuthFetchError = errorIs401(action.payload.error);
             break;
 
         case SET_ACCESS_TOKEN:
             newState.external.bitbucket.accessToken = action.payload.accessToken;
-            newState.external.bitbucket.gotNoAuthFetchError = false;
             break;
 
         case FETCH_REPOS_PAGES_BEGIN:
@@ -62,7 +59,6 @@ export function rootReducer(state, action) {
             newState.repos.selected = [];
             newState.repos.loading = true;
             newState.repos.fetchError = null;
-            newState.external.bitbucket.gotNoAuthFetchError = false;
             break;
 
         case FETCH_REPOS_PAGE_SUCCESS:
@@ -80,7 +76,6 @@ export function rootReducer(state, action) {
             newState.repos.all = [];
             newState.repos.loading = false;
             newState.repos.fetchError = action.payload.error;
-            newState.external.bitbucket.gotNoAuthFetchError = errorIs401(action.payload.error);
             break;
 
         case FETCH_REPOS_PAGES_END:

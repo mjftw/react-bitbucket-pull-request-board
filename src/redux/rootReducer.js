@@ -2,13 +2,13 @@ import {combineReducers} from 'redux';
 import {workspacesReducer} from './workspaces/reducers';
 import {reposReducer} from './repos/reducers';
 import {refreshReducer} from './refresh/reducers';
-import {externalReducer} from './external/reducers';
+import {apisReducer} from './apis/reducers';
 import {pullRequestsReducer} from './pullRequests/reducers';
 
 export default combineReducers({
     workspaces: workspacesReducer,
     repos: reposReducer,
     refresh: refreshReducer,
-    external: externalReducer,
+    apis: apisReducer,
     pullRequests: pullRequestsReducer
 });

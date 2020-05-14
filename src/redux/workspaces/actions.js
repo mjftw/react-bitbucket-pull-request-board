@@ -28,7 +28,7 @@ export const setWorkspaceSelection = (workspace) => {
 export const fetchWorkspaces = () => {
     return (dispatch, getState) => {
         const state = getState();
-        const accessToken = state.external.bitbucket.accessToken;
+        const accessToken = state.apis.bitbucket.accessToken;
 
         dispatch(fetchWorkspacesBegin());
         return getWorkspaces(accessToken)

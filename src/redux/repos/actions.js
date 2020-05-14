@@ -31,7 +31,7 @@ export const fetchReposPages = () => {
 export const fetchReposPageBegin = (pageUrl) => {
     return (dispatch, getState) => {
         const state = getState();
-        const accessToken = state.external.bitbucket.accessToken;
+        const accessToken = state.apis.bitbucket.accessToken;
         const workspaceName = state.workspaces.selected.name;
         // Get next page if page URL, otherwise first page
         getRepoListPage(pageUrl, workspaceName, accessToken)

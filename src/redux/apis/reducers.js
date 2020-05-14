@@ -9,7 +9,7 @@ const initialState = {
     }
 };
 
-export function externalReducer(state, action) {
+export function apisReducer(state, action) {
     let newState = (state === undefined) ? {...initialState} : {...state};
 
     switch (action.type) {

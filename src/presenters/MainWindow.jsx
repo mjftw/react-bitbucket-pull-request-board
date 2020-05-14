@@ -54,7 +54,7 @@ function MainWindow(props) {
 
 export default connect(
     (state) => ({
-        missingBitbucketAuth: state.external.bitbucket.accessToken ? false : true,
+        missingBitbucketAuth: state.apis.bitbucket.accessToken ? false : true,
         loadingData: state.pullRequests.loading
     })
 )(MainWindow);

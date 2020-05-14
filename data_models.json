@@ -71,7 +71,7 @@
         "shouldDataRefresh": true,
         "mins": 10
     },
-    "external": {
+    "apis": {
         "bitbucket": {
             "accessToken": "qwertyuiop1234567890",
             "gotNoAuthFetchError": false

@@ -1,6 +1,10 @@
 import {getRepoListPage} from '../../utils/bitbucket';
 import {handleRequestError} from '../commonActions';
 import {
+    addPullRequestsForRepo,
+    removePullRequestsForRepo
+} from '../pullRequests/actions';
+import {
     SET_REPOS_SELECTION,
     FETCH_REPOS_PAGES_BEGIN,
     FETCH_REPOS_PAGE_SUCCESS,
@@ -9,12 +13,33 @@ import {
     FETCH_REPOS_PAGES_END
 } from './actionTypes';
 
-export const setReposSelection = (repoNames) => ({
-    type: SET_REPOS_SELECTION,
-    payload: {
-        repoNames
-    }
-});
+
+export const setReposSelection = (repoNames) => {
+    const action = {
+        type: SET_REPOS_SELECTION,
+        payload: {
+            repoNames
+        }
+    };
+
+    return (dispatch, getState) => {
+        // Find what has changed in the repo selection
+        const state = getState();
+        const reposRemoved = state.repos.selected.filter(
+            selected => (repoNames.indexOf(selected) < 0));
+        const reposAdded = repoNames.filter(
+            name => (state.repos.selected.indexOf(name) < 0));
+
+        dispatch(action);
+
+        // Dispatch actions to add or remove pull request data as needed
+        reposRemoved.map(repoName =>
+            dispatch(removePullRequestsForRepo(repoName)));
+        reposAdded.map(repoName =>
+            dispatch(addPullRequestsForRepo(repoName)));
+
+    };
+};
 
 
 export const fetchReposPages = () => {

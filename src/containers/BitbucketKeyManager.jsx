@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
-import {setAccessToken} from '../redux/actions';
+import {setAccessToken} from '../redux/external/actions';
 import {getAccessTokenFromURL} from '../utils/bitbucket';
 
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Box, Select, CheckBox, Text} from 'grommet';
 import {connect} from 'react-redux';
-import {setReposSelection} from '../redux/actions';
+import {setReposSelection} from '../redux/repos/actions';
 
 function MenuOption(props) {
     return (

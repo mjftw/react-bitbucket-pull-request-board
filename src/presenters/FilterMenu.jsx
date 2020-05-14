@@ -4,7 +4,7 @@ import {PulseLoader} from 'react-spinners';
 import PredictiveSelect from './PredictiveSelect';
 import IntervalPicker from './IntervalPicker';
 import {connect} from 'react-redux';
-import {setWorkspaceSelection} from '../redux/actions';
+import {setWorkspaceSelection} from '../redux/workspaces/actions';
 
 
 function FilterMenu(props) {

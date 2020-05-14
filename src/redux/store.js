@@ -1,11 +1,11 @@
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
-import {rootReducer} from './reducers';
-import initialState from './initialState';
+import rootReducer from './rootReducer';
+
 
 const store = createStore(
     rootReducer,
-    initialState,
+    undefined, // Get initial state from subdirectory reducers
     compose(
         applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

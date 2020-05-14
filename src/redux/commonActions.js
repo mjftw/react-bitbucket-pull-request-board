@@ -12,6 +12,6 @@ export const handleRequestError = (dispatch, error, errorAction, cancelledAction
         redirectBitbucketOauthUrl();
     }
     else if (errorAction !== undefined) {
-        dispatch(errorAction());
+        dispatch(errorAction(error));
     }
 };

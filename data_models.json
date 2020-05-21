@@ -1,6 +1,7 @@
 {
     "pullRequests": {
-        "loading": false,
+        "loadingRepos": [],
+        "fetchError": null,
         "all": [
             {
                 "dataFetchDate": "2020-04-26T21:22:00+00:00",

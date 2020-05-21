@@ -13,6 +13,7 @@ import {
     FETCH_PULL_REQUEST_CANCELLED,
     FETCH_PULL_REQUESTS_FOR_REPO_END
 } from './actionTypes';
+import {addRepoSelection} from '../repos/actions';
 
 export const addPullRequestsForRepo = (repoName) => {
     // TODO: Have way of using cached data if not too old rather than
@@ -54,7 +55,6 @@ export const fetchPullRequestsForRepoBegin = (repoName) => {
         dispatch(action);
         getRepoPRDataPromises(workspaceName, repoName, accessToken)
             .then(pullRequestPromises => {
-                console.log('Promises:', pullRequestPromises);
                 pullRequestPromises.map(promise => {
                     promise.then(pullRequest => {
                         // TODO: Add check to see if we should update data
@@ -92,9 +92,21 @@ export const addPullRequest = (pullRequest) => ({
     }
 });
 
-export const fetchPullRequestsForRepoEnd = (repoName) => ({
-    type: FETCH_PULL_REQUESTS_FOR_REPO_END,
-    payload: {
-        repoName
-    }
-});
+export const fetchPullRequestsForRepoEnd = (repoName) => {
+    const action = {
+        type: FETCH_PULL_REQUESTS_FOR_REPO_END,
+        payload: {
+            repoName
+        }
+    };
+
+    return (dispatch, getState) => {
+        const state = getState();
+        const selected = state.repos.selected;
+        dispatch(action);
+
+        if (!inArray(repoName, selected)) {
+            dispatch(addRepoSelection(repoName));
+        }
+    };
+};

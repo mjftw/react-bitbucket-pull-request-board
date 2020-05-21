@@ -1,5 +1,6 @@
 import {
-    SET_REPOS_SELECTION,
+    ADD_REPO_SELECTION,
+    REMOVE_REPO_SELECTION,
     FETCH_REPOS_PAGES_BEGIN,
     FETCH_REPOS_PAGE_SUCCESS,
     FETCH_REPOS_PAGE_FAILURE,
@@ -19,8 +20,16 @@ export function reposReducer(state, action) {
     let newState = (state === undefined) ? {...initialState} : {...state};
 
     switch (action.type) {
-        case SET_REPOS_SELECTION:
-            newState.selected = action.payload.repoNames;
+        case ADD_REPO_SELECTION:
+            newState.selected = [
+                ...newState.selected,
+                action.payload.repoName
+            ];
+            break;
+
+        case REMOVE_REPO_SELECTION:
+            newState.selected = newState.selected.filter(selectedRepo =>
+                selectedRepo !== action.payload.repoName);
             break;
 
         case FETCH_REPOS_PAGES_BEGIN:

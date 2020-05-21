@@ -5,7 +5,8 @@ import {
     removePullRequestsForRepo
 } from '../pullRequests/actions';
 import {
-    SET_REPOS_SELECTION,
+    ADD_REPO_SELECTION,
+    REMOVE_REPO_SELECTION,
     FETCH_REPOS_PAGES_BEGIN,
     FETCH_REPOS_PAGE_SUCCESS,
     FETCH_REPOS_PAGE_FAILURE,
@@ -14,14 +15,21 @@ import {
 } from './actionTypes';
 
 
-export const setReposSelection = (repoNames) => {
-    const action = {
-        type: SET_REPOS_SELECTION,
-        payload: {
-            repoNames
-        }
-    };
+export const addRepoSelection = (repoName) => ({
+    type: ADD_REPO_SELECTION,
+    payload: {
+        repoName
+    }
+});
 
+export const removeRepoSelection = (repoName) => ({
+    type: REMOVE_REPO_SELECTION,
+    payload: {
+        repoName
+    }
+});
+
+export const updateReposSelection = (repoNames) => {
     return (dispatch, getState) => {
         // Find what has changed in the repo selection
         const state = getState();
@@ -30,14 +38,13 @@ export const setReposSelection = (repoNames) => {
         const reposAdded = repoNames.filter(
             name => (state.repos.selected.indexOf(name) < 0));
 
-        dispatch(action);
-
         // Dispatch actions to add or remove pull request data as needed
-        reposRemoved.map(repoName =>
-            dispatch(removePullRequestsForRepo(repoName)));
+        reposRemoved.map(repoName => {
+            dispatch(removePullRequestsForRepo(repoName));
+            dispatch(removeRepoSelection(repoName));
+        });
         reposAdded.map(repoName =>
             dispatch(addPullRequestsForRepo(repoName)));
-
     };
 };
 

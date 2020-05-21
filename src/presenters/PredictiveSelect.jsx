@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Box, Select, CheckBox, Text} from 'grommet';
 import {connect} from 'react-redux';
-import {setReposSelection} from '../redux/repos/actions';
+import {updateReposSelection} from '../redux/repos/actions';
 
 function MenuOption(props) {
     return (
@@ -79,13 +79,13 @@ class PredictiveSelect extends Component {
         }
     }
 
-    checkWordsStartWith(text, checkMatch, exclude) {
+    checkWordsStartWith(text, checkMatch) {
         const checkMatchWord = checkMatch.split('-');
 
         // Search split text for one that starts with checkMatch
         //  and isn't in exclusions
         for (let i = 0; i < checkMatchWord.length; i++) {
-            if (checkMatchWord[ i ].startsWith(text) && (exclude.indexOf(checkMatch) < 0)) {
+            if (checkMatchWord[ i ].startsWith(text)) {
                 return true;
             }
         }
@@ -93,11 +93,11 @@ class PredictiveSelect extends Component {
         return false;
     }
 
-    checkWordIn(text, checkMatch, exclude) {
-        return (checkMatch.indexOf(text) >= 0 && exclude.indexOf(checkMatch) < 0);
+    checkWordIn(text, checkMatch) {
+        return (checkMatch.indexOf(text) >= 0);
     }
 
-    getSuggestions(text, exclude, ignoreCase) {
+    getSuggestions(text, ignoreCase) {
         let strippedText = text.replace(/^[\s-]+|\s+$/g, '');
 
         if (ignoreCase) {
@@ -107,10 +107,10 @@ class PredictiveSelect extends Component {
         if (strippedText.length && this.props.options) {
             return this.props.options.filter(option => {
                 if (strippedText.indexOf('-') > 0) {
-                    return this.checkWordIn(strippedText, option, exclude);
+                    return this.checkWordIn(strippedText, option);
                 }
                 else {
-                    return this.checkWordsStartWith(strippedText, option, exclude);
+                    return this.checkWordsStartWith(strippedText, option);
                 }
             });
         }
@@ -144,6 +144,9 @@ class PredictiveSelect extends Component {
             options = this.props.options;
         }
 
+        // Do not show selected items of options
+        options = options.filter(option => this.props.selected.indexOf(option) < 0);
+
         options = options.map(text =>
             <MenuOption
                 key={text}
@@ -175,6 +178,6 @@ export default connect(
         placeholder: ownProps.placeholder
     }),
     {
-        setSelection: setReposSelection
+        setSelection: updateReposSelection
     }
 )(PredictiveSelect);

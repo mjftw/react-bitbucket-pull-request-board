@@ -26,7 +26,7 @@ export function pullRequestsReducer(state, action) {
             newState.fetchError = null;
             newState.loadingRepos = [
                 ...newState.loadingRepos,
-                action.payload.repo
+                action.payload.repoName
             ];
             break;
 
@@ -38,13 +38,17 @@ export function pullRequestsReducer(state, action) {
             break;
 
         case FETCH_PULL_REQUESTS_FOR_REPO_END:
-            newState.loadingRepos = newState.loadingRepos.filter(
-                repoName => !inArray(repoName, newState.loadingRepos)
-            );
+            newState.loadingRepos = newState.loadingRepos.filter(repoName =>
+                repoName !== action.payload.repoName);
             break;
 
         case ADD_PULL_REQUEST:
             newState.all = [ ...newState.all, action.payload.pullRequest ];
+            break;
+
+        case REMOVE_PULL_REQUESTS_FOR_REPO:
+            newState.all = newState.all.filter(pullRequest =>
+                pullRequest.repoName !== action.payload.repoName);
             break;
 
         default:

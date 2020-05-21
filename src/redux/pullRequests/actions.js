@@ -13,8 +13,6 @@ import {
     FETCH_PULL_REQUEST_CANCELLED,
     FETCH_PULL_REQUESTS_FOR_REPO_END
 } from './actionTypes';
-import {FETCH_REPOS_PAGE_FAILURE, FETCH_REPOS_PAGES_END} from '../repos/actionTypes';
-import {fetchReposPageFailure} from '../repos/actions';
 
 export const addPullRequestsForRepo = (repoName) => {
     // TODO: Have way of using cached data if not too old rather than
@@ -33,10 +31,12 @@ export const addPullRequestsForRepo = (repoName) => {
         }
     };
 };
-export const removePullRequestsForRepo = (repoName) => {
-    //TODO: Add implementation
-    throw function NotImplementedError() {};
-};
+export const removePullRequestsForRepo = (repoName) => ({
+    type: REMOVE_PULL_REQUESTS_FOR_REPO,
+    payload: {
+        repoName
+    }
+});
 
 export const fetchPullRequestsForRepoBegin = (repoName) => {
     const action = {
@@ -67,11 +67,10 @@ export const fetchPullRequestsForRepoBegin = (repoName) => {
             })
             .catch(error => handleRequestError(
                 dispatch, error,
-                fetchPullRequestFailure, fetchPullRequestCancelled));
-        // )
-        //     .then(() => {
-        //         dispatch(fetchPullRequestsForRepoEnd(repoName));
-        //     });
+                fetchPullRequestFailure, fetchPullRequestCancelled))
+            .then(() => {
+                dispatch(fetchPullRequestsForRepoEnd(repoName));
+            });
     };
 };
 
@@ -94,7 +93,7 @@ export const addPullRequest = (pullRequest) => ({
 });
 
 export const fetchPullRequestsForRepoEnd = (repoName) => ({
-    type: FETCH_REPOS_PAGES_END,
+    type: FETCH_PULL_REQUESTS_FOR_REPO_END,
     payload: {
         repoName
     }

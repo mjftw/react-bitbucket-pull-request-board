@@ -7,6 +7,7 @@ import BitbucketKeyManager from './containers/BitbucketKeyManager';
 import {Mutex} from 'async-mutex';
 import {Provider} from 'react-redux';
 import store from './redux/store';
+import RefreshManager from './containers/RefreshManager';
 
 const theme = {
     global: {
@@ -250,16 +251,10 @@ class App extends Component {
     }
 
     render() {
-        if (this.state.shouldDataRefresh) {
-            this.setRefeshIntervalTimer(this.state.refreshMins);
-        }
-        else {
-            this.disableRefreshData();
-        }
-
         return (
             <Provider store={store}>
                 <BitbucketKeyManager />
+                <RefreshManager />
                 <Grommet theme={theme}>
                     <MainWindow
                         missingBitbucketAuth={this.state.accessToken ? false : true}

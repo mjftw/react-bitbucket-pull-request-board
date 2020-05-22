@@ -43,7 +43,19 @@ export function pullRequestsReducer(state, action) {
             break;
 
         case ADD_PULL_REQUEST:
-            newState.all = [ ...newState.all, action.payload.pullRequest ];
+            const allPullRequestUrls = newState.all.map(
+                pullRequest => pullRequest.prUrl);
+
+            const index = allPullRequestUrls.indexOf(
+                action.payload.pullRequest.prUrl);
+
+            // Pull request already added, so update instead
+            if (index >= 0) {
+                newState.all[ index ] = action.payload.pullRequest;
+            }
+            else {
+                newState.all = [ ...newState.all, action.payload.pullRequest ];
+            }
             break;
 
         case REMOVE_PULL_REQUESTS_FOR_REPO:

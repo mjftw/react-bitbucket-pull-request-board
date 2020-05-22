@@ -1,6 +1,6 @@
 import {getWorkspaces} from '../../utils/bitbucket';
 import {cancelRequests} from '../../utils/courier';
-import {fetchReposPages} from '../repos/actions';
+import {fetchReposPages, updateReposSelection} from '../repos/actions';
 import {handleRequestError} from '../commonActions';
 import {
     SET_WORKSPACE_SELECTION,
@@ -21,6 +21,7 @@ export const setWorkspaceSelection = (workspace) => {
     return dispatch => {
         dispatch(action);
         cancelRequests();
+        dispatch(updateReposSelection([]));
         dispatch(fetchReposPages());
     };
 };

@@ -136,7 +136,6 @@ class PredictiveSelect extends Component {
         if (this.state.searchText && this.state.searchText.length) {
             options = this.getSuggestions(
                 this.state.searchText,
-                this.props.selected,
                 this.props.ignoreCase
             );
         }

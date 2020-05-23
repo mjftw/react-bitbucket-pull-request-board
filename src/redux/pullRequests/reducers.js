@@ -51,7 +51,9 @@ export function pullRequestsReducer(state, action) {
 
             // Pull request already added, so update instead
             if (index >= 0) {
-                newState.all[ index ] = action.payload.pullRequest;
+                const newAll = [ ...newState.all ];
+                newAll[ index ] = action.payload.pullRequest;
+                newState.all = newAll;
             }
             else {
                 newState.all = [ ...newState.all, action.payload.pullRequest ];

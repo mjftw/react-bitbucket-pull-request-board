@@ -1,8 +1,9 @@
 import React from 'react';
 import RingLoader from 'react-spinners/RingLoader';
 import {Layer} from 'grommet';
+import {connect} from 'react-redux';
 
-export default function SpinnerOverlay(props) {
+function SpinnerOverlay(props) {
     const spinnerLayer = (
         <Layer
             full={false}
@@ -22,3 +23,10 @@ export default function SpinnerOverlay(props) {
         </React.Fragment>
     );
 }
+
+export default connect(
+    (state, ownProps) => ({
+        show: state.pullRequests.loadingRepos.length > 0,
+        children: ownProps.children
+    })
+)(SpinnerOverlay);

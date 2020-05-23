@@ -1,10 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Box, Menu, Image} from 'grommet';
 import {PulseLoader} from 'react-spinners';
+import {setWorkspaceSelection} from '../redux/workspaces/actions';
 import PredictiveSelect from './PredictiveSelect';
 import IntervalPicker from './IntervalPicker';
-import {connect} from 'react-redux';
-import {setWorkspaceSelection} from '../redux/workspaces/actions';
 
 
 function FilterMenu(props) {
@@ -53,9 +53,6 @@ function FilterMenu(props) {
             <Box direction='row'>
                 <PredictiveSelect
                     label='Select repositories'
-                    selected={props.reposSelected}
-                    options={props.repoNameSuggestions}
-                    setSelection={props.setReposSelection}
                     placeholder='Start typing to filter list...'
                     ignoreCase={true}
                 />
@@ -63,12 +60,7 @@ function FilterMenu(props) {
                 {spinner}
             </Box>
             <Box height='2em' />
-            <IntervalPicker
-                setInterval={props.setRefreshMins}
-                interval={props.refreshMins}
-                setEnabled={props.setShouldDataRefresh}
-                enabled={props.shouldDataRefresh}
-            />
+            <IntervalPicker />
         </Box >
     );
 }

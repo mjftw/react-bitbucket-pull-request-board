@@ -2,6 +2,7 @@ import axios from 'axios';
 import {delay} from './promise';
 
 let cancelSource = axios.CancelToken.source();
+const cancelRequestErrorMessage = 'Request cancelled by user';
 
 export default function courier(url, payload, params) {
     // console.log(`GET: ${url}`)
@@ -18,7 +19,7 @@ export default function courier(url, payload, params) {
 }
 
 export function cancelRequests() {
-    cancelSource.cancel('Request cancelled by user');
+    cancelSource.cancel(cancelRequestErrorMessage);
 }
 
 export function requestsAreCancelled() {
@@ -41,6 +42,17 @@ function handleRequestError(error) {
     }
 
     throw error;
+}
+
+export function errorIs401(error) {
+    const error401Message = "Request failed with status code 401";
+    return error === error401Message ||
+        error.message === error401Message;
+}
+
+export function errorIsRequestCancelled(error) {
+    return error === cancelRequestErrorMessage ||
+        error.message === cancelRequestErrorMessage;
 }
 
 axios.interceptors.response.use(undefined, handleRequestError);

@@ -1,7 +1,9 @@
 import React from 'react';
 import {Box, RangeInput, CheckBox} from 'grommet';
+import {setRefreshMins, setShouldDataRefresh} from '../redux/refresh/actions';
+import {connect} from 'react-redux';
 
-export default function IntervalPicker(props) {
+function IntervalPicker(props) {
     let intervalInput = null;
     if (props.enabled) {
         intervalInput = (
@@ -35,3 +37,14 @@ export default function IntervalPicker(props) {
         </Box>
     );
 }
+
+export default connect(
+    (state) => ({
+        enabled: state.refresh.shouldDataRefresh,
+        interval: state.refresh.mins
+    }),
+    {
+        setInterval: setRefreshMins,
+        setEnabled: setShouldDataRefresh
+    }
+)(IntervalPicker);

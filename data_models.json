@@ -1,36 +1,81 @@
-[
-    {
-        "dataFetchDate": "2020-04-26T21:22:00+00:00",
-        "repoName": "repository-name",
-        "repoDisplayName": "Full Repository Name",
-        "repoProjectKey": "repository project name",
-        "title": "PR title",
-        "open": true,
-        "mergeConflicts": false,
-        "dateCreated": "2020-04-26T21:17:45+00:00",
-        "dateUpdated": "2020-04-26T21:21:50+00:00",
-        "branchSource": "source-branch-name",
-        "branchTarget": "target-branch-name",
-        "prUrl": "http://pull-reqest-url",
-        "repoUrl": "http://repo-url",
-        "author": {
-            "name": "username",
-            "profileUrl": "http://user-profile-url",
-            "avatarUrl": "http://avatar-image-url",
-            "comments": 3
-        },
-        "summary": {
-            "linesAdded": 100,
-            "linesRemoved": 50
-        },
-        "reviewers": [
+{
+    "pullRequests": {
+        "loadingRepos": [],
+        "fetchError": null,
+        "all": [
             {
-                "name": "username",
-                "profileUrl": "http://user-profile-url",
-                "avatarUrl": "http://avatar-image-url",
-                "comments": 3,
-                "approved": false
+                "dataFetchDate": "2020-04-26T21:22:00+00:00",
+                "repoName": "repository-name",
+                "repoDisplayName": "Full Repository Name",
+                "repoProjectKey": "repository project name",
+                "title": "PR title",
+                "open": true,
+                "mergeConflicts": false,
+                "dateCreated": "2020-04-26T21:17:45+00:00",
+                "dateUpdated": "2020-04-26T21:21:50+00:00",
+                "branchSource": "source-branch-name",
+                "branchTarget": "target-branch-name",
+                "prUrl": "http://pull-reqest-url",
+                "repoUrl": "http://repo-url",
+                "author": {
+                    "name": "username",
+                    "profileUrl": "http://user-profile-url",
+                    "avatarUrl": "http://avatar-image-url",
+                    "comments": 3
+                },
+                "summary": {
+                    "linesAdded": 100,
+                    "linesRemoved": 50
+                },
+                "reviewers": [
+                    {
+                        "name": "username",
+                        "profileUrl": "http://user-profile-url",
+                        "avatarUrl": "http://avatar-image-url",
+                        "comments": 3,
+                        "approved": false
+                    }
+                ]
             }
         ]
+    },
+    "repos": {
+        "loading": false,
+        "fetchError": null,
+        "all": [
+            "repo-name1",
+            "repo-name2"
+        ],
+        "selected": [
+            "repo-name1"
+        ]
+    },
+    "workspaces": {
+        "loading": false,
+        "fetchError": null,
+        "selected": {
+            "name": "workspace-name",
+            "displayName": "display-name",
+            "avatarUrl": "http://avatar-image-url",
+            "workspaceUrl": "http://workspace-url"
+        },
+        "all": [
+            {
+                "name": "workspace-name",
+                "displayName": "display-name",
+                "avatarUrl": "http://avatar-image-url",
+                "workspaceUrl": "http://workspace-url"
+            }
+        ]
+    },
+    "refresh": {
+        "shouldDataRefresh": true,
+        "mins": 10
+    },
+    "apis": {
+        "bitbucket": {
+            "accessToken": "qwertyuiop1234567890",
+            "gotNoAuthFetchError": false
+        }
     }
-]
+}

@@ -1,13 +1,14 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {Box} from 'grommet';
 import InfoBoard from './InfoBoard';
 import FilterMenu from './FilterMenu';
 import Sidebar from './Sidebar';
 import SpinnerOverlay from './SpinnerOverlay';
 import BitbucketLink from './BitbucketLink';
 import Footer from './Footer';
-import {Box} from 'grommet';
 
-export default function MainWindow(props) {
+function MainWindow(props) {
     if (props.missingBitbucketAuth) {
         return <BitbucketLink />;
     }
@@ -24,19 +25,7 @@ export default function MainWindow(props) {
                         direction='row'
                         flex='grow'>
                         <Sidebar>
-                            <FilterMenu
-                                reposSelected={props.reposSelected}
-                                repoNameSuggestions={props.repoNameSuggestions}
-                                setReposSelection={props.setReposSelection}
-                                workspaceSelected={props.workspaceSelected}
-                                workspaceSuggestions={props.workspaceSuggestions}
-                                setWorkspaceSelection={props.setWorkspaceSelection}
-                                loadingReposSuggestions={props.loadingReposSuggestions}
-                                setrefreshMins={props.setrefreshMins}
-                                refreshMins={props.refreshMins}
-                                setShouldDataRefresh={props.setShouldDataRefresh}
-                                shouldDataRefresh={props.shouldDataRefresh}
-                            />
+                            <FilterMenu />
                         </Sidebar>
                         <InfoBoard
                             prData={props.prData}
@@ -50,3 +39,10 @@ export default function MainWindow(props) {
         );
     }
 }
+
+export default connect(
+    (state) => ({
+        missingBitbucketAuth: state.apis.bitbucket.accessToken ? false : true,
+        loadingData: state.pullRequests.loading
+    })
+)(MainWindow);

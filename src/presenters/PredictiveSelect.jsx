@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Box, Select, CheckBox, Text} from 'grommet';
-
+import {connect} from 'react-redux';
+import {updateReposSelection} from '../redux/repos/actions';
 
 function MenuOption(props) {
     return (
@@ -14,7 +15,7 @@ function MenuOption(props) {
     );
 }
 
-export default class PredictiveSelect extends Component {
+class PredictiveSelect extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
@@ -78,13 +79,13 @@ export default class PredictiveSelect extends Component {
         }
     }
 
-    checkWordsStartWith(text, checkMatch, exclude) {
+    checkWordsStartWith(text, checkMatch) {
         const checkMatchWord = checkMatch.split('-');
 
         // Search split text for one that starts with checkMatch
         //  and isn't in exclusions
         for (let i = 0; i < checkMatchWord.length; i++) {
-            if (checkMatchWord[ i ].startsWith(text) && (exclude.indexOf(checkMatch) < 0)) {
+            if (checkMatchWord[ i ].startsWith(text)) {
                 return true;
             }
         }
@@ -92,11 +93,11 @@ export default class PredictiveSelect extends Component {
         return false;
     }
 
-    checkWordIn(text, checkMatch, exclude) {
-        return (checkMatch.indexOf(text) >= 0 && exclude.indexOf(checkMatch) < 0);
+    checkWordIn(text, checkMatch) {
+        return (checkMatch.indexOf(text) >= 0);
     }
 
-    getSuggestions(text, exclude, ignoreCase) {
+    getSuggestions(text, ignoreCase) {
         let strippedText = text.replace(/^[\s-]+|\s+$/g, '');
 
         if (ignoreCase) {
@@ -106,10 +107,10 @@ export default class PredictiveSelect extends Component {
         if (strippedText.length && this.props.options) {
             return this.props.options.filter(option => {
                 if (strippedText.indexOf('-') > 0) {
-                    return this.checkWordIn(strippedText, option, exclude);
+                    return this.checkWordIn(strippedText, option);
                 }
                 else {
-                    return this.checkWordsStartWith(strippedText, option, exclude);
+                    return this.checkWordsStartWith(strippedText, option);
                 }
             });
         }
@@ -135,13 +136,15 @@ export default class PredictiveSelect extends Component {
         if (this.state.searchText && this.state.searchText.length) {
             options = this.getSuggestions(
                 this.state.searchText,
-                this.props.selected,
                 this.props.ignoreCase
             );
         }
         else if (this.props.options && this.props.options.length) {
             options = this.props.options;
         }
+
+        // Do not show selected items of options
+        options = options.filter(option => this.props.selected.indexOf(option) < 0);
 
         options = options.map(text =>
             <MenuOption
@@ -164,3 +167,16 @@ export default class PredictiveSelect extends Component {
         );
     }
 }
+
+export default connect(
+    (state, ownProps) => ({
+        selected: state.repos.selected,
+        options: state.repos.all,
+        ignoreCase: ownProps.ignoreCase,
+        label: ownProps.label,
+        placeholder: ownProps.placeholder
+    }),
+    {
+        setSelection: updateReposSelection
+    }
+)(PredictiveSelect);

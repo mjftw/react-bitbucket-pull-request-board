@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import {Grommet} from 'grommet';
-import store from './redux/store';
+import {PersistGate} from 'redux-persist/lib/integration/react';
+import store, {persistor} from './redux/store';
 import BitbucketKeyManager from './containers/BitbucketKeyManager';
 import RefreshManager from './containers/RefreshManager';
 import MainWindow from './presenters/MainWindow';
@@ -24,11 +25,13 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <Grommet theme={theme}>
-                    <BitbucketKeyManager />
-                    <RefreshManager />
-                    <MainWindow />
-                </Grommet>
+                <PersistGate loading={null} persistor={persistor}>
+                    <Grommet theme={theme}>
+                        <BitbucketKeyManager />
+                        <RefreshManager />
+                        <MainWindow />
+                    </Grommet>
+                </PersistGate>
             </Provider>
         );
     }

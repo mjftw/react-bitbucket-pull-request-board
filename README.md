@@ -1,6 +1,7 @@
 # Bitbucket Pull Requests Board
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9affe0f631404f8fb21808688f9fb48f)](https://app.codacy.com/manual/mjftw/react-bitbucket-pull-request-board?utm_source=github.com&utm_medium=referral&utm_content=mjftw/react-bitbucket-pull-request-board&utm_campaign=Badge_Grade_Dashboard)
+[![Build Status](https://travis-ci.com/mjftw/react-bitbucket-pull-request-board.svg?branch=master)](https://travis-ci.com/mjftw/react-bitbucket-pull-request-board)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

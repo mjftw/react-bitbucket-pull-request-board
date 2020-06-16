@@ -30,14 +30,20 @@ export const fetchWorkspaces = () => {
     return (dispatch, getState) => {
         const state = getState();
         const accessToken = state.apis.bitbucket.accessToken;
+        const workspaceSelected = state.workspaces.selected;
 
         dispatch(fetchWorkspacesBegin());
         return getWorkspaces(accessToken)
             .then(workspaces => {
                 dispatch(fetchWorkspacesSuccess(workspaces));
 
-                // Select first workspace found
-                if (workspaces && workspaces.length) {
+                const selectedInFound = workspaces.map(w => w.name).indexOf(
+                    workspaceSelected.name) >= 0;
+
+                // Select first workspace found if no workspace selected or
+                //  if workspace selected is not found
+                if (!(workspaceSelected && selectedInFound) &&
+                    workspaces && workspaces.length) {
                     dispatch(setWorkspaceSelection(workspaces[ 0 ]));
                 }
 

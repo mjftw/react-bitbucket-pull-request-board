@@ -38,7 +38,6 @@ export function reposReducer(state = initialState, action) {
             return {
                 ...state,
                 all: [],
-                selected: [],
                 loading: true,
                 fetchError: null
             };

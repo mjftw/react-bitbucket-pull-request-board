@@ -12,11 +12,7 @@ const initialState = {
     'all': []
 };
 
-export function pullRequestsReducer(state, action) {
-    if (state === undefined) {
-        return initialState;
-    }
-
+export function pullRequestsReducer(state = initialState, action) {
     switch (action.type) {
         case FETCH_PULL_REQUESTS_FOR_REPO_BEGIN:
             return {

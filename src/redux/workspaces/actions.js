@@ -46,6 +46,9 @@ export const fetchWorkspaces = () => {
                     workspaces && workspaces.length) {
                     dispatch(setWorkspaceSelection(workspaces[ 0 ]));
                 }
+                else {
+                    dispatch(fetchReposPages());
+                }
 
                 return workspaces;
             })

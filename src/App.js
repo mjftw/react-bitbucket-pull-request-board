@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import {Grommet} from 'grommet';
-import {PersistGate} from 'redux-persist/lib/integration/react';
-import store, {persistor} from './redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from './redux/store';
 import BitbucketKeyManager from './containers/BitbucketKeyManager';
 import RefreshManager from './containers/RefreshManager';
 import MainWindow from './presenters/MainWindow';

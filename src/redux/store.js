@@ -8,19 +8,19 @@ import rootReducer from './rootReducer';
 
 const persistConfig = {
     key: 'root',
-    storage: storage,
+    storage,
     stateReconciler: autoMergeLevel2,
     blacklist: [ 'apis' ]
 };
 
-const pReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
-    pReducer,
+export const store = createStore(
+    persistedReducer,
     undefined, // Get initial state from subdirectory reducers
     composeWithDevTools(
         applyMiddleware(thunk)
     )
 );
-export default store;
+
 export const persistor = persistStore(store);

@@ -1,73 +1,77 @@
 import {
-    ADD_PULL_REQUESTS_FOR_REPO,
     REMOVE_PULL_REQUESTS_FOR_REPO,
     ADD_PULL_REQUEST,
-    UPDATE_PULL_REQUEST,
     FETCH_PULL_REQUESTS_FOR_REPO_BEGIN,
-    FETCH_PULL_REQUEST_BEGIN,
-    FETCH_PULL_REQUEST_SUCCESS,
     FETCH_PULL_REQUEST_FAILURE,
-    FETCH_PULL_REQUEST_CANCELLED,
     FETCH_PULL_REQUESTS_FOR_REPO_END
 } from './actionTypes';
-import {inArray} from '../../utils/array';
 
 const initialState = {
-    "loadingRepos": [],
-    "fetchError": null,
-    "all": []
+    'loadingRepos': [],
+    'fetchError': null,
+    'all': []
 };
 
 export function pullRequestsReducer(state, action) {
-    let newState = (state === undefined) ? {...initialState} : {...state};
+    if (state === undefined) {
+        return initialState;
+    }
 
     switch (action.type) {
         case FETCH_PULL_REQUESTS_FOR_REPO_BEGIN:
-            newState.fetchError = null;
-            newState.loadingRepos = [
-                ...newState.loadingRepos,
-                action.payload.repoName
-            ];
-            break;
+            return {
+                ...state,
+                fetchError: null,
+                loadingRepos: [
+                    ...state.loadingRepos,
+                    action.payload.repoName
+                ]
+            };
 
         case FETCH_PULL_REQUEST_FAILURE:
-            newState.fetchError = action.payload.error;
-            break;
-
-        case FETCH_PULL_REQUEST_CANCELLED:
-            break;
+            return {
+                ...state,
+                fetchError: action.payload.error
+            };
 
         case FETCH_PULL_REQUESTS_FOR_REPO_END:
-            newState.loadingRepos = newState.loadingRepos.filter(repoName =>
-                repoName !== action.payload.repoName);
-            break;
+            return {
+                ...state,
+                loadingRepos: state.loadingRepos.filter(repoName =>
+                    repoName !== action.payload.repoName)
+
+            };
 
         case ADD_PULL_REQUEST:
-            const allPullRequestUrls = newState.all.map(
+            const allPullRequestUrls = state.all.map(
                 pullRequest => pullRequest.prUrl);
 
             const index = allPullRequestUrls.indexOf(
                 action.payload.pullRequest.prUrl);
 
             // Pull request already added, so update instead
+            let newAll = null;
             if (index >= 0) {
-                const newAll = [ ...newState.all ];
+                newAll = [ ...state.all ];
                 newAll[ index ] = action.payload.pullRequest;
-                newState.all = newAll;
             }
             else {
-                newState.all = [ ...newState.all, action.payload.pullRequest ];
+                newAll = [ ...state.all, action.payload.pullRequest ];
             }
-            break;
+
+            return {
+                ...state,
+                all: newAll
+            };
 
         case REMOVE_PULL_REQUESTS_FOR_REPO:
-            newState.all = newState.all.filter(pullRequest =>
-                pullRequest.repoName !== action.payload.repoName);
-            break;
+            return {
+                ...state,
+                all: state.all.filter(pullRequest =>
+                    pullRequest.repoName !== action.payload.repoName)
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return newState;
 }

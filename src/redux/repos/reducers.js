@@ -10,59 +10,69 @@ import {
 
 
 const initialState = {
-    "loading": false,
-    "fetchError": null,
-    "all": [],
-    "selected": []
+    'loading': false,
+    'fetchError': null,
+    'all': [],
+    'selected': []
 };
 
-export function reposReducer(state, action) {
-    let newState = (state === undefined) ? {...initialState} : {...state};
-
+export function reposReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_REPO_SELECTION:
-            newState.selected = [
-                ...newState.selected,
-                action.payload.repoName
-            ];
-            break;
+            return {
+                ...state,
+                selected: [
+                    ...state.selected,
+                    action.payload.repoName
+                ]
+            };
 
         case REMOVE_REPO_SELECTION:
-            newState.selected = newState.selected.filter(selectedRepo =>
-                selectedRepo !== action.payload.repoName);
-            break;
+            return {
+                ...state,
+                selected: state.selected.filter(selectedRepo =>
+                    selectedRepo !== action.payload.repoName)
+            };
 
         case FETCH_REPOS_PAGES_BEGIN:
-            newState.all = [];
-            newState.selected = [];
-            newState.loading = true;
-            newState.fetchError = null;
-            break;
+            return {
+                ...state,
+                all: [],
+                selected: [],
+                loading: true,
+                fetchError: null
+            };
 
         case FETCH_REPOS_PAGE_SUCCESS:
-            newState.all = [
-                ...newState.all,
-                ...action.payload.repos
-            ];
-            break;
+            return {
+                ...state,
+                all: [
+                    ...state.all,
+                    ...action.payload.repos
+                ]
+            };
 
         case FETCH_REPOS_PAGE_CANCELLED:
-            newState.loading = false;
-            break;
+            return {
+                ...state,
+                loading: false
+            };
 
         case FETCH_REPOS_PAGE_FAILURE:
-            newState.all = [];
-            newState.loading = false;
-            newState.fetchError = action.payload.error;
-            break;
+            return {
+                ...state,
+                all: [],
+                loading: false,
+                fetchError: action.payload.error,
+            };
 
         case FETCH_REPOS_PAGES_END:
-            newState.loading = false;
-            break;
+            return {
+                ...state,
+                loading: false
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return newState;
 }

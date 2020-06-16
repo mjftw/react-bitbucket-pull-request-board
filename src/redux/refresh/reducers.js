@@ -5,26 +5,26 @@ import {
 
 
 const initialState = {
-    "shouldDataRefresh": true,
-    "mins": 10
+    'shouldDataRefresh': true,
+    'mins': 10
 };
 
-export function refreshReducer(state, action) {
-    let newState = (state === undefined) ? {...initialState} : {...state};
-
+export function refreshReducer(state = initialState, action) {
     switch (action.type) {
         case SET_REFRESH_MINS:
-            newState.mins = action.payload.mins;
-            break;
+            return {
+                ...state,
+                mins: action.payload.mins
+            };
 
         case SET_SHOULD_DATA_REFRESH:
-            newState.shouldDataRefresh = action.payload.yesNo;
-            break;
+            return {
+                ...state,
+                shouldDataRefresh: action.payload.yesNo
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return newState;
 }
 

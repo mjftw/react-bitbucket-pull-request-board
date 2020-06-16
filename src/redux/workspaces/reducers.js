@@ -7,39 +7,43 @@ import {
 
 
 const initialState = {
-    "loading": false,
-    "fetchError": null,
-    "selected": null,
-    "all": []
+    'loading': false,
+    'fetchError': null,
+    'selected': null,
+    'all': []
 };
 
-export function workspacesReducer(state, action) {
-    let newState = (state === undefined) ? {...initialState} : {...state};
-
+export function workspacesReducer(state = initialState, action) {
     switch (action.type) {
         case SET_WORKSPACE_SELECTION:
-            newState.selected = action.payload.workspace;
-            break;
+            return {
+                ...state,
+                selected: action.payload.workspace
+            };
 
         case FETCH_WORKSPACES_BEGIN:
-            newState.loading = true;
-            newState.fetchError = null;
-            break;
+            return {
+                ...state,
+                loading: true,
+                fetchError: null
+            };
 
         case FETCH_WORKSPACES_SUCCESS:
-            newState.loading = false;
-            newState.all = action.payload.workspaces;
-            break;
+            return {
+                ...state,
+                loading: false,
+                all: action.payload.workspaces
+            };
 
         case FETCH_WORKSPACES_FAILURE:
-            newState.loading = false;
-            newState.all = [];
-            newState.fetchError = action.payload.error;
-            break;
+            return {
+                ...state,
+                loading: false,
+                all: [],
+                fetchError: action.payload.error
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return newState;
 }

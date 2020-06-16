@@ -4,23 +4,24 @@ import {
 
 
 const initialState = {
-    "bitbucket": {
-        "accessToken": null
+    'bitbucket': {
+        'accessToken': null
     }
 };
 
-export function apisReducer(state, action) {
-    let newState = (state === undefined) ? {...initialState} : {...state};
-
+export function apisReducer(state = initialState, action) {
     switch (action.type) {
         case SET_ACCESS_TOKEN:
-            newState.bitbucket.accessToken = action.payload.accessToken;
-            break;
+            return {
+                ...state,
+                bitbucket: {
+                    ...state.bitbucket,
+                    accessToken: action.payload.accessToken
+                }
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return newState;
 }
 

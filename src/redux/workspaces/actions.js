@@ -37,16 +37,19 @@ export const fetchWorkspaces = () => {
             .then(workspaces => {
                 dispatch(fetchWorkspacesSuccess(workspaces));
 
-                const selectedInFound = workspaces.map(w => w.name).indexOf(
-                    workspaceSelected.name) >= 0;
+                let selectedInFetched = false;
+                if (workspaceSelected) {
+                    selectedInFetched = workspaces.map(w => w.name).indexOf(
+                        workspaceSelected.name) >= 0;
+                }
 
                 // Select first workspace found if no workspace selected or
                 //  if workspace selected is not found
-                if (!(workspaceSelected && selectedInFound) &&
-                    workspaces && workspaces.length) {
+                if (!selectedInFetched && workspaces && workspaces.length) {
                     dispatch(setWorkspaceSelection(workspaces[ 0 ]));
                 }
                 else {
+                    // setWorkspaceSelection would usually do this step
                     dispatch(fetchReposPages());
                 }
 
